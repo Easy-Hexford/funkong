@@ -22,5 +22,8 @@
     "url": "https://github.com/Easy-Hexford/funkong/issues"
   },
   "homepage": "https://github.com/Easy-Hexford/funkong#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "tdesign-miniprogram": "^1.2.4"
+  }
 }
