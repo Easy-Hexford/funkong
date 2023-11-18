@@ -1,0 +1,26 @@
+{
+  "name": "funkong",
+  "version": "0.0.1",
+  "scripts": {
+    "changelog": "auto-changelog -p && git add CHANGELOG.md"
+  },
+  "keywords": [],
+  "author": "hexford",
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.2",
+    "@commitlint/config-conventional": "^18.4.2",
+    "auto-changelog": "^2.4.0",
+    "husky": "^8.0.3"
+  },
+  "main": ".eslintrc.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Easy-Hexford/funkong.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Easy-Hexford/funkong/issues"
+  },
+  "homepage": "https://github.com/Easy-Hexford/funkong#readme",
+  "description": ""
+}
