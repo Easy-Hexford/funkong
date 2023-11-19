@@ -1,0 +1,82 @@
+.item {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  background-color: #fff;
+}
+
+.item-left {
+  width: 200px;
+  height: 180px;
+  position: relative;
+}
+
+.logo-wrap {
+  position: absolute;
+  padding: 12px 10px;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: green;
+  margin-right: 10px;
+}
+
+.activity-cover {
+  width: 100%;
+  height: 100%;
+  background-color: yellow;
+}
+
+.item-right {
+  position: relative;
+  flex: 1;
+  margin: 16px;
+  color: rgba(0, 0, 0, 0.60);
+  font-size: 14px;
+  line-height: 140%;
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.activity-name {
+  color: #000;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 140%; 
+  margin-bottom: 8px;
+}
+
+.activity-addr {
+  margin-left: 8px;
+}
+
+.item-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.activity-btn {
+  border-radius: var(--button-large-border-radius, 8px);
+  background: linear-gradient(141deg, #4C88FB 16.58%, #48DD84 98.19%);
+  padding: 6px 10px;
+  color: #FFF;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 140%; 
+}

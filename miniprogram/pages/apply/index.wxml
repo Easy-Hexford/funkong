@@ -1,0 +1,49 @@
+<!--pages/apply/index.wxml-->
+<t-navbar left-arrow fixed="{{false}}" title="搞起" />
+
+<scroll-view scroll-y type="list" class="scrollable">
+	<view class="activity row">
+		<view class="activity-cover">
+			<image src="" />
+		</view>
+		<view class="activity-intro column">
+			<view class="activity-name">惠州2天1夜冲浪团</view>
+			<view class="activity-addr">惠州小平青年海滩</view>
+			<view class="activity-date">12月3日</view>
+		</view>
+	</view>
+	<view class="section between" style="margin-top: 31px;">
+		<view class="left">数量</view>
+		<view class="right">1</view>
+	</view>
+	<view class="section between" style="margin-top: 24px;">
+		<view class="left">支付金额</view>
+		<view class="right money">¥12.00</view>
+	</view>
+	<view class="section between" style="margin-top: 24px;">
+		<view class="left">支付方式</view>
+		<view class="right row">
+			<image class="wechat-pay-icon" src="../../assets/images/Wechat_pay.svg" />
+			<text>微信支付</text>
+		</view>
+	</view>
+	<view class="section" style="margin-top: 31px;">
+    <view class="title">支付说明</view>
+    <view class="left" style="margin-top: 16px; margin-bottom: 10px;">退换规则</view>
+    <view class="cancel-intro">
+      如果商品描述中有明确的退换货说明，应以此说明为主要退换货处理原则。 如果因卖家未对商品作瑕疵描述或实际收到的商品与商品描述不符所引起商品退换，买家已提供相应证据证明不符的，应由卖家承担退换所需的全部运费。 如果因买家自身的主观原因或未提交有效证明而引起的商品退换货，则需由买家承担退换所需的全部运费。 商品退换货以双方协商一致的退换货协议处理，卖家同意退货后，买家安排退货，卖家收到退货确认无误后，再为买家进行换货或者退款。 买家在退换商品时应尽量保持商品原状，包括结构的完整、功能的完整、价值的完整、附件（配件）的完整。 退换商品的过程中，如由于承运方的原因造成商品损坏影响使用或者遗失，由确定承运方的一方联系承运方，并先行承担相应损失。 卖家发货到买家指定地点的过程中，如因承运方的原因造成商品损坏或者影响使用或者遗失，应由卖家联系承运方，并承担相应损失。
+    </view>
+  </view>
+
+</scroll-view>
+
+<view class="footer row">
+	<view class="left-btn">
+		<text class="text-1">￥ 12.00</text>
+		<text class="text-2">/人</text>
+	</view>
+	<view class="right-btn">
+		<text class="text-1">走起 </text>
+	</view>
+</view>
+

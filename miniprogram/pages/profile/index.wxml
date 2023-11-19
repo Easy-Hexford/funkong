@@ -1,0 +1,36 @@
+<!--pages/profile/index.wxml-->
+<t-navbar left-arrow fixed="{{false}}" class="custom-navbar" />
+<scroll-view scroll-y type="list" class="scrollable">
+  <view class="title">修改个人资料</view>
+  <view class="upload-wrap">
+    <t-upload
+      t-class="custom-upload"
+      mediaType="{{['image']}}"
+      max="{{1}}"
+      files="{{fileList}}"
+      bind:add="handleAdd"
+      bind:remove="handleRemove"
+    >
+    </t-upload>
+
+    <text class="tips">添加头像</text>
+  </view>
+
+  <view class="input-wrap">
+    <input class="input" placeholder="名字" placeholder-style="placeholder"	/>
+  </view>
+
+  <view class="input-wrap">
+    <input class="input" placeholder="性别" placeholder-style="placeholder"	/>
+  </view>
+
+  <view class="input-wrap">
+    <input class="input" placeholder="生日" placeholder-style="placeholder"	/>
+  </view>
+</scroll-view>
+
+<view class="footer">
+  <view class="modify-btn">
+    <text>修改</text>
+  </view>
+</view>

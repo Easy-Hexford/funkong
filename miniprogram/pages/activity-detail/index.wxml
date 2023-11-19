@@ -1,0 +1,60 @@
+<image class="poster" src="{{poster}}" />
+<view class="sheet">
+	<view class="club column center">
+		<image class="club-logo" src="{{clubLogo}}" />
+		<view class="club-name">逐浪青年</view>
+	</view>
+	<view class="activity-name">惠州2天1夜冲浪团</view>
+	<view class="activity-addr">惠州 · 小平青年海滩</view>
+	<view class="activity-date">全天 · 12月3日</view>
+	<view class="activity-team column">
+		<view class="title">小队成员</view>
+		<scroll-view scroll-x class="team-member">
+			<view class="row">
+				<block wx:for="{{members}}">
+					<view class="member column center">
+						<image class="member-avatar" src="" />
+						<text class="member-nickname">团长</text>
+					</view>
+				</block>
+			</view>
+		</scroll-view>
+	</view>
+	<view class="activity-content column">
+		<view class="title">活动描述</view>
+		<view>
+			Name tag battle between Tom & Jerry
+			老鼠和猫的名牌大战《来吧，let's go》
+			PS：不懂英文完全不影响抓您let's go
+			猫，鼠，有奖品哦
+			（两种游戏趣味结合）分三轮全程全员参与，不落空
+		</view>
+	</view>
+	<view class="activity-illustration">
+		<view class="title">活动配图</view>
+		<t-image
+		 class="illustration"
+		 error="slot"
+		 mode="widthFix"
+		 src=""
+		 lazy
+		 loading="slot"
+		>
+			<t-loading slot="loading" indicator="{{false}}" text="加载中..." />
+			<text class="error-text" slot="error">加载失败</text>
+		</t-image>
+	</view>
+</view>
+<view class="footer row">
+	<view class="left-btn column center">
+		<image class="share-icon" src="../../assets/images/share.svg" />
+		<tex>邀请好友</tex>
+	</view>
+	<view class="right-btn row">
+		<text class="text-1">走起 </text>
+		<text class="text-2">￥ 12.00/人</text>
+	</view>
+</view>
+
+<t-navbar left-arrow class="custom-navbar"></t-navbar>
+

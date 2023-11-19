@@ -1,1 +1,37 @@
-/* pages/activity/index.wxss */
+page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.scrollable {
+  flex: 1;
+  overflow: auto;
+  box-sizing: border-box;
+  padding: 4px 8px;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 60px);
+  background-color: rgba(247, 247, 247, 1);
+}
+
+.scroll-item {
+  margin-bottom: 8px;
+}
+
+.select-btns {
+  padding: 18px 11px 4px;
+}
+
+.select-btn {
+  display: inline-flex;
+  border-radius: 4px;
+  background: #F7F7F7;
+  padding: 2px var(--button-large-border-radius, 8px);
+  margin-right: 9px;
+  color: rgba(0, 0, 0, 0.55);
+  line-height: 140%;
+
+  &.active {
+    color: #000;
+    font-weight: 500;
+  }
+}

@@ -1,2 +1,9 @@
-<!--pages/home/index.wxml-->
-<text>pages/home/index.wxml</text>
+<t-navbar title="Fun空" fixed="{{false}}" t-class-title="nav-title" />
+<scroll-view scroll-y type="list" class="scrollable">
+	<block wx:for="{{list}}">
+		<view class="scroll-item">
+			<activity/>
+		</view>
+	</block>
+</scroll-view>
+

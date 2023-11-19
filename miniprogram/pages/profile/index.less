@@ -1,0 +1,77 @@
+/* pages/profile/index.wxss */
+
+page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.scrollable {
+  flex: 1;
+  overflow: auto;
+  box-sizing: border-box;
+  padding: 0 24px;
+  padding-bottom: calc(env(safe-area-inset-bottom));
+}
+
+.title {
+  margin: 16px 0;
+  color: var(--glyph-0, rgba(0, 0, 0, 0.90));
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 140%; /* 28px */
+}
+
+.upload-wrap {
+  position: relative;
+
+  .custom-upload {
+    --td-upload-radius: 8px;
+    --td-upload-add-bg-color: #F7F7F7;
+    --td-upload-add-color:rgba(0, 0, 0, 0.30);
+    --td-upload-add-icon-font-size: 28px;
+  }
+
+  .tips {
+    position: absolute;
+    top: 50%;
+    left: 96px;
+    transform: translate(0, -50%);
+    color: rgba(0, 0, 0, 0.30);
+    font-size: 16px;
+    line-height: 140%; /* 22.4px */
+  }
+}
+
+.input-wrap {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: var(--button-large-border-radius, 8px);
+  background: #F7F7F7;
+}
+
+.placeholder {
+  color: rgba(0, 0, 0, 0.30);
+  font-size: 16px;
+  line-height: 140%; /* 22.4px */
+}
+
+.footer {
+  position: absolute;
+  width: 100vw;
+  bottom: 114px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modify-btn {
+  color: #FFF;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 140%; /* 28px */
+  padding: 14px 100px;
+  border-radius: 8px;
+  background: linear-gradient(141deg, #4C88FB 16.58%, #48DD84 98.19%);
+}

@@ -1,1 +1,18 @@
-/* pages/home/index.wxss */
+page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--bg-0, #EDEDED);
+}
+
+.scrollable {
+  flex: 1;
+  overflow: auto;
+  box-sizing: border-box;
+  padding: 4px 8px;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 60px);
+}
+
+.scroll-item {
+  margin-bottom: 8px;
+}

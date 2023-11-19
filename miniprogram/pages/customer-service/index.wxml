@@ -1,0 +1,8 @@
+<!--pages/customer-service/index.wxml-->
+<t-navbar title="联系客服" left-arrow class="custom-navbar" />
+
+<view class="center column">
+  <image class="qrcode" src="../../assets/images/qrcode.png"></image>
+
+  <view class="tips">长按识别二维码添加客服微信</view>
+</view>

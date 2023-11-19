@@ -1,2 +1,54 @@
-<!--pages/mine/index.wxml-->
-<text>pages/mine/index.wxml</text>
+<image class="poster" src="{{poster}}" />
+<view class="sheet">
+	<view class="avatar">
+		<image src="{{avatar}}" />
+  </view>
+  
+	<view class="intro">
+		<text class="nickname">小平在摆烂</text>
+		<view class="identity">主理人</view>
+		<t-icon class="icon--modify" name="filter-2" size="20" />
+  </view>
+  
+	<view class="section">
+		<view class="section-title">俱乐部</view>
+		<view class="section-content">
+			<view class="item" style="padding: 16px 20px;">
+				<view class="vertical-center">
+					<image class="club-logo" src="{{clubLogo}}" />
+					<text>逐浪青年</text>
+				</view>
+				<t-icon size="24" class="icon--arrow-right" name="chevron-right" />
+			</view>
+			<t-divider class="item-divider" />
+			<view class="item">
+        <text>创建活动</text>
+				<t-icon size="24" class="icon--arrow-right" name="chevron-right" />
+			</view>
+			<t-divider class="item-divider" />
+			<view class="item">
+        <text>邀请粉丝</text>
+				<t-icon size="24" class="icon--arrow-right" name="chevron-right" />
+			</view>
+		</view>
+	</view>
+
+	<view class="section">
+		<view class="section-content">
+			<view class="item">
+        <text>账号管理</text>
+				<t-icon size="24" class="icon--arrow-right" name="chevron-right" />
+			</view>
+		</view>
+	</view>
+
+	<view class="section">
+		<view class="section-content">
+			<view class="item">
+        <text>联系客服</text>
+				<t-icon size="24" class="icon--arrow-right" name="chevron-right" />
+			</view>
+		</view>
+	</view>
+</view>
+

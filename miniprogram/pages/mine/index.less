@@ -1,1 +1,102 @@
 /* pages/mine/index.wxss */
+.poster {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 270px;
+}
+
+.sheet {
+  position: relative;
+  border-radius: 20px;
+  margin-top: 240px;
+  background-color: #ffffff;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 0 24px;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 60px);
+}
+
+.avatar {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: green;
+}
+
+.intro {
+  padding-top: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nickname {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.identity {
+  border-radius: 3px;
+  border: 1px solid #6CCEA2;
+  color: #6CCEA2;
+  font-size: 12px;
+  padding: 2px 4px;
+  margin-left: 4px;
+}
+
+.icon--modify {
+  display: inline-block;
+  margin-left: 12px;
+  color: #6CCEA2;
+}
+
+.section-title {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 14px;
+  margin-left: 16px;
+  margin-bottom: 5px;
+}
+
+.section-content {
+  border-radius: 8px;
+  background-color: #F7F7F7;
+  margin-bottom: 16px;
+}
+
+.item {
+  font-size: 16px;
+  font-style: normal;
+  padding: 21px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-divider {
+  margin: 0 24px;
+}
+
+.club-logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: green;
+  margin-right: 12px;
+}
+
+.icon--arrow-right {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.vertical-center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

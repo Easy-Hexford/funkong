@@ -1,0 +1,161 @@
+/* pages/apply/index.wxss */
+page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.scrollable {
+  flex: 1;
+  box-sizing: border-box;
+  overflow: auto;
+  padding: 0 24px;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 76px);
+}
+
+.activity {
+  padding-top: 18px;
+}
+
+.activity-cover {
+  width: 115px;
+  height: 97px;
+  margin-right: 12px;
+  background-color: green;
+}
+
+.activity-intro {
+  flex: 1;
+}
+
+.activity-name {
+  color: rgba(0, 0, 0, 0.90);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 140%; /* 23.8px */
+  margin-top: 4px;
+}
+
+.activity-addr {
+  color: rgba(0, 0, 0, 0.60);
+  font-size: 14px;
+  line-height: 140%; /* 19.6px */
+  margin-top: 8px;
+}
+
+.activity-date {
+  color: rgba(0, 0, 0, 0.60);
+  font-size: 14px;
+  line-height: 140%; /* 19.6px */
+  margin-top: 8px;
+}
+
+.between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section {
+  .left {
+    color: rgba(0, 0, 0, 0.55);
+    font-size: 16px;
+    line-height: 140%; /* 22.4px */
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+  }
+
+  .money {
+    color: #48DD84;
+    text-align: right;
+    font-family: DIN Condensed;
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .wechat-pay-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 4px;
+  }
+
+  .title {
+    color: rgba(0, 0, 0, 0.88);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 140%; /* 22.4px */
+  }
+
+  .cancel-intro {
+    color: rgba(0, 0, 0, 0.88);
+    font-size: 14px;
+    line-height: 140%; /* 19.6px */
+  }
+}
+
+.footer {
+  position: fixed;
+  width: 100vw;
+  bottom: 0;
+  height: 76px;
+  background: #F7F7F7;
+  padding-bottom: calc(env(safe-area-inset-bottom));
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-btn {
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 10px;
+  line-height: 140%;
+  margin-left: 20px;
+
+  .text-1 {
+    font-family: DIN Condensed;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    background: linear-gradient(141deg, #4C88FB 16.58%, #48DD84 98.19%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-2 {
+    color: rgba(0, 0, 0, 0.60);
+    font-family: PingFang SC;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 16.8px */
+  }
+}
+
+.right-btn {
+  margin-right: 16px;
+  padding: var(--button-large-border-radius, 8px) 24px;
+  border-radius: var(--button-large-border-radius, 8px);
+  background: linear-gradient(141deg, #4C88FB 16.58%, #48DD84 98.19%);
+  display: flex;
+  align-items: center;
+
+  .text-1 {
+    color: #FFF;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 140%; /* 28px */
+  }
+
+  .text-2 {
+    color: rgba(255, 255, 255, 0.60);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 16.8px */
+  }
+}

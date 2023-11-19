@@ -1,2 +1,14 @@
-<!--pages/activity/index.wxml-->
-<text>pages/activity/index.wxml</text>
+<t-navbar title="我的活动" fixed="{{false}}" t-class-title="nav-title" />
+<view class="row select-btns">
+  <view class="select-btn active">全部</view>
+  <view class="select-btn">进行中</view>
+  <view class="select-btn">已结束</view>
+</view>
+<scroll-view scroll-y type="list" class="scrollable">
+	<block wx:for="{{list}}">
+		<view class="scroll-item">
+			<activity/>
+		</view>
+	</block>
+</scroll-view>
+

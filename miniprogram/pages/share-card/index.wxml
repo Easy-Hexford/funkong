@@ -1,0 +1,58 @@
+<!--pages/share-card/index.wxml-->
+<t-navbar title="邀请粉丝" left-arrow class="custom-navbar" />
+<view class="center column">
+	<view class="share-card-border">
+		<view class="share-card">
+			<image class="avatar" src="../../assets/images/p1.png" />
+			<view class="title">邀请二维码</view>
+			<t-divider t-class="custom-divider-1" dashed />
+			<view class="order">
+				<text space="nbsp" style="font-weight: 600; color: #000;">订单 </text>
+				<text>29373892034234</text>
+			</view>
+
+			<view class="section" style="margin-top: 15px;">
+				<view class="header">活动口令</view>
+				<view class="content">天才小可爱</view>
+			</view>
+
+			<view class="section" style="margin-top: 20px;">
+				<view class="header">活动</view>
+				<view class="content">门口爬小游戏</view>
+			</view>
+
+			<view class="section" style="margin-top: 20px;">
+				<view class="header">时间</view>
+				<view class="content">周二 15:00</view>
+				<view class="date">2023年11月03日</view>
+			</view>
+
+			<view class="section" style="margin-top: 20px;">
+				<view class="header">地址</view>
+				<view class="content">广东省广州市海珠区海珠半岛花园一期广场</view>
+			</view>
+
+			<view class="divider-wrap">
+				<t-divider t-class="custom-divider-2" dashed></t-divider>
+				<view class="float-ball left" />
+				<view class="float-ball right" />
+			</view>
+
+			<view class="footer between">
+				<view class="left">
+					<view class="look">看这里👇👇</view>
+					<view style="margin-top: 5px;">扫码加入邀请团</view>
+					<view style="margin-top: 3px;">参与后将成对改俱乐部首批成员</view>
+				</view>
+				<view class="right">
+					<image class="qrcode" src="../../assets/images/qrcode.png" />
+				</view>
+			</view>
+		</view>
+	</view>
+
+	<view class="tips">长按保存图片邀请粉丝</view>
+
+	<view class="invite-btn center">邀请粉丝</view>
+</view>
+
