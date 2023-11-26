@@ -1,1 +1,129 @@
 /* pages/club-profile/index.wxss */
+
+.navbar-wrap {
+  // background: #C4C4C4;
+  height: 245px;
+}
+
+.navbar-bg {
+  width: 100%;
+  height: 100%;
+}
+
+.custom-navbar {
+  --td-navbar-bg-color: transparent;
+}
+
+.page-container {
+  position: absolute;
+  top: 150px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 24px;
+  height: calc(100vh - 150px);
+  background: linear-gradient(180deg, rgba(35, 84, 105, 0.00) 0%, #22495A 5.92%, #0D1E32 57.56%);
+  // background: linear-gradient(180deg, rgba(237, 237, 237, 0.00) 0%, #EDEDED 15.52%);
+}
+
+.scrollable {
+  height: 100%;
+}
+
+.club-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: green;
+  margin-right: 12px;
+}
+
+.club-name {
+  color: var(--glyph-white-0, rgba(255, 255, 255, 0.80));
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 140%; /* 28px */
+}
+
+.club-addr {
+  color: var(--glyph-white-1, rgba(255, 255, 255, 0.50));
+  font-size: 14px;
+  line-height: normal;
+}
+
+.club-profile {
+  margin-top: 8px;
+  color: var(--glyph-white-0, rgba(255, 255, 255, 0.80));
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.club-team {
+  margin-top: 20px;
+}
+
+.title {
+  color: var(--glyph-white-1, rgba(255, 255, 255, 0.50));
+  font-family: PingFang SC;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.team-member {
+  margin-top: 16px;
+  overflow: scroll;
+}
+
+.member {
+  width: 88px;
+  margin-right: 20px;
+}
+
+.member-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: green;
+}
+
+.member-nickname {
+  color: #000;
+  color: var(--glyph-white-0, rgba(255, 255, 255, 0.80));
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.member-identity {
+  box-sizing: border-box;
+  margin-top: 4px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  border: 1px solid #6CCEA2;
+  color: #6CCEA2;
+  font-family: PingFang SC;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.create-activity {
+  height: 178px;
+  width: 100%;
+  border-radius: 8px;
+  // background: #F7F7F7;
+  background-color: #193149;
+  color: var(--glyph-white-1, rgba(255, 255, 255, 0.50));
+}
+
+.scroll-item {
+  padding-bottom: 8px;
+}

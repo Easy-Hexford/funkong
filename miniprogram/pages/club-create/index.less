@@ -1,1 +1,127 @@
 /* pages/club-create/index.wxss */
+page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(180deg, rgba(237, 237, 237, 0.00) 0%, #EDEDED 15.52%);
+}
+
+.custom-navbar {
+  --td-navbar-bg-color: transparent;
+}
+
+.page-container {
+  position: relative;
+  flex: 1;
+}
+
+.scrollable {
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  padding: 0 24px;
+  padding-bottom: calc(env(safe-area-inset-bottom));
+}
+
+.title {
+  padding-top: 46px;
+  padding-bottom: 86px;
+  color: rgba(0, 0, 0, 0.30);
+  font-size: 16px;
+  line-height: 140%; /* 22.4px */
+  display: flex;
+  justify-content: center;
+}
+
+.upload-wrap {
+  position: relative;
+
+  .custom-upload {
+    --td-upload-add-bg-color: #F7F7F7;
+    --td-upload-add-color:rgba(0, 0, 0, 0.30);
+    --td-upload-add-icon-font-size: 28px;
+  }
+
+  .tips {
+    position: absolute;
+    top: 50%;
+    left: 96px;
+    transform: translate(0, -50%);
+    color: rgba(0, 0, 0, 0.30);
+    font-size: 16px;
+    line-height: 140%; /* 22.4px */
+  }
+}
+
+.input-wrap {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: var(--button-large-border-radius, 8px);
+  background: #F7F7F7;
+}
+
+.textarea-wrap {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: var(--button-large-border-radius, 8px);
+  background: #F7F7F7;
+  min-height: 124px;
+}
+
+.placeholder {
+  color: rgba(0, 0, 0, 0.30);
+  font-size: 16px;
+  line-height: 140%; /* 22.4px */
+}
+
+.footer {
+  position: absolute;
+  width: 100vw;
+  bottom: 114px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modify-btn {
+  color: #FFF;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 140%; /* 28px */
+  padding: 14px 100px;
+  border-radius: 8px;
+  background: linear-gradient(141deg, #4C88FB 16.58%, #48DD84 98.19%);
+}
+
+.result {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0 24px;
+  box-sizing: border-box;
+  align-items: center;
+
+  .result-title {
+    margin-top: 24px;
+    color: #000;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 140%; /* 28px */
+  }
+
+  .result-content {
+    margin-top: 10px;
+    color: var(--glyph-1, rgba(0, 0, 0, 0.55));
+    text-align: center;
+    font-size: 15px;
+    line-height: 140%; /* 21px */
+  }
+}
+
+.smile-icon {
+  width: 56px;
+  height: 56px;
+  margin-top: 70px;
+}

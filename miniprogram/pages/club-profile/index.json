@@ -1,4 +1,7 @@
 {
   "component": true,
-  "usingComponents": {}
+  "disableScroll": true,
+  "usingComponents": {
+    "activity": "../../components/activity/index"
+  }
 }

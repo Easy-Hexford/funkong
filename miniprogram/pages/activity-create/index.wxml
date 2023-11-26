@@ -1,2 +1,76 @@
 <!--pages/activity-create/index.wxml-->
-<text>pages/activity-create/index.wxml</text>
+<t-navbar
+ left-arrow
+ title="创建活动"
+ fixed="{{false}}"
+ class="custom-navbar"
+/>
+<view class="page-container">
+	<scroll-view scroll-y type="list" class="scrollable">
+		<view class="cover-tips">
+			<view class="row" style="padding-top: 52px; justify-content: center;">
+        <t-icon name="add" size="24" />
+			  <text style="margin-left: 8px;">添加活动封面</text>
+      </view>
+		</view>
+
+		<view class="sheet">
+      <view class="title" style="padding-top: 32px; padding-bottom: 8px;">基本信息</view>
+			<view class="field-wrap">
+				<input class="input" placeholder="填写活动名称" placeholder-class="placeholder" />
+			</view>
+
+			<view class="field-wrap">
+				填写活动开始时间
+			</view>
+
+			<view class="field-wrap">
+				填写活动结束时间
+			</view>
+
+			<view class="field-wrap">
+				添加活动地点
+			</view>
+
+			<view class="field-wrap">
+				活动价格
+			</view>
+
+      <view class="title" style="padding-top: 24px; padding-bottom: 8px;">活动配图</view>
+			<view class="upload-wrap">
+				<t-upload
+				 t-class="custom-upload"
+				 mediaType="{{['image']}}"
+				 max="{{1}}"
+				 files="{{fileList}}"
+				 bind:add="handleAdd"
+				 bind:remove="handleRemove"
+				/>
+			</view>
+
+      <view class="title" style="padding-top: 21px; padding-bottom: 8px;">更多信息</view>
+			<view class="field-wrap">
+				<input class="input" placeholder="参与人数上限" placeholder-class="placeholder" />
+			</view>
+
+			<view class="textarea-wrap">
+				<textarea
+				 class="input"
+				 auto-height
+				 placeholder="填写俱乐部描述"
+				 placeholder-class="placeholder"
+				/>
+				</view>
+        
+        <view class="footer center">
+          <view class="create-btn">
+            <text>创建活动</text>
+          </view>
+        </view>
+    </view>
+
+    </scroll-view>
+    
+    
+</view>
+

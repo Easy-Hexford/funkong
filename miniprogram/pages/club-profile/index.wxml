@@ -1,2 +1,54 @@
 <!--pages/club-profile/index.wxml-->
-<text>pages/club-profile/index.wxml</text>
+<view class="navbar-wrap">
+	<image class="navbar-bg" src="../../assets/images/bg.png" />
+	<t-navbar
+	 left-arrow
+	 title="我的"
+	 fixed="{{true}}"
+	 class="custom-navbar"
+	/>
+</view>
+<view class="page-container">
+	<scroll-view type="custom" scroll-y class="scrollable">
+		<view class="club-info row">
+			<image class="club-logo" />
+			<view class="column" style="justify-content: center;">
+				<view class="club-name">逐浪青年</view>
+				<view class="club-addr">广州</view>
+			</view>
+		</view>
+		<view class="club-profile column">
+			<text>Play Some Games！</text>
+			<text>养生运动出汗！交个朋友呗！最紧要是开心！</text>
+			<text>Take it Easy, Have Fun!</text>
+		</view>
+		<view class="club-team column">
+			<view class="title">小队成员</view>
+			<scroll-view scroll-x class="team-member">
+				<view class="row">
+					<block wx:for="{{members}}">
+						<view class="member column center">
+							<image class="member-avatar" src="" />
+							<text class="member-nickname">团长</text>
+							<view class="member-identity center">主理人</view>
+						</view>
+					</block>
+				</view>
+			</scroll-view>
+		</view>
+		<view class="title" style="padding-top: 38px; padding-bottom: 12px;">活动</view>
+		<view class="scroll-item">
+			<view class="create-activity center">
+				<t-icon name="add" size="28" />
+				<text>创建活动</text>
+			</view>
+		</view>
+
+		<block wx:for="{{activities}}">
+			<view class="scroll-item">
+				<activity/>
+			</view>
+		</block>
+	</scroll-view>
+</view>
+

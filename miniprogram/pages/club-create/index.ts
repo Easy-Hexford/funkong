@@ -12,7 +12,7 @@ Component({
    * 组件的初始数据
    */
   data: {
-
+    gridConfig: {column: 4, width: 72, height: 72}
   },
 
   /**

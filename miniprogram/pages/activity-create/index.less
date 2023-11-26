@@ -1,1 +1,108 @@
 /* pages/activity-create/index.wxss */
+page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(180deg, rgba(237, 237, 237, 0.00) 0%, #EDEDED 15.52%);
+}
+
+.custom-navbar {
+  --td-navbar-bg-color: #C4C4C4;
+}
+
+.page-container {
+  position: relative;
+  flex: 1;
+}
+
+.scrollable {
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+.cover-tips {
+  background: #C4C4C4;
+  height: 154px;
+  color: rgba(0, 0, 0, 0.30);
+  font-size: 16px;
+  line-height: 140%; /* 22.4px */
+}
+
+.sheet {
+  padding: 0 22px;
+  box-sizing: border-box;
+  border-radius: 20px 20px 0px 0px;
+  background: var(--bg-0, #EDEDED);
+  margin-top: -22px;
+}
+
+.title {
+  color: var(--glyph-1, rgba(0, 0, 0, 0.55));
+  font-family: PingFang SC;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.upload-wrap {
+  position: relative;
+
+  .custom-upload {
+    --td-upload-add-color:rgba(0, 0, 0, 0.30);
+    --td-upload-add-icon-font-size: 28px;
+    --td-upload-add-bg-color: #F7F7F7;
+  }
+}
+
+.field-wrap {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: var(--button-large-border-radius, 8px);
+  background: #F7F7F7;
+
+  color: rgba(0, 0, 0, 0.30);
+  font-family: PingFang SC;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 22.4px */
+}
+
+.textarea-wrap {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: var(--button-large-border-radius, 8px);
+  background: #F7F7F7;
+  min-height: 124px;
+}
+
+.placeholder {
+  color: rgba(0, 0, 0, 0.30);
+  font-size: 16px;
+  line-height: 140%; /* 22.4px */
+}
+
+.footer {
+  margin-top: 120px;
+  margin-bottom: 182px;
+  width: 100%;
+}
+
+.create-btn {
+  color: #FFF;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 140%; /* 28px */
+  padding: 14px 100px;
+  border-radius: 8px;
+  background: linear-gradient(141deg, #4C88FB 16.58%, #48DD84 98.19%);
+}
+
+.smile-icon {
+  width: 56px;
+  height: 56px;
+  margin-top: 70px;
+}

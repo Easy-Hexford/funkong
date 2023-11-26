@@ -12,7 +12,8 @@ Component({
    * 组件的初始数据
    */
   data: {
-
+    members: [1,2,3,4,5,6,7,8],
+    activities: [1, 2]
   },
 
   /**

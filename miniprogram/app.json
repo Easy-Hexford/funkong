@@ -25,6 +25,16 @@
       "sdkVersionEnd": "15.255.255"
     }
   },
+  "requiredPrivateInfos": [ 
+    "getLocation",
+    "chooseLocation",
+    "chooseAddress"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
   "usingComponents": {
     "t-navbar": "tdesign-miniprogram/navbar/navbar",
     "t-icon": "tdesign-miniprogram/icon/icon",

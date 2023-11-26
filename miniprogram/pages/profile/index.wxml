@@ -17,15 +17,15 @@
   </view>
 
   <view class="input-wrap">
-    <input class="input" placeholder="名字" placeholder-style="placeholder"	/>
+    <input class="input" placeholder="名字" placeholder-class="placeholder"	/>
   </view>
 
   <view class="input-wrap">
-    <input class="input" placeholder="性别" placeholder-style="placeholder"	/>
+    <input class="input" placeholder="性别" placeholder-class="placeholder"	/>
   </view>
 
   <view class="input-wrap">
-    <input class="input" placeholder="生日" placeholder-style="placeholder"	/>
+    <input class="input" placeholder="生日" placeholder-class="placeholder"	/>
   </view>
 </scroll-view>
 
