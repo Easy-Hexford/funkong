@@ -2,42 +2,63 @@
  left-arrow
  title="修改个人资料"
  fixed="{{true}}"
- class="custom-navbar"
+ t-class-center="custom-navbar"
 />
 
 <scroll-view scroll-y type="list" class="scrollable">
 	<view class="banner">
-		<view style="margin-top: -47px;" class="column-cross-center">
+		<view style="transform: translateY(-47px);" class="column-cross-center">
 			<image class="banner-bg" src="../../assets/images/@chartlet_man_bath.png" />
 			<view class="center">
-				<t-icon name="add" size="24" />
+				<t-icon name="add" size="24" color="rgba(0, 0, 0, 0.3)" />
 				<text style="margin-left: 8px;">添加背景</text>
 			</view>
-		</view>
+    </view>
+    <view class="avatar-wrap column-cross-center">
+      <view class="btn--add center">
+        <t-icon name="add" size="28" color="rgba(0, 0, 0, 0.3)"></t-icon>
+      </view>
+      <text style="margin-top: 10px">添加头像</text>
+    </view>
 	</view>
 
-	<view class="form-field-wrap">
-    <t-input placeholder="名字" borderless="{{true}}"/>
+	<view class="form-field-wrap" style="margin-top: 123px;">
+    <t-input
+      placeholder="名字"
+      placeholder-class="placeholder"
+      borderless="{{true}}"
+      t-class="custom-input-field"
+    />
 	</view>
+
 
 	<view class="form-field-wrap">
     <t-input
       placeholder="性别"
+      placeholder-class="placeholder"
       borderless="{{true}}"
-      suffix-icon="{{ { name: 'arrow-right', size: 24 } }}"
+      suffix-icon="{{ { name: 'chevron-right', size: 24 } }}"
       bind:click="click"
       t-class="custom-input-field"
     />
 	</view>
 
 	<view class="form-field-wrap">
-		<input class="input" placeholder="生日" placeholder-class="placeholder" />
-	</view>
-</scroll-view>
+    <t-input
+      placeholder="生日"
+      placeholder-class="placeholder"
+      borderless="{{true}}"
+      suffix-icon="{{ { name: 'menu', size: 24 } }}"
+      bind:click="click"
+      t-class="custom-input-field"
+    />
 
-<view class="footer">
-	<view class="modify-btn">
-		<text>修改</text>
-	</view>
-</view>
+    <view class="center" style="margin-top: 90px;">
+      <view class="btn--modiry center">
+        <text>修改</text>
+      </view>
+    </view>
+	</view></scroll-view>
+
+
 
