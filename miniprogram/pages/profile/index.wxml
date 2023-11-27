@@ -1,36 +1,43 @@
-<!--pages/profile/index.wxml-->
-<t-navbar left-arrow fixed="{{false}}" class="custom-navbar" />
+<t-navbar
+ left-arrow
+ title="修改个人资料"
+ fixed="{{true}}"
+ class="custom-navbar"
+/>
+
 <scroll-view scroll-y type="list" class="scrollable">
-  <view class="title">修改个人资料</view>
-  <view class="upload-wrap">
-    <t-upload
-      t-class="custom-upload"
-      mediaType="{{['image']}}"
-      max="{{1}}"
-      files="{{fileList}}"
-      bind:add="handleAdd"
-      bind:remove="handleRemove"
-    >
-    </t-upload>
+	<view class="banner">
+		<view style="margin-top: -47px;" class="column-cross-center">
+			<image class="banner-bg" src="../../assets/images/@chartlet_man_bath.png" />
+			<view class="center">
+				<t-icon name="add" size="24" />
+				<text style="margin-left: 8px;">添加背景</text>
+			</view>
+		</view>
+	</view>
 
-    <text class="tips">添加头像</text>
-  </view>
+	<view class="form-field-wrap">
+    <t-input placeholder="名字" borderless="{{true}}"/>
+	</view>
 
-  <view class="input-wrap">
-    <input class="input" placeholder="名字" placeholder-class="placeholder"	/>
-  </view>
+	<view class="form-field-wrap">
+    <t-input
+      placeholder="性别"
+      borderless="{{true}}"
+      suffix-icon="{{ { name: 'arrow-right', size: 24 } }}"
+      bind:click="click"
+      t-class="custom-input-field"
+    />
+	</view>
 
-  <view class="input-wrap">
-    <input class="input" placeholder="性别" placeholder-class="placeholder"	/>
-  </view>
-
-  <view class="input-wrap">
-    <input class="input" placeholder="生日" placeholder-class="placeholder"	/>
-  </view>
+	<view class="form-field-wrap">
+		<input class="input" placeholder="生日" placeholder-class="placeholder" />
+	</view>
 </scroll-view>
 
 <view class="footer">
-  <view class="modify-btn">
-    <text>修改</text>
-  </view>
+	<view class="modify-btn">
+		<text>修改</text>
+	</view>
 </view>
+

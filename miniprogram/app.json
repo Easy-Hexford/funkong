@@ -37,7 +37,6 @@
   },
   "usingComponents": {
     "t-navbar": "tdesign-miniprogram/navbar/navbar",
-    "t-icon": "tdesign-miniprogram/icon/icon",
     "safe-area": "./components/safe-area/index"
   },
   "componentFramework": "glass-easel",

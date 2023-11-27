@@ -1,6 +1,9 @@
 {
   "component": true,
+  "disableScroll": true,
   "usingComponents": {
-    "t-upload": "tdesign-miniprogram/upload/upload"
+    "t-upload": "tdesign-miniprogram/upload/upload",
+    "t-input": "tdesign-miniprogram/input/input",
+    "t-icon": "tdesign-miniprogram/icon/icon"
   }
 }

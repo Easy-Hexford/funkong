@@ -25,7 +25,7 @@
 				<text class="tips">添加头像</text>
 			</view>
 
-			<view class="input-wrap">
+			<view class="form-field-wrap">
 				<input
 				 class="input"
 				 placeho
@@ -34,7 +34,7 @@
 				/>
 			</view>
 
-			<view class="input-wrap">
+			<view class="form-field-wrap">
 				<input class="input" placeholder="添加所在地" placeholder-class="placeholder" />
 			</view>
 

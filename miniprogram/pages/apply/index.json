@@ -1,6 +1,7 @@
 {
   "component": true,
   "usingComponents": {
-    "t-popup": "tdesign-miniprogram/popup/popup"
+    "t-popup": "tdesign-miniprogram/popup/popup",
+    "register": "../../components/register/index"
   }
 }
