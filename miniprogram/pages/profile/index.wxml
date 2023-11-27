@@ -1,10 +1,3 @@
-<t-navbar
- left-arrow
- title="修改个人资料"
- fixed="{{true}}"
- t-class-center="custom-navbar"
-/>
-
 <scroll-view scroll-y type="list" class="scrollable">
 	<view class="banner">
 		<view style="transform: translateY(-47px);" class="column-cross-center">
@@ -60,5 +53,9 @@
     </view>
 	</view></scroll-view>
 
-
-
+<t-navbar
+ left-arrow
+ fixed
+ title="修改个人资料"
+ t-class="custom-navbar"
+/>
