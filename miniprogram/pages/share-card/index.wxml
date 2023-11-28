@@ -3,7 +3,7 @@
 <view class="center column">
 	<view class="share-card-border">
 		<view class="share-card">
-			<image class="avatar" src="../../assets/images/p1.png" />
+			<image mode="aspectFill" class="avatar" src="../../assets/images/p1.png" />
 			<view class="title">邀请二维码</view>
 			<t-divider t-class="custom-divider-1" dashed />
 			<view class="order">

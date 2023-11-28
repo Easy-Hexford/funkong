@@ -6,52 +6,67 @@
 				<t-icon name="add" size="24" color="rgba(0, 0, 0, 0.3)" />
 				<text style="margin-left: 8px;">添加背景</text>
 			</view>
-    </view>
-    <view class="avatar-wrap column-cross-center">
-      <view class="btn--add center">
-        <t-icon name="add" size="28" color="rgba(0, 0, 0, 0.3)"></t-icon>
-      </view>
-      <text style="margin-top: 10px">添加头像</text>
-    </view>
+		</view>
+		<view class="avatar-wrap column-cross-center">
+			<button class="btn--add center" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+				<t-avatar
+				 wx:if="{{userInfo.avatarUrl}}"
+				 alt="头像"
+				 image="{{userInfo.avatarUrl}}"
+				 size="96px"
+				/>
+				<t-icon
+				 wx:else
+				 name="add"
+				 size="28"
+				 color="rgba(0, 0, 0, 0.3)"
+				/>
+			</button>
+			<text style="margin-top: 10px">{{userInfo.avatarUrl ? '更换头像' : '添加头像'}}</text>
+		</view>
 	</view>
 
 	<view class="form-field-wrap" style="margin-top: 123px;">
-    <t-input
-      placeholder="名字"
-      placeholder-class="placeholder"
-      borderless="{{true}}"
-      t-class="custom-input-field"
-    />
-	</view>
-
-
-	<view class="form-field-wrap">
-    <t-input
-      placeholder="性别"
-      placeholder-class="placeholder"
-      borderless="{{true}}"
-      suffix-icon="{{ { name: 'chevron-right', size: 24 } }}"
-      bind:click="click"
-      t-class="custom-input-field"
-    />
+		<t-input
+		 placeholder="名字"
+		 type="nickname"
+		 placeholder-class="placeholder"
+		 borderless="{{true}}"
+		 t-class="custom-input-field"
+		/>
 	</view>
 
 	<view class="form-field-wrap">
-    <t-input
-      placeholder="生日"
-      placeholder-class="placeholder"
-      borderless="{{true}}"
-      suffix-icon="{{ { name: 'menu', size: 24 } }}"
-      bind:click="click"
-      t-class="custom-input-field"
-    />
+		<t-input
+		 t-class="custom-input-field"
+     disabled
+     value="{{userInfo.gender}}"
+		 placeholder="性别"
+		 placeholder-class="placeholder"
+		 borderless="{{true}}"
+		 suffix-icon="{{ { name: 'chevron-right', size: 24 } }}"
+		 bind:tap="chooseGender"
+		/>
+	</view>
 
-    <view class="center" style="margin-top: 90px;">
-      <view class="btn--modiry center">
-        <text>修改</text>
-      </view>
-    </view>
-	</view></scroll-view>
+	<view class="form-field-wrap">
+		<t-input
+		 disabled
+		 placeholder="生日"
+		 placeholder-class="placeholder"
+		 borderless="{{true}}"
+		 suffix-icon="{{ { name: 'menu', size: 24 } }}"
+		 bind:click="click"
+		 t-class="custom-input-field"
+		/>
+
+		<view class="center" style="margin-top: 90px;">
+			<view class="btn--modiry center">
+				<text>修改</text>
+			</view>
+		</view>
+	</view>
+</scroll-view>
 
 <t-navbar
  left-arrow
@@ -59,3 +74,4 @@
  title="修改个人资料"
  t-class="custom-navbar"
 />
+
