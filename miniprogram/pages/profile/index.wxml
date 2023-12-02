@@ -1,10 +1,53 @@
 <scroll-view scroll-y type="list" class="scrollable">
 	<view class="banner">
-		<view style="transform: translateY(-47px);" class="column-cross-center">
-			<image class="banner-bg" src="../../assets/images/@chartlet_man_bath.png" />
-			<view class="center">
-				<t-icon name="add" size="24" color="rgba(0, 0, 0, 0.3)" />
-				<text style="margin-left: 8px;">添加背景</text>
+		<block wx:if="{{userInfo.coverUrl}}">
+			<image class="cover" mode="aspectFill" src="{{userInfo.coverUrl}}" />
+		</block>
+		<block wx:else>
+			<view style="transform: translateY(-47px);" class="column-cross-center" bind:tap="chooseCover">
+				<image class="banner-bg" src="../../assets/images/@chartlet_man_bath.png" />
+				<view class="center">
+					<t-icon name="add" size="24" color="rgba(0, 0, 0, 0.3)" />
+					<text style="margin-left: 8px;">添加背景</text>
+				</view>
+			</view>
+		</block>
+	</view>
+
+	<view class="sheet">
+		<view class="content-wrap {{active ? 'active' : ''}}">
+			<view class="form-field-wrap">
+				<t-input
+				 placeholder="名字"
+				 type="nickname"
+				 placeholder-class="placeholder"
+				 borderless="{{true}}"
+				 t-class="custom-input-field"
+				/>
+			</view>
+
+			<view class="form-field-wrap">
+				<view class="input-field row-between" bind:tap="showGenderPicker">
+					<text wx:if="{{userInfo.gender}}">{{userInfo.gender}}</text>
+					<text wx:else class="placeholder">性别</text>
+					<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+				</view>
+			</view>
+
+			<view class="form-field-wrap">
+				<view class="input-field row-between" bind:tap="showDatePicker">
+					<text wx:if="{{userInfo.birthday}}">{{userInfo.birthday}}</text>
+					<text wx:else class="placeholder">生日</text>
+					<t-icon name="menu" size="24" color="rgba(0, 0, 0, 0.3)" />
+				</view>
+			</view>
+
+			<view class="form-field-wrap">
+				<view class="center" style="margin-top: 90px;">
+					<view class="btn--modiry center {{active ? 'active' : ''}}" bind:tap="submit">
+						<text>修改</text>
+					</view>
+				</view>
 			</view>
 		</view>
 		<view class="avatar-wrap column-cross-center">
@@ -26,47 +69,30 @@
 		</view>
 	</view>
 
-	<view class="form-field-wrap" style="margin-top: 123px;">
-		<t-input
-		 placeholder="名字"
-		 type="nickname"
-		 placeholder-class="placeholder"
-		 borderless="{{true}}"
-		 t-class="custom-input-field"
-		/>
-	</view>
-
-	<view class="form-field-wrap">
-		<t-input
-		 t-class="custom-input-field"
-     disabled
-     value="{{userInfo.gender}}"
-		 placeholder="性别"
-		 placeholder-class="placeholder"
-		 borderless="{{true}}"
-		 suffix-icon="{{ { name: 'chevron-right', size: 24 } }}"
-		 bind:tap="chooseGender"
-		/>
-	</view>
-
-	<view class="form-field-wrap">
-		<t-input
-		 disabled
-		 placeholder="生日"
-		 placeholder-class="placeholder"
-		 borderless="{{true}}"
-		 suffix-icon="{{ { name: 'menu', size: 24 } }}"
-		 bind:click="click"
-		 t-class="custom-input-field"
-		/>
-
-		<view class="center" style="margin-top: 90px;">
-			<view class="btn--modiry center">
-				<text>修改</text>
-			</view>
-		</view>
-	</view>
 </scroll-view>
+
+<t-picker
+  visible="{{genderPickerVisible}}"
+  title="性别"
+  cancelBtn="取消"
+  confirmBtn="确认"
+  bind:confirm="onConfirmGender"
+  bind:cancel="hideGenderPicker"
+>
+  <t-picker-item options="{{genders}}" />
+</t-picker>
+
+<t-date-time-picker
+ title="生日"
+ visible="{{datePickerVisible}}"
+ mode="date"
+ defaultValue="{{date}}"
+ format="YYYY-MM-DD"
+ bind:confirm="onConfirmDate"
+ bind:cancel="hideDatePicker"
+ start="{{start}}"
+ end="{{end}}"
+/>
 
 <t-navbar
  left-arrow

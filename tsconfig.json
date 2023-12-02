@@ -18,6 +18,7 @@
     "strictPropertyInitialization": true,
     "lib": ["ES2020"],
     "typeRoots": [
+      "./miniprogram/services",
       "./typings",
       "./miniprogram/miniprogram_npm/tdesign-miniprogram"
     ]
