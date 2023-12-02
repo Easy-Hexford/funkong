@@ -1,5 +1,5 @@
 <t-tab-bar
- value="{{value}}"
+ value="{{selected}}"
  bindchange="onChange"
  theme="normal"
  split="{{false}}"

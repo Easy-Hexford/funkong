@@ -1,8 +1,19 @@
 import call from './base'
 
+export function login(): Promise<ILoginResp> {
+  return call({
+    url: '/user/login',
+    method: 'POST'
+  })
+}
+
 export function getUser(): Promise<IGetUserResp> {
   return call({
     url: '/user/get',
+    method: 'POST',
+    data: {
+      UseCache: true
+    }
   })
 }
 
@@ -36,13 +47,13 @@ export function sendVerifyCode(req: ISendVerifyCodeReq) {
   })
 }
 
-export type IRegisterType = 'ActivityInvite' | 'ClubInvite' | 'Normal'
+export type IRegisterType = 'ActivityInvite' | 'ClubInvite' | 'Normal' | ''
 
 export type IRole = 'NormalRole' | 'SuperRole'
 
-export type IGender = 'Man' | 'Woman' | 'Unknown'
+export type IGender = 'Man' | 'Woman' | 'Unknown' | ''
 
-export type IIDCardType = 'ShenFenZheng' | 'passport'
+export type IIDCardType = 'ShenFenZheng' | 'HuZhao'
 
 export interface IUserInfo {
   UserId: string,
@@ -67,6 +78,10 @@ export interface IUserInfo {
   DeleteFlag: string
 }
 
+export interface ILoginResp {
+  User: IUserInfo
+}
+
 export interface IClubInfo {
   ClubId: string,
   ClubType: string,
@@ -80,6 +95,10 @@ export interface IClubInfo {
   DeleteFlag: string
 }
 
+export interface IGetUserReq {
+  UseCache?: boolean
+}
+
 export interface IGetUserResp {
   User: IUserInfo,
   Club: IClubInfo
@@ -90,9 +109,9 @@ export interface IUpdateUserReq {
   OpenId?: string,
   NickName?: string,
   Icon?: string,
-  Gender?: string,
-  Role?: string,
-  RegisterType?: string,
+  Gender?: IGender,
+  Role?: IRole,
+  RegisterType?: IRegisterType,
   RegisterInfo?: {
     ClubId?: string,
     ActivityId?: string

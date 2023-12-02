@@ -1,54 +1,107 @@
-<image class="poster" src="{{poster}}" />
-<view class="sheet">
-	<view class="avatar">
-		<image src="{{avatar}}" />
-  </view>
-  
-	<view class="intro">
-		<text class="nickname">小平在摆烂</text>
-		<view class="identity">主理人</view>
-		<t-icon class="icon--modify" name="filter-2" size="20" />
-  </view>
-  
-	<view class="section">
-		<view class="section-title">俱乐部</view>
-		<view class="section-content">
-			<view class="item" style="padding: 16px 20px;">
-				<view class="vertical-center">
-					<image class="club-logo" src="{{clubLogo}}" />
-					<text>逐浪青年</text>
+<scroll-view scroll-y type="list" class="scrollable">
+	<view class="banner">
+		<block wx:if="{{userInfo.Cover}}">
+			<image class="cover" mode="aspectFill" src="{{userInfo.Cover}}" />
+		</block>
+		<block wx:else>
+			<view style="transform: translateY(-47px);" class="column-cross-center" bind:tap="chooseCover">
+				<image class="banner-bg" src="../../assets/images/@chartlet_man_bath.png" />
+			</view>
+		</block>
+	</view>
+
+	<view class="sheet">
+		<view class="content-wrap active">
+			<block wx:if="{{isSuperRole}}">
+				<view wx:if="{{clubInfo.ClubId}}">
+					<view class="field-title">俱乐部</view>
+					<view class="form-field-wrap">
+						<view class="input-field" style="padding-top: 0; padding-bottom: 0;">
+							<navigator
+							 style="padding: 17px 0;"
+							 class="row-between"
+							 url="../club-profile/index"
+							 hover-class="none"
+							>
+								<view class="row">
+									<image class="icon--club circle" mode="aspectFill" src="{{clubInfo.ClubIcon}}" />
+									<text>{{clubInfo.ClubName || '逐浪青年'}}</text>
+								</view>
+								<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+							</navigator>
+
+							<t-divider t-class="custom-divider" />
+
+							<navigator
+							 style="padding: 17px 0;"
+							 class="sub-input-field row-between"
+							 url="../activity-create/index"
+							 hover-class="none"
+							>
+								<text>创建活动</text>
+								<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+							</navigator>
+
+							<t-divider t-class="custom-divider" />
+
+							<navigator
+							 style="padding: 17px 0;"
+							 class="row-between"
+							 url="../share-card/index"
+							 hover-class="none"
+							>
+								<text>邀请粉丝</text>
+								<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+							</navigator>
+						</view>
+					</view>
 				</view>
-				<t-icon size="24" class="icon--arrow-right" name="chevron-right" />
-			</view>
-			<t-divider class="item-divider" />
-			<view class="item">
-        <text>创建活动</text>
-				<t-icon size="24" class="icon--arrow-right" name="chevron-right" />
-			</view>
-			<t-divider class="item-divider" />
-			<view class="item">
-        <text>邀请粉丝</text>
-				<t-icon size="24" class="icon--arrow-right" name="chevron-right" />
-			</view>
-		</view>
-	</view>
 
-	<view class="section">
-		<view class="section-content">
-			<view class="item">
-        <text>账号管理</text>
-				<t-icon size="24" class="icon--arrow-right" name="chevron-right" />
-			</view>
-		</view>
-	</view>
+				<view wx:else class="form-field-wrap">
+					<navigator class="input-field row-between" url="../club-create/index" hover-class="none">
+						<text>创建俱乐部</text>
+						<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+					</navigator>
+				</view>
+			</block>
 
-	<view class="section">
-		<view class="section-content">
-			<view class="item">
-        <text>联系客服</text>
-				<t-icon size="24" class="icon--arrow-right" name="chevron-right" />
+			<view class="form-field-wrap">
+				<navigator class="input-field row-between" url="../customer-service/index" hover-class="none">
+					<text>联系客服</text>
+					<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+				</navigator>
 			</view>
 		</view>
+
+		<view class="avatar-wrap column-cross-center">
+			<view class="btn--add center">
+				<t-avatar
+				 wx:if="{{userInfo.avatarUrl}}"
+				 alt="头像"
+				 image="{{userInfo.avatarUrl}}"
+				 size="96px"
+				/>
+				<image
+				 wx:else
+				 class="avatar"
+				 mode="aspectFill"
+				 src="../../assets/images/@avatar_man.svg"
+				/>
+			</view>
+
+			<navigator class="nickname center" url="../profile/index" hover-class="none">
+				<text>{{userInfo.nickname || '尊嘟假嘟'}}</text>
+				<t-icon
+				 style="margin-left: 4px;"
+				 name="edit"
+				 size="20"
+				 color="#6CCEA2"
+				/>
+			</navigator>
+			<view class="identity-badge">{{isSuperRole ? '主理人' : userInfo.Phone ? '' : '游客'}}</view>
+		</view>
 	</view>
-</view>
+</scroll-view>
+
+<t-navbar left-arrow fixed t-class="custom-navbar" />
 

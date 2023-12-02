@@ -1,15 +1,40 @@
+import * as request from '../../services/index'
+
 Component({
   properties: {
 
   },
 
   data: {
-    poster: 'cloud://prod-1gsl7u0x17e23d06.7072-prod-1gsl7u0x17e23d06-1322287298/1700302744405.jpg',
-    avatar: 'cloud://prod-1gsl7u0x17e23d06.7072-prod-1gsl7u0x17e23d06-1322287298/head.png	',
-    clubLogo: 'cloud://prod-1gsl7u0x17e23d06.7072-prod-1gsl7u0x17e23d06-1322287298/logo.png	'
+    isSuperRole: false,
+    userInfo: {},
+    clubInfo: {},
   },
 
- 
+  lifetimes: {
+    async created() {
+      const info = await request.getUser()
+      this.setData({
+        isSuperRole: info.User.Role === 'SuperRole',
+        userInfo: info.User,
+        clubInfo: info.Club ?? {}
+      })
+    },
+
+    async attached() {
+
+    }
+  },
+
+  pageLifetimes: {
+    async show() { 
+      const tabComp = this.getTabBar()
+      tabComp.setData({
+        selected: 2
+      })
+    }
+  },
+
   methods: {
 
   }

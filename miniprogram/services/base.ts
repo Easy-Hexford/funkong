@@ -7,20 +7,21 @@ async function call(options: WechatMiniprogram.RequestOption) {
     })
     _initCloud = true
   }
+  
   const result = await wx.cloud.callContainer({
     config: {
       env: 'prod-1gsl7u0x17e23d06'
     },
     path: options.url,
     method: options.method || 'GET',
-    dataType: options.dataType || 'json',
-    responseType: options.responseType || 'text',
     header: {
-      'X-WX-SERVICE': 'golang-dpux-043',
-    },
+      "X-WX-SERVICE": "golang-dpux",
+      "content-type": "application/json"
+  },
     data: options.data || {}
   })
-  return result.data
+  console.info(`云调用 ${options.url} 结果: `, result.data)
+  return result.data.data
 }
 
 export default call

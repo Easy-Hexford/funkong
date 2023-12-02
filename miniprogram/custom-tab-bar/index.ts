@@ -1,33 +1,28 @@
 // custom-tab-bar/index.ts
+
+const tabUrls = [
+  '/pages/home/index',
+  '/pages/activity/index',
+  '/pages/mine/index'
+]
+
 Component({
-
-  /**
-   * 组件的属性列表
-   */
-  properties: {
-
-  },
-
-  /**
-   * 组件的初始数据
-   */
   data: {
-    value: 'label_1',
+    selected: 0,
     list: [
-      { value: 'label_1', label: 'Fun空', icon: 'home' },
-      { value: 'label_2', label: '活动', icon: 'app' },
-      { value: 'label_3', label: '我', icon: 'user' },
+      { value: 0, label: 'Fun空', icon: 'home', index: 0 },
+      { value: 1, label: '活动', icon: 'app', index: 1 },
+      { value: 2, label: '我', icon: 'user', index: 2 },
     ],
   },
 
-  /**
-   * 组件的方法列表
-   */
   methods: {
-    onChange(e) {
-      this.setData({
-        value: e.detail.value,
-      });
+    onChange(e: any) {
+      const selected = e.detail.value
+      this.setData({ selected });
+      wx.switchTab({
+        url: tabUrls[selected]
+      })
     },
   }
 })
