@@ -1,29 +1,13 @@
-export interface IUploadFileReq {
-  cloudPath: string,
-  filePath: string,
-  config?: {
-    env: string
-  },
-  onCall?: (res: IOnProgressUpdateResp) => boolean
-}
+import { SERVICE_ENV_ID } from '../config'
 
-export interface IUploadFileResp {
-  fileID: string,
-  statusCode: number,
-  errMsg: string
-}
-
-export interface IOnProgressUpdateResp {
-  progress: number,
-  totalBytesSent: number,
-  totalBytesExpectedToSend: number
-}
-
-export function upload(req: IUploadFileReq): Promise<ITempFile> {
+export function uploadFile(req: IUploadFileReq): Promise<ITempFile> {
   return new Promise((resolve, reject) => {
     const task = wx.cloud.uploadFile({
       cloudPath: req.cloudPath,
       filePath: req.filePath,
+      config: {
+        env: SERVICE_ENV_ID
+      },
       success: (res: IUploadFileResp) => {
         getTempFileUrl({
           fileList: [{
@@ -51,6 +35,27 @@ export function upload(req: IUploadFileReq): Promise<ITempFile> {
       }
     })
   })
+}
+
+export interface IUploadFileReq {
+  cloudPath: string,
+  filePath: string,
+  config?: {
+    env: string
+  },
+  onCall?: (res: IOnProgressUpdateResp) => boolean
+}
+
+export interface IUploadFileResp {
+  fileID: string,
+  statusCode: number,
+  errMsg: string
+}
+
+export interface IOnProgressUpdateResp {
+  progress: number,
+  totalBytesSent: number,
+  totalBytesExpectedToSend: number
 }
 
 export interface IGetTempFileUrlReq {

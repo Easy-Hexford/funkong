@@ -1,7 +1,7 @@
 <scroll-view scroll-y type="list" class="scrollable">
 	<view class="banner">
-		<block wx:if="{{userInfo.Cover}}">
-			<image class="cover" mode="aspectFill" src="{{userInfo.Cover}}" />
+		<block wx:if="{{User.Cover.CoverUrls.Items[0]}}">
+			<image class="cover" mode="aspectFill" src="{{User.Cover.CoverUrls.Items[0]}}" />
 		</block>
 		<block wx:else>
 			<view style="transform: translateY(-47px);" class="column-cross-center" bind:tap="chooseCover">
@@ -13,7 +13,7 @@
 	<view class="sheet">
 		<view class="content-wrap active">
 			<block wx:if="{{isSuperRole}}">
-				<view wx:if="{{clubInfo.ClubId}}">
+				<view wx:if="{{Club.AuditStatus}}">
 					<view class="field-title">俱乐部</view>
 					<view class="form-field-wrap">
 						<view class="input-field" style="padding-top: 0; padding-bottom: 0;">
@@ -24,8 +24,8 @@
 							 hover-class="none"
 							>
 								<view class="row">
-									<image class="icon--club circle" mode="aspectFill" src="{{clubInfo.ClubIcon}}" />
-									<text>{{clubInfo.ClubName || '逐浪青年'}}</text>
+									<image class="icon--club circle" mode="aspectFill" src="{{Club.ClubIcon}}" />
+									<text>{{Club.ClubName || '逐浪青年'}}</text>
 								</view>
 								<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
 							</navigator>
@@ -76,21 +76,21 @@
 		<view class="avatar-wrap column-cross-center">
 			<view class="btn--add center">
 				<t-avatar
-				 wx:if="{{userInfo.avatarUrl}}"
+				 wx:if="{{User.Icon}}"
 				 alt="头像"
-				 image="{{userInfo.avatarUrl}}"
+				 image="{{User.Icon}}"
 				 size="96px"
 				/>
 				<image
 				 wx:else
 				 class="avatar"
 				 mode="aspectFill"
-				 src="../../assets/images/@avatar_man.svg"
+				 src="../../assets/images/@avatar_woman.svg"
 				/>
 			</view>
 
 			<navigator class="nickname center" url="../profile/index" hover-class="none">
-				<text>{{userInfo.nickname || '尊嘟假嘟'}}</text>
+				<text>{{User.NickName || '尊嘟假嘟'}}</text>
 				<t-icon
 				 style="margin-left: 4px;"
 				 name="edit"
@@ -98,7 +98,7 @@
 				 color="#6CCEA2"
 				/>
 			</navigator>
-			<view class="identity-badge">{{isSuperRole ? '主理人' : userInfo.Phone ? '' : '游客'}}</view>
+			<view class="identity-badge">{{isSuperRole ? '主理人' : User.Phone ? '' : '游客'}}</view>
 		</view>
 	</view>
 </scroll-view>

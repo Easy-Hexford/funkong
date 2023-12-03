@@ -1,21 +1,23 @@
+import { SERVICE_NAME, SERVICE_ENV_ID, CLOUD_ENV_ID } from '../config'
+
 let _initCloud = false
 
 async function call(options: WechatMiniprogram.RequestOption) {
   if (!_initCloud) {
     wx.cloud.init({
-      env: 'release-5g0ny7l2324d3b5b'
+      env: CLOUD_ENV_ID
     })
     _initCloud = true
   }
   
   const result = await wx.cloud.callContainer({
     config: {
-      env: 'prod-1gsl7u0x17e23d06'
+      env: SERVICE_ENV_ID
     },
     path: options.url,
     method: options.method || 'GET',
     header: {
-      "X-WX-SERVICE": "golang-dpux",
+      "X-WX-SERVICE": SERVICE_NAME,
       "content-type": "application/json"
   },
     data: options.data || {}

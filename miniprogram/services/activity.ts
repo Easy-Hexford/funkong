@@ -33,15 +33,19 @@ export function getSignActicityList(req: IGetSignUpActicityListReq): Promise<IGe
   })
 }
 
+export interface IActivityTypes {
+  Items: Array<string>
+}
+
 export interface ICreateActivityReq {
   ClubId: string,
   Title: string,
   Content: string,
-  ActivityType: string,
+  ActivityTypes: IActivityTypes,
   BeginTime: string,
   EndTime: string,
   PicList?: {
-    PicUrls: Array<string>
+    Items: Array<string>
   },
   Province: string,
   City: string,
@@ -76,15 +80,14 @@ export interface ISignUpctivityResp {
     paySign: string
   }
 }
-
-export type IAuditStatus = 'AuditFail' | 'AuditSucc' | 'Auditing'
+export type IActivityAuditStatus = 'AuditFail' | 'AuditSucc' | 'Auditing'
 
 export interface IGetActicityListReq {
   ClubId: string,
   City: string,
   Offset: 0,
   Limit: 0,
-  AuditStatus: IAuditStatus
+  AuditStatus: IActivityAuditStatus
 }
 
 export interface IGetActicityListResp {
@@ -100,11 +103,11 @@ export interface IActivityInfo {
   City: string,
   Title: string,
   Content: string,
-  ActivityType: string,
+  ActivityTypes: IActivityTypes,
   BeginTime: string,
   EndTime: string,
   PicList: {
-    PicUrls: Array<string>
+    Items: Array<string>
   },
   Location: {
     lat: number,

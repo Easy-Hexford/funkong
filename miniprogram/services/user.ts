@@ -1,4 +1,5 @@
 import call from './base'
+import { IClubAuditStatus } from './club'
 
 export function login(): Promise<ILoginResp> {
   return call({
@@ -59,6 +60,7 @@ export interface IUserInfo {
   UserId: string,
   OpenId: string,
   NickName: string,
+  CoverUrls: ICoverUrls,
   Icon: string,
   Gender: IGender,
   Role: IRole,
@@ -86,13 +88,26 @@ export interface IClubInfo {
   ClubId: string,
   ClubType: string,
   ClubName: string,
+  ClubDesc: string,
   ClubIcon: string,
+  CoverUrls: ICoverUrls,
   Province: string,
   City: string,
   OwnerUserId: string,
+  AuditStatus: IClubAuditStatus
   CreateTime: string,
   UpdateTime: string,
   DeleteFlag: string
+}
+
+export interface IClubInfoNullable {
+  ClubType?: string,
+  ClubName?: string,
+  ClubDesc?: string,
+  ClubIcon?: string,
+  CoverUrls?: ICoverUrls,
+  Province?: string,
+  City?: string,
 }
 
 export interface IGetUserReq {
@@ -104,10 +119,15 @@ export interface IGetUserResp {
   Club: IClubInfo
 }
 
+export interface ICoverUrls {
+  Items: Array<string>
+}
+
 export interface IUpdateUserReq {
   UserId?: string,
   OpenId?: string,
   NickName?: string,
+  CoverUrls?: ICoverUrls,
   Icon?: string,
   Gender?: IGender,
   Role?: IRole,

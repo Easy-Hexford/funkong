@@ -7,8 +7,8 @@ Component({
 
   data: {
     isSuperRole: false,
-    userInfo: {},
-    clubInfo: {},
+    User: {},
+    Club: {},
   },
 
   lifetimes: {
@@ -16,8 +16,8 @@ Component({
       const info = await request.getUser()
       this.setData({
         isSuperRole: info.User.Role === 'SuperRole',
-        userInfo: info.User,
-        clubInfo: info.Club ?? {}
+        User: info.User,
+        Club: info.Club
       })
     },
 

@@ -1,16 +1,52 @@
 /* pages/customer-service/index.wxss */
-
-.qrcode {
-  margin-top: 118px;
-  margin-bottom: 25px;
-  width: 250px;
-  height: 250px;
+page {
+  position: relative;
 }
 
-.tips {
-  color: #000;
+.container {
+  position: absolute;
+  width: 100vw;
+}
+
+.qrcode {
+  margin-top: 240px;
+  width: 250px;
+  height: 250px;
+  background-color: #ccc;
+} 
+
+.tip-1 {
+  color: rgba(0, 0, 0, 0.90);
   text-align: center;
   font-size: 17px;
   font-weight: 500;
   line-height: 140%; /* 23.8px */
+}
+
+.tip-2 {
+  color: rgba(0, 0, 0, 0.55);
+  text-align: center;
+  font-family: PingFang SC;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 16.8px */
+}
+
+.chartlet-1 {
+  position: absolute;
+  left: 0;
+  top: 452px;
+  width: 182px;
+  height: 174px;
+  transform: translateX(-5px);
+}
+
+.chartlet-2 {
+  position: absolute;
+  right: 0;
+  top: 150px;
+  width: 200px;
+  height: 170px;
+  transform: translateX(75px);
 }

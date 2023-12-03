@@ -69,6 +69,11 @@ page {
     overflow: hidden;
     padding: 0;
     background: #F7F7F7;
+
+    &::after {
+      content: '';
+      border: none;
+    }
   }
   
   .avatar {
@@ -143,6 +148,7 @@ page {
   --td-input-bg-color: #F7F7F7;
   --td-input-default-text-color: #000;
   border-radius: 8px !important;
+  padding: 17px !important;
 }
 
 .btn--modiry {

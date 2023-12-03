@@ -1,7 +1,10 @@
 {
   "component": true,
   "usingComponents": {
+    "t-input": "tdesign-miniprogram/input/input",
     "t-icon": "tdesign-miniprogram/icon/icon",
-    "t-upload": "tdesign-miniprogram/upload/upload"
+    "t-upload": "tdesign-miniprogram/upload/upload",
+    "t-avatar": "tdesign-miniprogram/avatar/avatar",
+    "t-textarea": "tdesign-miniprogram/textarea/textarea"
   }
 }
