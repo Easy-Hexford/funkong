@@ -1,36 +1,137 @@
 /* pages/share-card/index.wxss */
+@import '../../style//common.less';
+
 page {
-  background: var(--bg-0, #EDEDED);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.custom-navbar {
-  --td-navbar-bg-color: #EDEDED;
+.scrollable {
+  flex: 1;
 }
 
-.share-card-border {
+.card {
   box-sizing: border-box;
-  width: 300px;
-  margin-top: 26px;
   flex-shrink: 0;
-  border-radius: 6px;
-  background: linear-gradient(162deg, #6B95E6 0.57%, #6CD797 98.5%);
+  margin-top: 26px;
+  width: 300px;
+  height: 524px;
+  border-radius: 22px;
   padding: 10px;
+  background: linear-gradient(136deg, #161619 -7.12%, #313136 22.1%, #1D1D1F 46.17%, #111112 57.77%, #18181A 99.9%);
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.55) inset;
 }
 
-.share-card {
+.card-content {
   position: relative;
   width: 100%;
+  height: 100%;
   box-sizing: border-box;
-  border-radius: 5px;
-  background-color: #fff;
+  background: linear-gradient(136deg, #161619 -7.12%, #313136 22.1%, #1D1D1F 46.17%, #111112 57.77%, #18181A 99.9%);
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.55) inset;
 }
 
-.avatar {
-  width: 112px;
-  height: 112px;
+.club-icon {
+  margin-top: 73px;
+  width: 88px;
+  height: 88px;
+  background-color: #ccc;
+  border-radius: 50%;
+}
+
+.club-name {
+  color: rgba(234, 238, 240, 0.60);
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.club-desc {
+  color: rgba(255, 255, 255, 0.90);
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 0 20px;
+
+  word-break: break-all;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.tip--join {
+  margin-top: 47px;
+  color: rgba(234, 238, 240, 0.80);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.tip--invite {
+  color: rgba(234, 238, 240, 0.80);
+  margin-top: 47px;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.tip--save {
+  width: 100%;
+  margin-top: 17px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 15px;
+  line-height: 140%; /* 21px */
+}
+
+.btn--invite {
+  margin-top: 37px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #4321F5;
+  width: 240px;
+  height: 56px;
+
+  color: #AFF164;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%; /* 28px */
+}
+
+.qrcode {
+  width: 64px;
+  height: 64px;
+  background-color: green;
+}
+
+.qrcode-area {
   position: absolute;
-  top: 134px;
-  right: 9px;
+  box-sizing: border-box;
+  bottom: 5px;
+  width: 100%;
+
+  color: var(--glyph-white-0, rgba(255, 255, 255, 0.80));
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+  .divider {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #C4C8CA;
+    font-size: 10px;
+  }
 }
 
 .title {
@@ -40,8 +141,6 @@ page {
   text-align: center;
   background: linear-gradient(94deg, #6B95E6 -5.71%, #6CD797 100%);
   background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 .order {
@@ -78,33 +177,6 @@ page {
   }
 }
 
-.footer {
-  padding-left: 18px;
-  padding-right: 14px;
-  padding-bottom: 8px;
-  color: var(--glyph-1, rgba(0, 0, 0, 0.55));
-  font-size: 11px;
-
-  .look {
-    color: var(--glyph-0, rgba(0, 0, 0, 0.90));
-    font-size: 13px;
-    font-weight: 500;
-    line-height: normal;
-  }
-}
-
-.custom-divider-1 {
-  --td-divider-color: #6CA1D8;
-  margin-top: 12px !important;
-  margin-bottom: 11px !important;
-}
-
-.custom-divider-2 {
-  --td-divider-color: #6CD0A0;
-  margin-top: 24px !important;
-  margin-bottom: 10px !important;
-}
-
 .divider-wrap {
   position: relative;
 
@@ -126,36 +198,4 @@ page {
       border-radius:10px 0 0 10px;
     }
   }
-}
-
-.tips {
-  width: 100%;
-  margin-top: 17px;
-  text-align: center;
-  color: rgba(0, 0, 0, 0.5);
-  font-size: 15px;
-  line-height: 140%; /* 21px */
-}
-
-.invite-btn {
-  margin-top: 50px;
-  padding: 14px 50px;
-  border-radius: var(--button-large-border-radius, 8px);
-  color: #FFF;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 140%; /* 28px */
-  background: #4D88FB;
-}
-
-.between {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.qrcode {
-  width: 64px;
-  height: 64px;
-  background-color: green;
 }

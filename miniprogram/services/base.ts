@@ -19,11 +19,12 @@ async function call(options: WechatMiniprogram.RequestOption) {
     header: {
       "X-WX-SERVICE": SERVICE_NAME,
       "content-type": "application/json"
-  },
+    },
+    responseType: options.responseType || 'text',
     data: options.data || {}
   })
   console.info(`云调用 ${options.url} 结果: `, result.data)
-  return result.data.data
+  return result.data.data || result.data
 }
 
 export default call

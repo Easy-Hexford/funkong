@@ -1,5 +1,7 @@
 import * as request from '../../services/index'
 
+const app = getApp()
+
 Component({
   properties: {
 
@@ -19,6 +21,9 @@ Component({
         User: info.User,
         Club: info.Club
       })
+
+      app.globalData.User = info.User
+      app.globalData.Club = info.Club
     },
 
     async attached() {

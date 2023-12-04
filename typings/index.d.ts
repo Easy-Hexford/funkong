@@ -1,9 +1,10 @@
 /// <reference path="./types/index.d.ts" />
 
-import { IUserInfo } from "../miniprogram/services";
+import { IClubInfo, IUserInfo } from "../miniprogram/services";
 
 interface IAppOption {
   globalData: {
-    UserId: string
+    User: IUserInfo,
+    Club: IClubInfo
   }
 }

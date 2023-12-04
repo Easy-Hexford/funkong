@@ -16,9 +16,11 @@
     "navigationBarTextStyle": "black",
     "navigationStyle": "custom"
   },
+  "renderer": "webview",
   "rendererOptions": {
     "skyline": {
       "defaultDisplayBlock": true,
+      "defaultContentBox": true,
       "disableABTest": true,
       "sdkVersionBegin": "3.0.0",
       "sdkVersionEnd": "15.255.255"

@@ -13,7 +13,7 @@
 	<view class="sheet">
 		<view class="content-wrap active">
 			<block wx:if="{{isSuperRole}}">
-				<view wx:if="{{Club.AuditStatus}}">
+				<view wx:if="{{Club.AuditStatus === 'AuditSucc'}}">
 					<view class="field-title">俱乐部</view>
 					<view class="form-field-wrap">
 						<view class="input-field" style="padding-top: 0; padding-bottom: 0;">

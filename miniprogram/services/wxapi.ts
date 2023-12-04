@@ -6,16 +6,17 @@ export function getWxaCode(req: IGetWxaCodeReq): Promise<IGetWxaCodeResp> {
   return call({
     url: '/wxa_api/getwxacodeunlimit',
     method: 'POST',
-    data: req
+    data: req,
   })
 }
 
 export interface IGetWxaCodeReq {
   scene: string,
-  path: string,
-  check_path: boolean,
+  path?: string,
+  check_path?: boolean,
   env_version: IEnvVersion,
-  width: number
+  width?: number,
+  is_hyaline?: boolean
 }
 
 export interface IGetWxaCodeResp {

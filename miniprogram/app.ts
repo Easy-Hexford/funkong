@@ -1,15 +1,14 @@
 // app.ts
-import { IAppOption } from '../typings'
 import * as request from './services/index'
 
-App<IAppOption>({
+App({
   globalData: {
-    UserId: ''
+    User: {},
+    Club: {},
+
   },
-  async onLaunch() {
-    const info = await request.login()
-    const UserId = info.User.UserId
-    this.globalData.UserId = UserId
+  onLaunch() {
+    request.login()
   },
 
 })
