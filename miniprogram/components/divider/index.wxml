@@ -1,2 +1,2 @@
-<!--components/divider/index.wxml-->
-<text>components/divider/index.wxml</text>
+<view class="divider" style="font-size: {{height}}px; color: {{color}};">{{chars}}</view>
+

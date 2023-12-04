@@ -1,5 +1,5 @@
 import call from "./base";
-import type { IClubInfo, ICoverUrls } from "./user";
+import type { IClubInfo, IClubType, ICoverUrls } from "./user";
 
 export function createClub(req: ICreateClubReq): Promise<ICreateClubResp> {
   return call({
@@ -37,7 +37,7 @@ export function updateClub(req: IUpdateClubInfoReq) {
 export type IClubAuditStatus = 'AuditFail' | 'AuditSucc' | 'Auditing'
 
 export interface ICreateClubReq {
-  ClubType: string,
+  ClubType: IClubType,
   ClubName: string,
   CoverUrls: ICoverUrls,
   ClubIcon: string,
@@ -56,7 +56,7 @@ export interface IFollowClubReq {
 }
 
 export interface IGetClubReq {
-  ClubType: string,
+  ClubType: IClubType,
   ClubId: string
 }
 
@@ -65,7 +65,7 @@ export interface IGetClubResp {
 }
 
 export interface IUpdateClubInfoReq {
-  ClubType?: string,
+  ClubType?: IClubType,
   ClubId?: string,
   ClubName?: string,
   ClubIcon?: string,

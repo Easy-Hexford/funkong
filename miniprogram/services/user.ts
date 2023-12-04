@@ -56,6 +56,8 @@ export type IGender = 'Man' | 'Woman' | 'Unknown' | ''
 
 export type IIDCardType = 'ShenFenZheng' | 'HuZhao'
 
+export type IClubType = 'NormalClub' | 'SpecialClub'
+
 export interface IUserInfo {
   UserId: string,
   OpenId: string,
@@ -86,7 +88,7 @@ export interface ILoginResp {
 
 export interface IClubInfo {
   ClubId: string,
-  ClubType: string,
+  ClubType: IClubType,
   ClubName: string,
   ClubDesc: string,
   ClubIcon: string,
@@ -101,7 +103,7 @@ export interface IClubInfo {
 }
 
 export interface IClubInfoNullable {
-  ClubType?: string,
+  ClubType?: IClubType,
   ClubName?: string,
   ClubDesc?: string,
   ClubIcon?: string,

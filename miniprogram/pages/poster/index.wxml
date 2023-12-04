@@ -6,33 +6,32 @@
 />
 <scroll-view scroll-y type="list" class="scrollable">
 	<view class="column-cross-center">
-		<snapshot class="club-invite-poster" bind:longpress="saveClubInvitePoster">
+		<snapshot class="club-invite-poster">
 			<view class="poster">
-        <view class="poster-inner column-cross-center">
-          <image mode="aspectFill" class="club-icon" src="{{Club.ClubIcon}}" />
-          <view class="club-name" style="margin-top: 12px;">{{Club.ClubName}}</view>
-          <view class="club-desc" style="margin-top: 8px;">
-            <text max-lines="2" overflow="ellipsis">{{Club.ClubDesc}}</text>
-          </view>
-          <view class="tip--invite">加入我的俱乐部</view>
-          <view class="qrcode-area">
-            <view class="divider" style="margin-bottom: 6px;">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</view>
-            <view class="row-between" style="padding: 0 14px 0 18px;">
-              <view class="column">
-                <view style="margin-bottom: 5px;">看这里👇👇</view>
-                <view style="font-size: 11px;">
-                  <view style="margin-bottom: 3px;">扫码加入俱乐部</view>
-                  <view>参与后将成为该俱乐部首批成员</view>
-                </view>
-              </view>
-              <image class="qrcode" src="{{qrcode}}" />
-            </view>
-          </view>
-        </view>
-      </view>
+				<view class="poster-inner column-cross-center">
+					<image mode="aspectFill" class="club-icon" src="{{Club.ClubIcon}}" />
+					<view class="club-name" style="margin-top: 12px;">{{Club.ClubName}}</view>
+					<view class="club-desc" style="margin-top: 8px;">
+						<text max-lines="2" overflow="ellipsis">{{Club.ClubDesc}}</text>
+					</view>
+					<view class="tip--invite">加入我的俱乐部</view>
+					<view class="qrcode-area">
+						<divider color="#C4C8CA" />
+						<view class="row-between" style="padding: 10px 14px 0 18px;">
+							<view class="column">
+								<view style="margin-bottom: 5px;">看这里👇👇</view>
+								<view style="font-size: 11px;">
+									<view style="margin-bottom: 3px;">扫码加入俱乐部</view>
+									<view>参与后将成为该俱乐部首批成员</view>
+								</view>
+							</view>
+							<image class="qrcode" bind:load="onQrcodeLoad" src="{{qrcode}}" />
+						</view>
+					</view>
+				</view>
+			</view>
 		</snapshot>
-		<view class="tip--save">长按保存图片邀请粉丝</view>
-		<view class="btn--invite center">邀请粉丝</view>
+		<view class="btn--invite center" bind:tap="share">邀请粉丝</view>
 	</view>
 
 </scroll-view>

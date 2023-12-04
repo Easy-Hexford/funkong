@@ -1,5 +1,7 @@
 {
   "component": true,
   "renderer": "skyline",
-  "usingComponents": {}
+  "usingComponents": {
+    "divider": "../../components/divider/index"
+  }
 }

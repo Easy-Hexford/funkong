@@ -1,23 +1,24 @@
-// components/divider/index.ts
+const chars = new Array(10).fill('- - - - - - - - - -').join(' ')
+
 Component({
+  options: {},
 
-  /**
-   * Component properties
-   */
   properties: {
+    height: {
+      type: Number,
+      value: 10,
+    },
 
+    color: {
+      type: String,
+      value: '#fff'
+    }
   },
 
-  /**
-   * Component initial data
-   */
   data: {
-
+    chars
   },
 
-  /**
-   * Component methods
-   */
   methods: {
 
   }

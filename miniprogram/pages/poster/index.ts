@@ -1,5 +1,7 @@
 import * as request from '../../services/index'
 import { IClubInfo } from '../../services/index'
+import { MockClub } from './mock'
+
 const app = getApp()
 const fs = wx.getFileSystemManager()
 
@@ -14,13 +16,15 @@ Component({
     qrcode: '',
     User: {},
     Club: {},
+    _poster: '',
   },
 
   lifetimes: {
     attached() {
       this.setData({
         User: app.globalData.User,
-        Club: app.globalData.Club,
+        // Club: app.globalData.Club,
+        Club: MockClub
       })
 
       this.getWxaCode().then(qrcode => {
@@ -32,66 +36,84 @@ Component({
   },
 
   methods: {
-    saveClubInvitePoster() {
-      const ClubId = (this.data.Club as IClubInfo).ClubId
-      this.savePoster({
-        selector: '.club-invite-poster',
-        filePath: `${ClubId}_club_poster.png`
+    share() {
+      this.takeSnapshot().then((filePath: string) => {
+        wx.showShareImageMenu({
+          path: filePath
+        })
       })
     },
 
-    savePoster(options: {
-      selector: string,
-      filePath: string,
-    }) {
-      this.createSelectorQuery()
-        .select(options.selector)
-        .node()
-        .exec(res => {
-          const node = res[0].node
-          node.takeSnapshot({
-            type: 'arraybuffer',
-            format: 'png',
-            success: (res: any) => {
-              const filePath = `${wx.env.USER_DATA_PATH}/${options.filePath}`
-              fs.writeFileSync(filePath, res.data, 'binary')
-              wx.saveImageToPhotosAlbum({ filePath })
-                .then(() => {
-                  wx.showToast({
-                    icon: 'success',
-                    title: '保存成功'
-                  })
-                }, () => {
-                  wx.showToast({
-                    icon: 'error',
-                    title: '保存失败'
-                  })
-                })
-            },
-          })
+    onQrcodeLoad() {
+      this.takeSnapshot()
+    },
+
+    takeSnapshot(): Promise<string> {
+      return new Promise((resolve, reject) => {
+        if (this.data._poster) {
+          resolve(this.data._poster)
+        }
+
+        const ClubId = (this.data.Club as IClubInfo).ClubId
+        const selector = '.club-invite-poster'
+        const filePath = `${wx.env.USER_DATA_PATH}/${ClubId}_club_poster.png`
+
+        fs.access({
+          path: filePath,
+          success() {
+            resolve(filePath)
+          },
+
+          fail:() => {
+            this.createSelectorQuery()
+            .select(selector)
+            .node()
+            .exec(res => {
+              const node = res[0].node
+              node.takeSnapshot({
+                type: 'arraybuffer',
+                format: 'png',
+                success: (res: any) => {
+                  fs.writeFileSync(filePath, res.data, 'binary')
+                  this.data._poster = filePath
+                  resolve(filePath)
+                },
+                fail(e: any) {
+                  reject(e)
+                }
+              })
+            })
+          }
         })
+      })
     },
 
     getWxaCode() {
       const ClubId = (this.data.Club as IClubInfo).ClubId
-      return request.getWxaCode({
-        scene: `ClubId=${ClubId}`,
-        path: `pages/club-profile/index`,
-        check_path: true,
-        env_version: 'develop',
-        width: 300,
-      }).then(resp => {
-        const buffer: any = resp.buffer
-        const qrcode = 'data:image/png;base64,' + buffer
-        return qrcode
+      const filePath = wx.env.USER_DATA_PATH + `/${ClubId}_club_qrcode.png`
+      return new Promise((resolve, reject) => {
+        fs.access({
+          path: filePath,
+          success () {
+            resolve(filePath)
+          },
+          fail: () => {
+            request.getWxaCode({
+              scene: `ClubId=${ClubId}`,
+              path: `pages/club-profile/index`,
+              check_path: true,
+              env_version: 'develop',
+              width: 300,
+            }).then(resp => {
+              const buffer: any = resp.buffer
+              fs.writeFileSync(filePath, buffer, 'base64')
+              resolve(filePath)
+            }, () => {
+              reject()
+            })
+          }
+        })
       })
     },
-
-    saveWxaCode(buffer: ArrayBuffer) {
-      const ClubId = (this.data.Club as IClubInfo).ClubId
-      const filePath = wx.env.USER_DATA_PATH + `/${ClubId}_club_qrcode.png`
-      fs.writeFileSync(filePath, buffer, 'binary')
-      return filePath
-    }
   }
 })
