@@ -10,6 +10,7 @@
   "devDependencies": {
     "@commitlint/cli": "^18.4.2",
     "@commitlint/config-conventional": "^18.4.2",
+    "@types/lodash": "^4.14.202",
     "auto-changelog": "^2.4.0",
     "husky": "^8.0.3"
   },
@@ -24,6 +25,7 @@
   "homepage": "https://github.com/Easy-Hexford/funkong#readme",
   "description": "",
   "dependencies": {
+    "lodash-es": "^4.17.21",
     "tdesign-miniprogram": "^1.2.4"
   }
 }
