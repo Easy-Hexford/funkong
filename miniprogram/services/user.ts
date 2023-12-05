@@ -85,6 +85,19 @@ export interface IUserInfo {
   DeleteFlag: string
 }
 
+export interface IUserInfoNullable {
+  CoverUrls?: ICoverUrls,
+  Icon?: string,
+  NickName?: string,
+  Gender?: IGender,
+  Phone?: string,
+  Name?: string,
+  IdCardType?: IIDCardType,
+  IdCardNo?: string,
+  BirthdayDate?: string,
+  CreateTime?: string,
+}
+
 export interface ILoginResp {
   User: IUserInfo
 }

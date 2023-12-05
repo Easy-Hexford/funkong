@@ -1,7 +1,7 @@
 <scroll-view scroll-y type="list" class="scrollable">
 	<view class="banner">
-		<block wx:if="{{User.Cover.CoverUrls.Items[0]}}">
-			<image class="cover" mode="aspectFill" src="{{User.Cover.CoverUrls.Items[0]}}" />
+		<block wx:if="{{User.CoverUrls.Items[0]}}">
+			<image class="cover" mode="aspectFill" src="{{User.CoverUrls.Items[0]}}" />
 		</block>
 		<block wx:else>
 			<view style="transform: translateY(-47px);" class="column-cross-center" bind:tap="chooseCover">

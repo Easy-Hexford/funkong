@@ -1,0 +1,7 @@
+var birthday = function(date) {
+  return date.trim().split(' ')[0]
+}
+
+module.exports = {
+  birthday: birthday
+}

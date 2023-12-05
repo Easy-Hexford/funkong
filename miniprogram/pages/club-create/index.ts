@@ -1,6 +1,6 @@
 import * as request from '../../services/index'
 
-import { uploadBehavior, IChooseImageFunc } from '../../behaviors/upload'
+import { uploadBehavior, IUploadBehavior } from '../../behaviors/upload'
 import { IClubInfo, IClubInfoNullable } from '../../services/index'
 
 const app = getApp()
@@ -90,25 +90,25 @@ Component({
       })
     },
 
-    async chooseCover(this: { chooseImage: IChooseImageFunc }) {
-      this.chooseImage({
+    async chooseCover() {
+      (this as unknown as IUploadBehavior).chooseImage({
         catalog: CLUB_PIC_CATALOG,
         varName: 'ClubCoverTempFile'
       }).then(resp => {
         (this as any).setData({
           'Club.CoverUrls.Items[0]': resp.tempFileURL
-        })
+        });
       })
     },
 
-    async chooseAvatar(this: { chooseImage: IChooseImageFunc }) {
-      this.chooseImage({
+    async chooseAvatar() {
+      (this as unknown as IUploadBehavior).chooseImage({
         catalog: CLUB_PIC_CATALOG,
         varName: 'ClubIconTempFile'
       }).then(resp => {
         (this as any).setData({
           'Club.ClubIcon': resp.tempFileURL
-        })
+        });
       })
     },
 

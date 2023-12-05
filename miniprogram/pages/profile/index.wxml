@@ -1,3 +1,5 @@
+<wxs src="../../utils/filter.wxs" module="filter"></wxs>
+
 <scroll-view scroll-y type="list" class="scrollable">
 	<view class="banner">
 		<block wx:if="{{UserCoverTempFile}}">
@@ -15,9 +17,10 @@
 	</view>
 
 	<view class="sheet">
-		<view class="content-wrap {{active ? 'active' : ''}}">
+		<view class="content-wrap {{UserCoverTempFile ? 'active' : ''}}">
 			<view class="form-field-wrap">
-				<t-input
+        <t-input
+         value="{{User.NickName}}"
 				 placeholder="名字"
 				 type="nickname"
 				 placeholder-class="placeholder"
@@ -38,7 +41,7 @@
 
 			<view class="form-field-wrap">
 				<view class="input-field row-between" bind:tap="showDatePicker">
-					<text wx:if="{{User.birthday}}">{{User.birthday}}</text>
+					<text wx:if="{{User.BirthdayDate}}">{{filter.birthday(User.BirthdayDate)}}</text>
 					<text wx:else class="placeholder">生日</text>
 					<t-icon name="menu" size="24" color="rgba(0, 0, 0, 0.3)" />
 				</view>
@@ -96,10 +99,11 @@
  end="{{end}}"
 />
 
+
 <t-navbar
+ style="position: fixed; top: 0;"
  left-arrow
  fixed
  title="修改个人资料"
  t-class="custom-navbar"
 />
-

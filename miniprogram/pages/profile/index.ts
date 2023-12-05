@@ -1,6 +1,7 @@
 import { uploadBehavior } from '../../behaviors/upload'
-import type { IChooseImageFunc } from '../../behaviors/upload'
-import type { IUserInfo } from '../../services/index'
+import type { IUploadBehavior} from '../../behaviors/upload'
+import * as request from '../../services/index'
+import type { IUserInfo, IUserInfoNullable } from '../../services/index'
 import _ from '../../miniprogram_npm/lodash-es/index'
 
 const app = getApp()
@@ -52,13 +53,42 @@ Component({
   observers: {
     'User.**': function (_) {
       this.setData({
-        active: true
+        active: this.checkClubField()
       })
     },
   },
 
  
   methods: {
+    submit() {
+      const User: IUserInfoNullable = this.data.User
+      request.updateUser({
+        CoverUrls: User.CoverUrls,
+        Icon: User.Icon,
+        NickName: User.NickName,
+        Gender: User.Gender,
+        BirthdayDate: User.BirthdayDate
+      }).then(() => {
+        wx.showToast({
+          icon: 'success',
+          title: '修改成功',
+        })
+        wx.navigateBack()
+      }, () => {
+        wx.showToast({
+          icon: 'error',
+          title: '修改失败',
+        })
+      })
+    },
+
+    checkClubField() {
+      const User: IUserInfoNullable = this.data.User
+      if (User.CoverUrls?.Items[0] || User.Icon || User.NickName || User.Gender || User.BirthdayDate)
+        return true
+      return false
+    },
+
     showGenderPicker() {
       this.setData({
         genderPickerVisible: true,
@@ -95,7 +125,7 @@ Component({
     onConfirmDate(e: any) {
       const { value } = e.detail;
       this.setData({
-        'userInfo.birthday': value
+        'User.BirthdayDate': `${value} 00:00:00`
       })
       this.hideDatePicker();
     },
@@ -107,24 +137,31 @@ Component({
       })
     },
 
-    chooseCover(this: { chooseImage: IChooseImageFunc }) {
-      this.chooseImage({
+    chooseCover() {
+      (this as unknown as IUploadBehavior).chooseImage({
         catalog: USER_PIC_CATALOG,
         varName: 'UserCoverTempFile'
       }).then(resp => {
         (this as any).setData({
           'User.CoverUrls.Items[0]': resp.tempFileURL
-        })
+        });
       })
     },
 
-    onChooseAvatar(this: { chooseImage: IChooseImageFunc }, e: any) {
-      const { avatarUrl } = e.detail
-    
-    },
-    
-    submit() {
+    async onChooseAvatar(e: any) {
+      const tempFile = e.detail.avatarUrl;
+      this.setData({
+        'UserIconTempFile': tempFile
+      });
 
-    }
+      (this as unknown as IUploadBehavior).pureUploadImage({
+        catalog: USER_PIC_CATALOG,
+        tempFile,
+      }).then(resp => {
+        (this as any).setData({
+          'User.Icon': resp.tempFileURL
+        })
+      });
+    },
   }
 })

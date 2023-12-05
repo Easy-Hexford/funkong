@@ -7,11 +7,23 @@ export interface IChooseImageOption {
   varName: string,
 }
 
+export interface IPureUploadImageOption {
+  catalog: string,
+  tempFile: string
+}
+
 export type IChooseImageFunc = (opt: IChooseImageOption) => Promise<ITempFile>
+export type IPureUploadImageFunc = (opt: IPureUploadImageOption) => Promise<ITempFile>
+
+export interface IUploadBehavior {
+  chooseImage: IChooseImageFunc,
+  pureUploadImage: IPureUploadImageFunc,
+  setData: (args: any, cb?: () => void) => void
+}
 
 export const uploadBehavior = Behavior({
   methods: {
-    chooseImage(opt: IChooseImageOption) {
+    chooseImage(opt: IChooseImageOption): Promise<ITempFile> {
       return new Promise((resolve) => {
         const that = this
         wx.chooseImage({
@@ -33,6 +45,15 @@ export const uploadBehavior = Behavior({
             resolve(resp)
           }
         })
+      })
+    },
+
+    pureUploadImage(opt: IPureUploadImageOption): Promise<ITempFile> {
+      // 上传云图片获取外网链接
+      const cloudPath = genPicName(opt.catalog)
+      return request.uploadFile({
+        filePath: opt.tempFile,
+        cloudPath: cloudPath
       })
     }
   }
