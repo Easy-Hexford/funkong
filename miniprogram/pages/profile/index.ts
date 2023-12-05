@@ -1,4 +1,11 @@
+import { uploadBehavior } from '../../behaviors/upload'
+import type { IChooseImageFunc } from '../../behaviors/upload'
+import type { IUserInfo } from '../../services/index'
+const app = getApp()
+
 Component({
+  behaviors: [uploadBehavior],
+
   options: {
   },
  
@@ -7,13 +14,9 @@ Component({
   },
 
   data: {
-    userInfo: {
-      coverUrl: '',
-      avatarUrl: '',
-      nickName: '',
-      gender: '',
-      birthday: '',
-    },
+    UserCoverTempFile: '',
+    UserIconTempFile: '',
+
     genders: [
       { label: '男', value: '男' },
       { label: '女', value: '女' },
@@ -24,6 +27,19 @@ Component({
     start: '1949-10-01 00:00:00',
     end: new Date().getTime(),
     active: false,
+  },
+
+  lifetimes: {
+    attached() {
+      const User: IUserInfo = app.globalData.User
+      const UserCoverTempFile = User.CoverUrls.Items[0]
+      const UserIconTempFile = User.Icon
+      this.setData({
+        User,
+        UserCoverTempFile,
+        UserIconTempFile,
+      })
+    }
   },
 
   observers: {

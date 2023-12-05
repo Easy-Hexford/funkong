@@ -3,8 +3,16 @@ import * as request from './services/index'
 
 App({
   globalData: {
-    User: {},
-    Club: {},
+    User: {
+      CoverUrls: {
+        Items: []
+      }
+    },
+    Club: {
+      CoverUrls: {
+        Items: []
+      }
+    },
 
   },
   onLaunch() {

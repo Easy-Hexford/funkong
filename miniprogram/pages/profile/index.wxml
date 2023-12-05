@@ -1,7 +1,7 @@
 <scroll-view scroll-y type="list" class="scrollable">
 	<view class="banner">
-		<block wx:if="{{userInfo.coverUrl}}">
-			<image class="cover" mode="aspectFill" src="{{userInfo.coverUrl}}" />
+		<block wx:if="{{UserCoverTempFile}}">
+			<image class="cover" mode="aspectFill" src="{{UserCoverTempFile}}" />
 		</block>
 		<block wx:else>
 			<view style="transform: translateY(-47px);" class="column-cross-center" bind:tap="chooseCover">
@@ -22,13 +22,15 @@
 				 type="nickname"
 				 placeholder-class="placeholder"
 				 borderless="{{true}}"
-				 t-class="custom-input-field"
+         t-class="custom-input-field"
+         bind:blur="onNameInputDone"
+         bind:enter="onNameInputDone"
 				/>
 			</view>
 
 			<view class="form-field-wrap">
 				<view class="input-field row-between" bind:tap="showGenderPicker">
-					<text wx:if="{{userInfo.gender}}">{{userInfo.gender}}</text>
+					<text wx:if="{{User.gender}}">{{User.gender}}</text>
 					<text wx:else class="placeholder">性别</text>
 					<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
 				</view>
@@ -36,7 +38,7 @@
 
 			<view class="form-field-wrap">
 				<view class="input-field row-between" bind:tap="showDatePicker">
-					<text wx:if="{{userInfo.birthday}}">{{userInfo.birthday}}</text>
+					<text wx:if="{{User.birthday}}">{{User.birthday}}</text>
 					<text wx:else class="placeholder">生日</text>
 					<t-icon name="menu" size="24" color="rgba(0, 0, 0, 0.3)" />
 				</view>
@@ -53,9 +55,9 @@
 		<view class="avatar-wrap column-cross-center">
 			<button class="btn--add center" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
 				<t-avatar
-				 wx:if="{{userInfo.avatarUrl}}"
+				 wx:if="{{UserIconTempFile}}"
 				 alt="头像"
-				 image="{{userInfo.avatarUrl}}"
+				 image="{{UserIconTempFile}}"
 				 size="96px"
 				/>
 				<t-icon
@@ -65,7 +67,7 @@
 				 color="rgba(0, 0, 0, 0.3)"
 				/>
 			</button>
-			<text style="margin-top: 10px">{{userInfo.avatarUrl ? '更换头像' : '添加头像'}}</text>
+			<text style="margin-top: 10px">{{UserIconTempFile ? '更换头像' : '添加头像'}}</text>
 		</view>
 	</view>
 
