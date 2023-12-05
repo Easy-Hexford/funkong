@@ -3,6 +3,7 @@ import * as request from '../../services/index'
 import { uploadBehavior, IChooseImageFunc } from '../../behaviors/upload'
 import { IClubInfo, IClubInfoNullable } from '../../services/index'
 
+const app = getApp()
 const log = wx.getRealtimeLogManager()
 
 const PIC_CATALOG = 'club/'
@@ -15,7 +16,6 @@ Component({
   },
 
   data: {
-    isAuditing: false,
     ClubCoverTempFile: '',
     ClubIconTempFile: '',
 
@@ -25,6 +25,13 @@ Component({
         Items: []
       }
     },
+  },
+
+  attached() {
+    this.setData({
+      User: app.globalData.User,
+      Club: app.globalData.Club,
+    })
   },
 
   observers: {

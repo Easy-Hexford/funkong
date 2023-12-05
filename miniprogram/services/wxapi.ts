@@ -11,6 +11,7 @@ export function getWxaCode(req: IGetWxaCodeReq): Promise<IGetWxaCodeResp> {
 }
 
 export interface IGetWxaCodeReq {
+  // 最大32个可见字符，只支持数字，大小写英文以及部分特殊字符
   scene: string,
   path?: string,
   check_path?: boolean,

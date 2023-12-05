@@ -58,6 +58,8 @@ export type IIDCardType = 'ShenFenZheng' | 'HuZhao'
 
 export type IClubType = 'NormalClub' | 'SpecialClub'
 
+export type IAuditRole = 'NormalAuditRole' | 'UnknownAuditRole'
+
 export interface IUserInfo {
   UserId: string,
   OpenId: string,
@@ -66,6 +68,7 @@ export interface IUserInfo {
   Icon: string,
   Gender: IGender,
   Role: IRole,
+  AuditRole: IAuditRole,
   RegisterType: IRegisterType,
   RegisterInfo: {
     ClubId: string,
@@ -133,6 +136,7 @@ export interface IUpdateUserReq {
   Icon?: string,
   Gender?: IGender,
   Role?: IRole,
+  AuditRole?: IAuditRole,
   RegisterType?: IRegisterType,
   RegisterInfo?: {
     ClubId?: string,

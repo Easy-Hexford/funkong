@@ -23,11 +23,11 @@ Component({
     attached() {
       this.setData({
         User: app.globalData.User,
-        // Club: app.globalData.Club,
-        Club: MockClub
+        Club: app.globalData.Club,
+        // Club: MockClub
       })
 
-      this.getWxaCode().then(qrcode => {
+      this.getWxaCode().then((qrcode: string) => {
         this.setData({
           qrcode
         })
@@ -88,7 +88,7 @@ Component({
       })
     },
 
-    getWxaCode() {
+    getWxaCode(): Promise<string> {
       const ClubId = (this.data.Club as IClubInfo).ClubId
       const filePath = wx.env.USER_DATA_PATH + `/${ClubId}_club_qrcode.png`
       return new Promise((resolve, reject) => {
@@ -99,7 +99,8 @@ Component({
           },
           fail: () => {
             request.getWxaCode({
-              scene: `ClubId=${ClubId}`,
+              // scene: `ClubId=${ClubId}`,
+              scene: 'ClubId=12344',
               path: `pages/club-profile/index`,
               check_path: true,
               env_version: 'develop',

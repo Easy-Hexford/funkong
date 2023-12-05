@@ -1,4 +1,4 @@
-<block wx:if="{{isAuditing}}">
+<block wx:if="{{Club.AuditStatus === 'Auditing'}}">
 	<view class="audit-result">
 		<image class="icon--result" mode="aspectFit" src="../../assets/images/@charlet_happy_woman.png" />
 		<view class="result-title">已提交</view>
