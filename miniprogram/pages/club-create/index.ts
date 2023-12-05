@@ -6,7 +6,7 @@ import { IClubInfo, IClubInfoNullable } from '../../services/index'
 const app = getApp()
 const log = wx.getRealtimeLogManager()
 
-const PIC_CATALOG = 'club/'
+const CLUB_PIC_CATALOG = 'club/'
 
 Component({
   behaviors: [uploadBehavior],
@@ -92,7 +92,7 @@ Component({
 
     async chooseCover(this: { chooseImage: IChooseImageFunc }) {
       this.chooseImage({
-        catalog: PIC_CATALOG,
+        catalog: CLUB_PIC_CATALOG,
         varName: 'ClubCoverTempFile'
       }).then(resp => {
         (this as any).setData({
@@ -103,7 +103,7 @@ Component({
 
     async chooseAvatar(this: { chooseImage: IChooseImageFunc }) {
       this.chooseImage({
-        catalog: PIC_CATALOG,
+        catalog: CLUB_PIC_CATALOG,
         varName: 'ClubIconTempFile'
       }).then(resp => {
         (this as any).setData({
