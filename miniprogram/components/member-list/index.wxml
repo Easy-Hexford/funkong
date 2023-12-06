@@ -1,0 +1,13 @@
+<!--components/member-list/index.wxml-->
+<scroll-view scroll-x class="scrollable">
+	<block wx:for="{{members}}" wx:key="UserId" wx:for-item="User">
+		<view class="item">
+			<view class="column-cross-center">
+				<image class="avatar" src="{{User.Icon}}" />
+				<text class="nickname">{{User.NickName}}</text>
+				<view wx:if="{{User.Role === 'SuperRole'}}" class="identity">{{User.Role === 'SuperRole' ? '主理人' : ''}}</view>
+			</view>
+		</view>
+	</block>
+</scroll-view>
+
