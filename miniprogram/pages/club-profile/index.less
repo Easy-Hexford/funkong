@@ -1,40 +1,81 @@
 /* pages/club-profile/index.wxss */
-
-.navbar-wrap {
-  // background: #C4C4C4;
-  height: 245px;
-}
-
-.navbar-bg {
-  width: 100%;
-  height: 100%;
-}
-
-.custom-navbar {
-  --td-navbar-bg-color: transparent;
-}
-
-.page-container {
-  position: absolute;
-  top: 150px;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 24px;
-  height: calc(100vh - 150px);
-  background: linear-gradient(180deg, rgba(35, 84, 105, 0.00) 0%, #22495A 5.92%, #0D1E32 57.56%);
-  // background: linear-gradient(180deg, rgba(237, 237, 237, 0.00) 0%, #EDEDED 15.52%);
-}
-
 .scrollable {
-  height: 100%;
+  height: 100vh;
+  overflow: auto;
+  box-sizing: border-box;
+  background-color: #fff;
+  padding-bottom: calc(env(safe-area-inset-bottom));
 }
 
-.club-logo {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background-color: green;
-  margin-right: 12px;
+.banner {
+  position: relative;
+  width: 100%;
+  height: 245px;
+  background: var(--bg-0, #EDEDED);
+
+  color: rgba(0, 0, 0, 0.30);
+  font-family: PingFang SC;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+
+  .cover {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.banner-bg {
+  width: 200px;
+  height: 200px;
+}
+
+.sheet {
+  position: relative;
+  border: 0.5px solid #fff;
+  background-color: #fff;
+  margin-top: -20px;
+}
+
+.charlet-woman {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 62px;
+  height: 105px;
+}
+
+.content-wrap {
+  position: relative;
+
+  &.active {
+    border-radius: 20px;
+    overflow: hidden;
+  }
+}
+
+.avatar-wrap {
+  position: absolute;
+  top: 0;
+  left: 21px;
+  transform: translateY(-50%);
+
+  color: rgba(0, 0, 0, 0.30);
+  font-family: PingFang SC;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  /* 22.4px */
+
+  .avatar {
+    box-sizing: border-box;
+    width: 64px;
+    height: 64px;
+    overflow: hidden;
+    background: #F7F7F7;
+  }
 }
 
 .club-name {
@@ -45,85 +86,36 @@
 }
 
 .club-addr {
-  color: var(--glyph-white-1, rgba(255, 255, 255, 0.50));
+  color: var(--glyph-white-1, rgba(0, 0, 0, 0.55));
   font-size: 14px;
   line-height: normal;
 }
 
 .club-profile {
-  margin-top: 8px;
-  color: var(--glyph-white-0, rgba(255, 255, 255, 0.80));
+  margin-top: 42px;
+  padding-left: 24px;
+  padding-right: 65px;
+  color: rgba(0, 0, 0, 0.90);
+  font-size: 15px;
+}
+
+.sub-title {
+  padding-left: 24px;
+  color: var(--glyph-white-1, rgba(0, 0, 0, 0.50));
   font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
 }
 
-.club-team {
-  margin-top: 20px;
-}
-
-.title {
-  color: var(--glyph-white-1, rgba(255, 255, 255, 0.50));
-  font-family: PingFang SC;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
-.team-member {
-  margin-top: 16px;
-  overflow: scroll;
-}
-
-.member {
-  width: 88px;
-  margin-right: 20px;
-}
-
-.member-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: green;
-}
-
-.member-nickname {
-  color: #000;
-  color: var(--glyph-white-0, rgba(255, 255, 255, 0.80));
-  display: inline-block;
-  margin-top: 12px;
-  font-size: 14px;
-  font-style: normal;
+.btn--create {
+  margin: 0 24px;
+  height: 56px;
+  background-color: #F7F7F7;
+  color: var(--Overlay, rgba(0, 0, 0, 0.50));
+  font-size: 17px;
   font-weight: 500;
-  line-height: normal;
+  line-height: 140%; 
 }
 
-.member-identity {
-  box-sizing: border-box;
-  margin-top: 4px;
-  padding: 2px 4px;
-  border-radius: 3px;
-  border: 1px solid #6CCEA2;
-  color: #6CCEA2;
-  font-family: PingFang SC;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
-.create-activity {
-  height: 178px;
-  width: 100%;
-  border-radius: 8px;
-  // background: #F7F7F7;
-  background-color: #193149;
-  color: var(--glyph-white-1, rgba(255, 255, 255, 0.50));
-}
-
-.scroll-item {
-  padding-bottom: 8px;
+.custom-navbar {
+  --td-navbar-bg-color: transparent;
+  --td-navbar-color: rgba(0, 0, 0, 0.9);
 }

@@ -1,6 +1,6 @@
 import * as request from '../../services/index'
 import { IClubInfo } from '../../services/index'
-import { MockClub } from './mock'
+import { MockClub } from '../../utils/mock'
 
 const app = getApp()
 const fs = wx.getFileSystemManager()

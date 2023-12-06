@@ -1,7 +1,7 @@
 import * as request from '../../services/index'
 
 import { uploadBehavior, IUploadBehavior } from '../../behaviors/upload'
-import { IClubInfo, IClubInfoNullable } from '../../services/index'
+import type { IClubInfo, IClubInfoNullable } from '../../services/index'
 
 const app = getApp()
 const log = wx.getRealtimeLogManager()
@@ -19,7 +19,6 @@ Component({
     ClubCoverTempFile: '',
     ClubIconTempFile: '',
 
-    User: {},
     Club: {
       CoverUrls: {
         Items: []
@@ -29,7 +28,6 @@ Component({
 
   attached() {
     this.setData({
-      User: app.globalData.User,
       Club: app.globalData.Club,
     })
   },
@@ -55,7 +53,7 @@ Component({
         ClubDesc: Club.ClubDesc
       })
       this.setData({
-        isAuditing: true
+        'Club.AuditStatus': 'Auditing'
       })
     },
 

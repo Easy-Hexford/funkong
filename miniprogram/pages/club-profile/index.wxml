@@ -1,54 +1,35 @@
-<!--pages/club-profile/index.wxml-->
-<view class="navbar-wrap">
-	<image class="navbar-bg" src="../../assets/images/bg.png" />
-	<t-navbar
-	 left-arrow
-	 title="我的"
-	 fixed="{{true}}"
-	 class="custom-navbar"
-	/>
-</view>
-<view class="page-container">
-	<scroll-view type="custom" scroll-y class="scrollable">
-		<view class="club-info row">
-			<image class="club-logo" />
-			<view class="column" style="justify-content: center;">
-				<view class="club-name">逐浪青年</view>
-				<view class="club-addr">广州</view>
-			</view>
-		</view>
-		<view class="club-profile column">
-			<text>Play Some Games！</text>
-			<text>养生运动出汗！交个朋友呗！最紧要是开心！</text>
-			<text>Take it Easy, Have Fun!</text>
-		</view>
-		<view class="club-team column">
-			<view class="title">小队成员</view>
-			<scroll-view scroll-x class="team-member">
-				<view class="row">
-					<block wx:for="{{members}}">
-						<view class="member column center">
-							<image class="member-avatar" src="" />
-							<text class="member-nickname">团长</text>
-							<view class="member-identity center">主理人</view>
-						</view>
-					</block>
-				</view>
-			</scroll-view>
-		</view>
-		<view class="title" style="padding-top: 38px; padding-bottom: 12px;">活动</view>
-		<view class="scroll-item">
-			<view class="create-activity center">
-				<t-icon name="add" size="28" />
-				<text>创建活动</text>
-			</view>
-		</view>
+<scroll-view scroll-y type="list" class="scrollable">
+	<view class="banner" bind:tap="chooseCover">
+		<image class="cover" mode="aspectFill" src="{{Club.CoverUrls.Items[0]}}" />
+	</view>
 
-		<block wx:for="{{activities}}">
-			<view class="scroll-item">
-				<activity/>
+	<view class="sheet">
+		<view class="content-wrap">
+			<view class="club-profile">
+				<text>{{Club.ClubDesc}}</text>
+      </view>
+      
+      <view class="sub-title" style="margin-top: 12px;">团队成员</view>
+
+      <view class="sub-title" style="margin-top: 30px;">活动</view>
+
+      <view class="btn--create center" style="margin-top: 12px;">
+        <t-icon name="add" size="24" color="rgba(0, 0, 0, 0.5)"></t-icon>
+        <text>创建活动</text>
+      </view>
+
+		</view>
+		<view class="avatar-wrap row">
+			<image class="avatar circle" src="{{Club.ClubIcon}}" />
+			<view class="column" style="height: 64px; margin-left: 12px;">
+				<text class="club-name" style="margin-top: 5px;">{{Club.ClubName}}</text>
+				<text class="club-addr" style="margin-top: 3px;">{{Club.Province}}</text>
 			</view>
-		</block>
-	</scroll-view>
-</view>
+		</view>
+		<image class="charlet-woman" mode="aspectFit" src="../../assets/images/@chartlet_woman_music.png" />
+	</view>
+
+</scroll-view>
+
+<t-navbar left-arrow fixed t-class="custom-navbar" />
 

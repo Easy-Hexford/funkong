@@ -13,32 +13,35 @@
 	<view class="sheet">
 		<view class="content-wrap active">
 			<block wx:if="{{isSuperRole}}">
-				<view wx:if="{{Club.AuditStatus === 'AuditSucc'}}">
+				<view wx:if="{{Club.AuditStatus === 'AuditSucc' || isAuditing}}">
 					<view class="field-title">俱乐部</view>
 					<view class="form-field-wrap">
 						<view class="input-field" style="padding-top: 0; padding-bottom: 0;">
 							<navigator
 							 style="padding: 17px 0;"
 							 class="row-between"
-							 url="../club-profile/index"
+							 url="{{isAuditing ? '../club-create/index' : '../club-profile/index'}}"
 							 hover-class="none"
 							>
 								<view class="row">
 									<image class="icon--club circle" mode="aspectFill" src="{{Club.ClubIcon}}" />
 									<text>{{Club.ClubName || '逐浪青年'}}</text>
-								</view>
-								<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+                </view>
+                <view class="row">
+                  <text wx:if="{{isAuditing}}" class="tip-auditing">审核中</text>
+								  <t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+                </view>
 							</navigator>
 
 							<t-divider t-class="custom-divider" />
 
 							<navigator
 							 style="padding: 17px 0;"
-							 class="sub-input-field row-between"
-							 url="../activity-create/index"
+							 class="row-between"
+							 url="{{isAuditing ? '' : '../activity-create/index'}}"
 							 hover-class="none"
 							>
-								<text>创建活动</text>
+								<text class="{{isAuditing ? 'disabled' : ''}}">创建活动</text>
 								<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
 							</navigator>
 
@@ -63,7 +66,14 @@
 						<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
 					</navigator>
 				</view>
-			</block>
+      </block>
+      
+      <view class="form-field-wrap" wx:if="{{User.AuditRole === 'NormalAuditRole'}}">
+				<navigator class="input-field row-between" url="../audit/index" hover-class="none">
+					<text>审核台</text>
+					<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+				</navigator>
+			</view>
 
 			<view class="form-field-wrap">
 				<navigator class="input-field row-between" url="../customer-service/index" hover-class="none">

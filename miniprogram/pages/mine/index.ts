@@ -9,21 +9,14 @@ Component({
 
   data: {
     isSuperRole: false,
+    isAuditing: false,
     User: {},
     Club: {},
   },
 
   lifetimes: {
     async created() {
-      const info = await request.getUser()
-      this.setData({
-        isSuperRole: info.User.Role === 'SuperRole',
-        User: info.User,
-        Club: info.Club
-      })
-
-      app.globalData.User = info.User
-      app.globalData.Club = info.Club
+      
     },
 
     async attached() {
@@ -33,14 +26,30 @@ Component({
 
   pageLifetimes: {
     async show() { 
-      const tabComp = this.getTabBar()
-      tabComp.setData({
-        selected: 2
-      })
+      this.updateTabBar()
+      this.updateUserInfo()
     }
   },
 
   methods: {
+    updateTabBar() {
+      const tabComp = this.getTabBar()
+      tabComp.setData({
+        selected: 2
+      })
+    },
 
+    async updateUserInfo() {
+      const info = await request.getUser()
+      this.setData({
+        isSuperRole: info.User.Role === 'SuperRole',
+        isAuditing: info.Club.AuditStatus === 'Auditing',
+        User: info.User,
+        Club: info.Club
+      })
+
+      app.globalData.User = info.User
+      app.globalData.Club = info.Club
+    }
   }
 })

@@ -1,24 +1,31 @@
 // pages/club-profile/index.ts
-Component({
+import * as request from '../../services/index'
+import type { IClubInfo, IClubInfoNullable } from '../../services/index'
+import { MockClub } from '../../utils/mock'
 
-  /**
-   * 组件的属性列表
-   */
+const app = getApp()
+
+Component({
   properties: {
 
   },
 
-  /**
-   * 组件的初始数据
-   */
   data: {
     members: [1,2,3,4,5,6,7,8],
-    activities: [1, 2]
+    activities: [1, 2],
+
+    Club: {},
   },
 
-  /**
-   * 组件的方法列表
-   */
+  lifetimes: {
+    attached() {
+      this.setData({
+        // Club: app.globalData.Club,
+        Club: MockClub
+      })
+    }
+  },
+
   methods: {
 
   }

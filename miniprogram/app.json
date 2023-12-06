@@ -10,7 +10,8 @@
     "pages/customer-service/index",
     "pages/profile/index",
     "pages/club-create/index",
-    "pages/club-profile/index"
+    "pages/club-profile/index",
+    "pages/audit/index"
   ],
   "window": {
     "navigationBarTextStyle": "black",
