@@ -73,7 +73,6 @@ Component({
           icon: 'success',
           title: '修改成功',
         })
-        wx.navigateBack()
       }, () => {
         wx.showToast({
           icon: 'error',
