@@ -13,7 +13,7 @@
 .banner {
   position: relative;
   width: 100%;
-  height: 265px;
+  height: 245px;
   background: var(--bg-0, #EDEDED);
 
   color: rgba(0, 0, 0, 0.30);
@@ -42,9 +42,9 @@
 
 .content-wrap {
   position: relative;
-  padding-top: 67px;
+  border: 0.5px solid #fff;
   background-color: #fff;
-
+  padding: 0 24px;
 
   &.active {
     border-radius: 20px;
@@ -52,53 +52,13 @@
   }
 }
 
-.avatar-wrap {
-  position: absolute;
-  left: 21px;
-  top: -24px;
-
-  color: rgba(0, 0, 0, 0.30);
-  font-family: PingFang SC;
-  font-size: 16px;
-  font-style: normal;
+.sub-title {
+  color: var(--glyph-1, rgba(0, 0, 0, 0.55));
+  font-size: 14px;
   font-weight: 400;
-  line-height: 140%;
-  /* 22.4px */
-
-  .btn--add {
-    box-sizing: border-box;
-    width: 72px;
-    height: 72px;
-    border-radius: 7px;
-    overflow: hidden;
-    padding: 0;
-    background: #F7F7F7;
-  }
-
-  .del-avatar-wrap {
-    position: relative;
-    width: 72px;
-    height: 72px;
-    padding: 0;
-  }
-
-  .btn--xmark {
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: translate(50%, -50%);
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    overflow: hidden;
-    background-color: #F2F2F2;
-  }
-
-  .fill {
-    width: 100%;
-    height: 100%;
-  }
+  margin-bottom: 8px;
 }
+
 
 .custom-navbar {
   --td-navbar-bg-color: transparent;
@@ -113,14 +73,6 @@
   padding-bottom: calc(env(safe-area-inset-bottom));
 }
 
-.title {
-  margin: 16px 0;
-  color: var(--glyph-0, rgba(0, 0, 0, 0.90));
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 140%;
-  /* 28px */
-}
 
 .upload-wrap {
   position: relative;
@@ -144,7 +96,7 @@
 }
 
 .form-field-wrap {
-  margin: 0 24px 16px 24px;
+  margin-top: 16px;
 }
 
 .input-field {

@@ -25,8 +25,9 @@
 		</view>
 
 		<view class="sheet">
-			<view class="content-wrap">
-				<view class="form-field-wrap">
+			<view class="content-wrap active">
+				<view class="sub-title" style="margin-top: 32px;">基本信息</view>
+				<view class="form-field-wrap" style="margin-top: 0;">
 					<t-input
 					 cursor-spacing="20"
 					 placeholder="填写活动名称"
@@ -38,25 +39,75 @@
 					/>
 				</view>
 
+				<view class="form-field-wrap">
+					<view class="input-field row-between" bind:tap="showDatePicker">
+						<text wx:if="{{User.BirthdayDate}}">{{filter.birthday(User.BirthdayDate)}}</text>
+						<text wx:else class="placeholder">填写活动开始时间</text>
+						<t-icon name="menu" size="24" color="rgba(0, 0, 0, 0.3)" />
+					</view>
+				</view>
+
+				<view class="form-field-wrap">
+					<view class="input-field row-between" bind:tap="showDatePicker">
+						<text wx:if="{{User.BirthdayDate}}">{{filter.birthday(User.BirthdayDate)}}</text>
+						<text wx:else class="placeholder">填写活动结束时间</text>
+						<t-icon name="menu" size="24" color="rgba(0, 0, 0, 0.3)" />
+					</view>
+				</view>
+
 				<picker
 				 mode="region"
 				 level="city"
-				 header-text="添加活动地点"
+				 header-text="活动地点"
 				 bind:change="onRegionPickerChange"
 				>
 					<view class="form-field-wrap">
 						<view class="input-field row-between">
 							<text wx:if="{{Club.Province}}">{{Club.Province}} {{Club.City}}</text>
-							<text wx:else class="placeholder">添加所在地</text>
+							<text wx:else class="placeholder">添加活动地点</text>
 							<t-icon name="location" size="24" color="rgba(0, 0, 0, 0.3)" />
 						</view>
 					</view>
-				</picker>
+        </picker>
+        
+        <view class="form-field-wrap">
+					<t-input
+					 cursor-spacing="20"
+					 placeholder="活动价格"
+					 placeholder-class="placeholder"
+					 borderless="{{true}}"
+					 t-class="custom-input-field"
+					 bind:blur="onClubNameInputDone"
+					 bind:enter="onClubNameInputDone"
+          >
+            <view slot="suffix" style="display: inline-block; width: 24px; text-align: center;">元</view>
+          </t-input>
+				</view>
+
+
+				<view class="sub-title" style="margin-top: 21px;">活动配图</view>
+
+				<view class="sub-title" style="margin-top: 24px;">更多信息</view>
+				<view class="form-field-wrap" style="margin-top: 0;">
+					<t-input
+					 cursor-spacing="20"
+					 placeholder="参与人数上限"
+					 placeholder-class="placeholder"
+					 borderless="{{true}}"
+					 t-class="custom-input-field"
+					 bind:blur="onClubNameInputDone"
+					 bind:enter="onClubNameInputDone"
+          >
+            <view slot="suffix" style="display: inline-block; width: 24px; text-align: center;">人</view>
+          </t-input>
+				</view>
 
 				<view class="form-field-wrap">
 					<t-textarea
-					 cursor-spacing="20"
-					 placeholder="填写俱乐部描述"
+           cursor-spacing="20"
+           maxlength="300"
+           indicator
+					 placeholder="填写活动描述"
 					 placeholder-class="placeholder"
 					 disableDefaultPadding="{{true}}"
 					 t-class="custom-textarea-field"
@@ -65,10 +116,10 @@
 					/>
 				</view>
 
-				<view class="form-field-wrap">
-					<view class="center" style="margin-top: 78px;">
+				<view class="form-field-wrap"  style="margin-top: 120px; margin-bottom: 58px;">
+					<view class="center">
 						<view class="btn--modiry center {{active ? 'active' : ''}}" bind:tap="submit">
-							<text>确认</text>
+							<text>创建活动</text>
 						</view>
 					</view>
 				</view>
