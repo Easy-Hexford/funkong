@@ -1,76 +1,110 @@
 <!--pages/activity-create/index.wxml-->
-<t-navbar
- left-arrow
- title="创建活动"
- fixed="{{false}}"
- class="custom-navbar"
-/>
-<view class="page-container">
+<block wx:if="{{Club.AuditStatus === 'Auditing'}}">
+	<view class="audit-result">
+		<image class="icon--result" mode="aspectFit" src="../../assets/images/@charlet_man_woman.png" />
+		<view class="result-title">已提交</view>
+		<view class="result-content">我们已收到您的俱乐部创建申请，将在3个工作日完成审核，到时会通过短信/微信与您联系。</view>
+	</view>
+</block>
+
+<block wx:else>
 	<scroll-view scroll-y type="list" class="scrollable">
-		<view class="cover-tips">
-			<view class="row" style="padding-top: 52px; justify-content: center;">
-        <t-icon name="add" size="24" />
-			  <text style="margin-left: 8px;">添加活动封面</text>
-      </view>
+		<view class="banner" bind:tap="chooseCover">
+			<block wx:if="{{ClubCoverTempFile}}">
+				<image class="cover" mode="aspectFill" src="{{ClubCoverTempFile}}" />
+			</block>
+			<block wx:else>
+				<view style="transform: translateY(-47px);" class="column-cross-center">
+					<image class="banner-bg" src="../../assets/images/@chartlet_man_woman.png" />
+					<view class="center" style="margin-top: 9px;">
+						<t-icon name="add" size="24" color="rgba(0, 0, 0, 0.3)" />
+						<text style="margin-left: 8px;">添加活动封面</text>
+					</view>
+				</view>
+			</block>
 		</view>
 
 		<view class="sheet">
-      <view class="title" style="padding-top: 32px; padding-bottom: 8px;">基本信息</view>
-			<view class="field-wrap">
-				<input class="input" placeholder="填写活动名称" placeholder-class="placeholder" />
-			</view>
-
-			<view class="field-wrap">
-				填写活动开始时间
-			</view>
-
-			<view class="field-wrap">
-				填写活动结束时间
-			</view>
-
-			<view class="field-wrap">
-				添加活动地点
-			</view>
-
-			<view class="field-wrap">
-				活动价格
-			</view>
-
-      <view class="title" style="padding-top: 24px; padding-bottom: 8px;">活动配图</view>
-			<view class="upload-wrap">
-				<t-upload
-				 t-class="custom-upload"
-				 mediaType="{{['image']}}"
-				 max="{{1}}"
-				 files="{{fileList}}"
-				 bind:add="handleAdd"
-				 bind:remove="handleRemove"
-				/>
-			</view>
-
-      <view class="title" style="padding-top: 21px; padding-bottom: 8px;">更多信息</view>
-			<view class="field-wrap">
-				<input class="input" placeholder="参与人数上限" placeholder-class="placeholder" />
-			</view>
-
-			<view class="textarea-wrap">
-				<textarea
-				 class="input"
-				 auto-height
-				 placeholder="填写俱乐部描述"
-				 placeholder-class="placeholder"
-				/>
+			<view class="content-wrap">
+				<view class="form-field-wrap">
+					<t-input
+					 cursor-spacing="20"
+					 placeholder="填写活动名称"
+					 placeholder-class="placeholder"
+					 borderless="{{true}}"
+					 t-class="custom-input-field"
+					 bind:blur="onClubNameInputDone"
+					 bind:enter="onClubNameInputDone"
+					/>
 				</view>
-        
-        <view class="footer center">
-          <view class="create-btn">
-            <text>创建活动</text>
-          </view>
-        </view>
-    </view>
 
-    </scroll-view>
-    
-    
-</view>
+				<picker
+				 mode="region"
+				 level="city"
+				 header-text="添加活动地点"
+				 bind:change="onRegionPickerChange"
+				>
+					<view class="form-field-wrap">
+						<view class="input-field row-between">
+							<text wx:if="{{Club.Province}}">{{Club.Province}} {{Club.City}}</text>
+							<text wx:else class="placeholder">添加所在地</text>
+							<t-icon name="location" size="24" color="rgba(0, 0, 0, 0.3)" />
+						</view>
+					</view>
+				</picker>
+
+				<view class="form-field-wrap">
+					<t-textarea
+					 cursor-spacing="20"
+					 placeholder="填写俱乐部描述"
+					 placeholder-class="placeholder"
+					 disableDefaultPadding="{{true}}"
+					 t-class="custom-textarea-field"
+					 bind:blur="onClubDescInputDone"
+					 bind:enter="onClubDescInputDone"
+					/>
+				</view>
+
+				<view class="form-field-wrap">
+					<view class="center" style="margin-top: 78px;">
+						<view class="btn--modiry center {{active ? 'active' : ''}}" bind:tap="submit">
+							<text>确认</text>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+
+	</scroll-view>
+</block>
+
+<t-picker
+ visible="{{genderPickerVisible}}"
+ title="性别"
+ cancelBtn="取消"
+ confirmBtn="确认"
+ bind:confirm="onConfirmGender"
+ bind:cancel="hideGenderPicker"
+>
+	<t-picker-item options="{{genders}}" />
+</t-picker>
+
+<t-date-time-picker
+ title="生日"
+ visible="{{datePickerVisible}}"
+ mode="date"
+ defaultValue="{{date}}"
+ format="YYYY-MM-DD"
+ bind:confirm="onConfirmDate"
+ bind:cancel="hideDatePicker"
+ start="{{start}}"
+ end="{{end}}"
+/>
+
+<t-navbar
+ left-arrow
+ fixed
+ title="创建活动"
+ t-class="custom-navbar"
+/>
 

@@ -1,6 +1,6 @@
 // pages/club-profile/index.ts
 import * as request from '../../services/index'
-import type { IClubInfo, IClubInfoNullable } from '../../services/index'
+import type { IUserInfo, IClubInfo, IClubInfoNullable } from '../../services/index'
 import { MockClub } from '../../utils/mock'
 
 const app = getApp()
@@ -11,17 +11,17 @@ Component({
   },
 
   data: {
-    members: [1,2,3,4,5,6,7,8],
-    activities: [1, 2],
-
     Club: {},
+    members: <Array<IUserInfo>>[],
   },
 
   lifetimes: {
     attached() {
+      const { User, Club } = app.globalData
       this.setData({
-        // Club: app.globalData.Club,
-        Club: MockClub
+        Club,
+        members: [User],
+        // Club: MockClub
       })
     }
   },

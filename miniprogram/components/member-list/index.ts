@@ -12,7 +12,7 @@ Component({
   lifetimes: {
     attached() {
       this.setData({
-        members: MockMembers
+        // members: MockMembers
       })
     }
   },
