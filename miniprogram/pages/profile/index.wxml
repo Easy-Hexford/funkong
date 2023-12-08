@@ -21,6 +21,7 @@
 			<view class="form-field-wrap">
         <t-input
          value="{{User.NickName}}"
+         clearable
 				 placeholder="名字"
 				 type="nickname"
 				 placeholder-class="placeholder"
@@ -49,7 +50,7 @@
 
 			<view class="form-field-wrap">
 				<view class="center" style="margin-top: 90px;">
-					<view class="btn--modiry center {{active ? 'active' : ''}}" bind:tap="submit">
+					<view class="btn--modiry center {{submittable ? 'active' : ''}}" bind:tap="submit">
 						<text>修改</text>
 					</view>
 				</view>
@@ -92,7 +93,7 @@
  visible="{{datePickerVisible}}"
  mode="date"
  defaultValue="{{date}}"
- format="YYYY-MM-DD"
+ format="YYYY-MM-DD HH:mm:ss"
  bind:confirm="onConfirmDate"
  bind:cancel="hideDatePicker"
  start="{{start}}"

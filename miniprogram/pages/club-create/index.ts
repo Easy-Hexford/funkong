@@ -24,6 +24,7 @@ Component({
         Items: []
       }
     },
+    submittable: false,
   },
 
   attached() {
@@ -35,13 +36,15 @@ Component({
   observers: {
     'Club.**': function (_) {
       this.setData({
-        active: this.checkClubField()
+        submittable: this.checkFormFields()
       })
     },
   },
 
   methods: {
     submit() {
+      if (!this.data.submittable) return
+      
       const Club: IClubInfo = this.data.Club as any
       request.createClub({
         ClubType: 'NormalClub',
@@ -57,7 +60,7 @@ Component({
       })
     },
 
-    checkClubField() {
+    checkFormFields() {
       const Club: IClubInfoNullable = this.data.Club
       if (Club.ClubName && Club.Province && Club.ClubDesc && Club.CoverUrls?.Items[0] && Club.ClubIcon)
         return true

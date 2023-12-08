@@ -1,7 +1,8 @@
 import call from './base';
-import { ICreateClubReq, ICreateClubResp } from './club';
+import { ICreateClubResp } from './club';
+import { ICoverUrls } from './user';
 
-export function createActivity(req: ICreateClubReq): Promise<ICreateClubResp> {
+export function createActivity(req: ICreateActivityReq): Promise<ICreateClubResp> {
   return call({
     url: '/activity/create',
     method: 'POST',
@@ -33,6 +34,8 @@ export function getSignActicityList(req: IGetSignUpActicityListReq): Promise<IGe
   })
 }
 
+export type ILocationType = 'gcj02' | 'wgs84'
+
 export interface IActivityTypes {
   Items: Array<string>
 }
@@ -41,6 +44,7 @@ export interface ICreateActivityReq {
   ClubId: string,
   Title: string,
   Content: string,
+  CoverUrls: ICoverUrls,
   ActivityTypes: IActivityTypes,
   BeginTime: string,
   EndTime: string,
@@ -49,7 +53,8 @@ export interface ICreateActivityReq {
   },
   Province: string,
   City: string,
-  Location?: {
+  LocationType?: ILocationType,
+  Location: {
     lat: number,
     lon: number
   },
@@ -98,6 +103,7 @@ export interface IGetActicityListResp {
 export interface IActivityInfo {
   ActivityId: string,
   UserId: string,
+  CoverUrls?: ICoverUrls,
   ClubId: string,
   Province: string,
   City: string,
@@ -121,7 +127,7 @@ export interface IActivityInfo {
   CreateTime: string,
   UpdateTime: string,
   DeleteFlag: string,
-  AuditStatus: string,
+  AuditStatus: IActivityAuditStatus,
 }
 
 export type IActivitySignUpTag = 'All' | 'Begin' | 'End'

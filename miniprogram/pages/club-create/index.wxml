@@ -66,7 +66,7 @@
 
 				<view class="form-field-wrap">
 					<view class="center" style="margin-top: 78px;">
-						<view class="btn--modiry center {{active ? 'active' : ''}}" bind:tap="submit">
+						<view class="btn--modiry center {{submittable ? 'active' : ''}}" bind:tap="submit">
 							<text>确认</text>
 						</view>
 					</view>
@@ -92,29 +92,6 @@
 
 	</scroll-view>
 </block>
-
-<t-picker
- visible="{{genderPickerVisible}}"
- title="性别"
- cancelBtn="取消"
- confirmBtn="确认"
- bind:confirm="onConfirmGender"
- bind:cancel="hideGenderPicker"
->
-	<t-picker-item options="{{genders}}" />
-</t-picker>
-
-<t-date-time-picker
- title="生日"
- visible="{{datePickerVisible}}"
- mode="date"
- defaultValue="{{date}}"
- format="YYYY-MM-DD"
- bind:confirm="onConfirmDate"
- bind:cancel="hideDatePicker"
- start="{{start}}"
- end="{{end}}"
-/>
 
 <t-navbar
  left-arrow

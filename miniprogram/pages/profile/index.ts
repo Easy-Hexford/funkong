@@ -3,6 +3,7 @@ import type { IUploadBehavior} from '../../behaviors/upload'
 import * as request from '../../services/index'
 import type { IUserInfo, IUserInfoNullable } from '../../services/index'
 import _ from '../../miniprogram_npm/lodash-es/index'
+import dayjs from 'dayjs'
 
 const app = getApp()
 
@@ -32,8 +33,8 @@ Component({
     datePickerVisible: false,
     date: '2008-10-01 00:00:00',
     start: '1949-10-01 00:00:00',
-    end: new Date().getTime(),
-    active: false,
+    end: dayjs().valueOf(),
+    submittable: false,
   },
 
   lifetimes: {
@@ -53,7 +54,7 @@ Component({
   observers: {
     'User.**': function (_) {
       this.setData({
-        active: this.checkClubField()
+        submittable: this.checkFormFields()
       })
     },
   },
@@ -61,6 +62,8 @@ Component({
  
   methods: {
     submit() {
+      if (!this.data.submittable) return
+      
       const User: IUserInfoNullable = this.data.User
       request.updateUser({
         CoverUrls: User.CoverUrls,
@@ -81,7 +84,7 @@ Component({
       })
     },
 
-    checkClubField() {
+    checkFormFields() {
       const User: IUserInfoNullable = this.data.User
       if (User.CoverUrls?.Items[0] || User.Icon || User.NickName || User.Gender || User.BirthdayDate)
         return true
@@ -124,7 +127,7 @@ Component({
     onConfirmDate(e: any) {
       const { value } = e.detail;
       this.setData({
-        'User.BirthdayDate': `${value} 00:00:00`
+        'User.BirthdayDate': value
       })
       this.hideDatePicker();
     },

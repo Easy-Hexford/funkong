@@ -10,8 +10,8 @@
 <block wx:else>
 	<scroll-view scroll-y type="list" class="scrollable">
 		<view class="banner" bind:tap="chooseCover">
-			<block wx:if="{{ClubCoverTempFile}}">
-				<image class="cover" mode="aspectFill" src="{{ClubCoverTempFile}}" />
+			<block wx:if="{{ActivityCoverTempFile}}">
+				<image class="cover" mode="aspectFill" src="{{ActivityCoverTempFile}}" />
 			</block>
 			<block wx:else>
 				<view style="transform: translateY(-47px);" class="column-cross-center">
@@ -29,61 +29,65 @@
 				<view class="sub-title" style="margin-top: 32px;">基本信息</view>
 				<view class="form-field-wrap" style="margin-top: 0;">
 					<t-input
+					 clearable
+					 tips="最大输入32个字符，汉字算两个"
+					 maxcharacter="32"
 					 cursor-spacing="20"
 					 placeholder="填写活动名称"
 					 placeholder-class="placeholder"
 					 borderless="{{true}}"
 					 t-class="custom-input-field"
-					 bind:blur="onClubNameInputDone"
-					 bind:enter="onClubNameInputDone"
+					 bind:blur="onTitleInputDone"
+					 bind:enter="onTitleInputDone"
 					/>
 				</view>
 
 				<view class="form-field-wrap">
-					<view class="input-field row-between" bind:tap="showDatePicker">
-						<text wx:if="{{User.BirthdayDate}}">{{filter.birthday(User.BirthdayDate)}}</text>
+					<view class="input-field row-between" data-type="Begin" bind:tap="showDatePicker">
+						<text wx:if="{{BeginTime}}">{{BeginTime}}</text>
 						<text wx:else class="placeholder">填写活动开始时间</text>
 						<t-icon name="menu" size="24" color="rgba(0, 0, 0, 0.3)" />
 					</view>
 				</view>
 
 				<view class="form-field-wrap">
-					<view class="input-field row-between" bind:tap="showDatePicker">
-						<text wx:if="{{User.BirthdayDate}}">{{filter.birthday(User.BirthdayDate)}}</text>
+					<view class="input-field row-between" data-type="End" bind:tap="showDatePicker">
+						<text wx:if="{{EndTime}}">{{EndTime}}</text>
 						<text wx:else class="placeholder">填写活动结束时间</text>
 						<t-icon name="menu" size="24" color="rgba(0, 0, 0, 0.3)" />
 					</view>
 				</view>
 
-				<picker
-				 mode="region"
-				 level="city"
-				 header-text="活动地点"
-				 bind:change="onRegionPickerChange"
-				>
-					<view class="form-field-wrap">
-						<view class="input-field row-between">
-							<text wx:if="{{Club.Province}}">{{Club.Province}} {{Club.City}}</text>
-							<text wx:else class="placeholder">添加活动地点</text>
-							<t-icon name="location" size="24" color="rgba(0, 0, 0, 0.3)" />
-						</view>
+				<view class="form-field-wrap" bind:tap="chooseLocation">
+					<view class="input-field row-between">
+						<text wx:if="{{Activity.LocationName}}">{{Activity.LocationName}}</text>
+						<text wx:else class="placeholder">添加活动地点</text>
+						<t-icon name="location" size="24" color="rgba(0, 0, 0, 0.3)" />
 					</view>
-        </picker>
-        
-        <view class="form-field-wrap">
+				</view>
+
+				<view class="form-field-wrap">
 					<t-input
+					 value="{{Activity.ActivityRule.Price}}"
 					 cursor-spacing="20"
 					 placeholder="活动价格"
+					 type="digit"
 					 placeholder-class="placeholder"
 					 borderless="{{true}}"
 					 t-class="custom-input-field"
-					 bind:blur="onClubNameInputDone"
-					 bind:enter="onClubNameInputDone"
-          >
-            <view slot="suffix" style="display: inline-block; width: 24px; text-align: center;">元</view>
-          </t-input>
+					 bind:blur="onPriceInputDone"
+					 bind:enter="onPriceInputDone"
+					>
+						<view slot="suffix" style="display: inline-block; width: 24px; text-align: center;">元</view>
+					</t-input>
 				</view>
 
+				<view class="form-field-wrap">
+					<view class="input-field row-between" bind:tap="showTypePicker">
+						<text class="placeholder">选择活动类型</text>
+						<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+					</view>
+				</view>
 
 				<view class="sub-title" style="margin-top: 21px;">活动配图</view>
 
@@ -91,34 +95,35 @@
 				<view class="form-field-wrap" style="margin-top: 0;">
 					<t-input
 					 cursor-spacing="20"
+					 type="number"
 					 placeholder="参与人数上限"
 					 placeholder-class="placeholder"
 					 borderless="{{true}}"
 					 t-class="custom-input-field"
-					 bind:blur="onClubNameInputDone"
-					 bind:enter="onClubNameInputDone"
-          >
-            <view slot="suffix" style="display: inline-block; width: 24px; text-align: center;">人</view>
-          </t-input>
+					 bind:blur="onSignUpNumberInputDone"
+					 bind:enter="onSignUpNumberInputDone"
+					>
+						<view slot="suffix" style="display: inline-block; width: 24px; text-align: center;">人</view>
+					</t-input>
 				</view>
 
 				<view class="form-field-wrap">
 					<t-textarea
-           cursor-spacing="20"
-           maxlength="300"
-           indicator
+					 cursor-spacing="20"
+					 maxlength="300"
+					 indicator
 					 placeholder="填写活动描述"
 					 placeholder-class="placeholder"
 					 disableDefaultPadding="{{true}}"
 					 t-class="custom-textarea-field"
-					 bind:blur="onClubDescInputDone"
-					 bind:enter="onClubDescInputDone"
+					 bind:blur="onContentInputDone"
+					 bind:enter="onContentInputDone"
 					/>
 				</view>
 
-				<view class="form-field-wrap"  style="margin-top: 120px; margin-bottom: 58px;">
+				<view class="form-field-wrap" style="margin-top: 120px; margin-bottom: 58px;">
 					<view class="center">
-						<view class="btn--modiry center {{active ? 'active' : ''}}" bind:tap="submit">
+						<view class="btn--modiry center {{submittable ? 'active' : ''}}" bind:tap="submit">
 							<text>创建活动</text>
 						</view>
 					</view>
@@ -129,28 +134,29 @@
 	</scroll-view>
 </block>
 
-<t-picker
- visible="{{genderPickerVisible}}"
- title="性别"
- cancelBtn="取消"
- confirmBtn="确认"
- bind:confirm="onConfirmGender"
- bind:cancel="hideGenderPicker"
->
-	<t-picker-item options="{{genders}}" />
-</t-picker>
-
 <t-date-time-picker
- title="生日"
+ title="{{dateType === 'Begin' ? '开始时间' : '结束时间'}}"
  visible="{{datePickerVisible}}"
- mode="date"
- defaultValue="{{date}}"
- format="YYYY-MM-DD"
+ format="YYYY-MM-DD HH:mm"
+ mode="{{['minute']}}"
  bind:confirm="onConfirmDate"
  bind:cancel="hideDatePicker"
  start="{{start}}"
  end="{{end}}"
 />
+
+<t-popup visible="{{typePickerVisible}}" bind:visible-change="onVisibleChange" placement="bottom">
+	<view class="block">
+		<view class="header">
+			<view class="btn btn--cancel" aria-role="button">取消</view>
+      <view class="title">选择活动类型</view>
+      <view class="btn"></view>
+    </view>
+    <view class="content">
+      
+    </view>
+	</view>
+</t-popup>
 
 <t-navbar
  left-arrow
