@@ -1,0 +1,30 @@
+<!--components/acvitity-type-picker/index.wxml-->
+<view class="container">
+	<view class="header">
+		<view class="btn btn--cancel" aria-role="button" bind:tap="cancel">取消</view>
+		<view class="title">{{title}}</view>
+		<view class="btn" />
+	</view>
+	<scroll-view scroll-y style="height: 500px; overflow: auto;">
+		<view class="content">
+			<view class="grid">
+				<block wx:for="{{types}}" wx:key="*this">
+					<view class="cell center {{selected === index ? 'active' : ''}}" data-idx="{{index}}" bind:tap="select">
+						<text class="ellipsis">{{item}}</text>
+					</view>
+				</block>
+			</view>
+		</view>
+	</scroll-view>
+	<view class="footer row-between">
+		<view class="row">
+			<text>已选</text>
+			<view wx:if="{{selected >= 0}}" class="cell--selected row" bind:tap="reset">
+				<text class="ellipsis" style="margin-right: 10px; max-width: 120px;">{{types[selected]}}</text>
+				<t-icon name="close" size="16" />
+			</view>
+		</view>
+		<view class="btn--confirm center {{selected >= 0 ? 'active' : ''}}" bind:tap="confirm">确定</view>
+	</view>
+</view>
+

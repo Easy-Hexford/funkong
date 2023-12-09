@@ -21,10 +21,23 @@ Component({
   data: {
     ActivityCoverTempFile: '',
     Activity: {
+      ClubId: '',
+      Title: '',
+      Content: '',
       CoverUrls: {
         Items: []
       },
-      ActivityRule: {}
+      BeginTime: '',
+      EndTime: '',
+      ActivityTypes: {
+        Items: []
+      },
+      Province: '',
+      City: '',
+      LocationType: 'gcj02',
+      Location: {},
+      LocationName: '',
+      ActivityRule: {},
     },
     BeginTime: '',
     EndTime: '',
@@ -32,8 +45,9 @@ Component({
     datePickerVisible: false,
     start: dayjs().valueOf(),
     end: dayjs().add(1, 'year').valueOf(),
-    typePickerVisible: true,
+    typePickerVisible: false,
     submittable: false,
+    activityTypes: []
   },
 
   observers: {
@@ -45,31 +59,16 @@ Component({
   },
 
   lifetimes: {
-    attached() {}
+    attached() {
+      this.data.Activity.ClubId = this.data.ClubId
+    }
   },
 
   methods: {
     submit() {
       if (!this.data.submittable) return
-
       const Activity: ICreateActivityReq = this.data.Activity as any
-      request.createActivity({
-        ClubId: this.data.ClubId,
-        Title: Activity.Title,
-        Content: Activity.Content,
-        CoverUrls: Activity.CoverUrls,
-        BeginTime: Activity.BeginTime,
-        EndTime: Activity.EndTime,
-        ActivityTypes: {
-          Items: []
-        },
-        Province: '',
-        City: '',
-        LocationType: 'gcj02',
-        Location: Activity.Location,
-        LocationName: Activity.LocationName,
-        ActivityRule: Activity.ActivityRule,
-      })
+      request.createActivity(Activity)
     },
 
     checkFormFields() {
@@ -81,6 +80,8 @@ Component({
           && Activity.EndTime 
           && Activity.LocationName 
           && Activity.ActivityRule?.Price
+          && Activity.ActivityRule?.MaxSiguUpNumber
+          && Activity.ActivityTypes.Items[0]
       ) {
         return true
       }
@@ -142,10 +143,24 @@ Component({
       });
     },
 
+    hideTypePicker() {
+      this.setData({
+        typePickerVisible: false,
+      });
+    },
+
     onVisibleChange(e: any) {
       this.setData({
         typePickerVisible: e.detail.visible,
       });
+    },
+
+    onTypePickerConfirm(e: any) {
+      const { value } = e.detail
+      this.setData({
+        typePickerVisible: false,
+        'Activity.ActivityTypes.Items[0]': value
+      })
     },
 
     onTitleInputDone(e: any) {
@@ -157,7 +172,7 @@ Component({
 
     onPriceInputDone(e: any) {
       const value = e.detail.value
-      const formatValue = Number(value).toFixed(3)
+      const formatValue = Number(value).toFixed(2)
       this.setData({
         'Activity.ActivityRule.Price': +formatValue
       })

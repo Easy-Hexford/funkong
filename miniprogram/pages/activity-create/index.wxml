@@ -26,7 +26,7 @@
 
 		<view class="sheet">
 			<view class="content-wrap active">
-				<view class="sub-title" style="margin-top: 32px;">基本信息</view>
+				<view class="sub-title">基本信息</view>
 				<view class="form-field-wrap" style="margin-top: 0;">
 					<t-input
 					 clearable
@@ -84,14 +84,20 @@
 
 				<view class="form-field-wrap">
 					<view class="input-field row-between" bind:tap="showTypePicker">
-						<text class="placeholder">选择活动类型</text>
+            <text wx:if="{{Activity.ActivityTypes.Items[0]}}">{{Activity.ActivityTypes.Items[0]}}</text>
+						<text wx:else class="placeholder">选择活动类型</text>
 						<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
 					</view>
-				</view>
+        </view>
+        
+       <view class="tips--insure">
+        <view>购买保险费用(将从活动费用中扣除)</view>
+        <view class="insure-price">普通活动保险2.00元，极限类运动5.00元</view>
+       </view>
 
-				<view class="sub-title" style="margin-top: 21px;">活动配图</view>
+				<view class="sub-title">活动配图</view>
 
-				<view class="sub-title" style="margin-top: 24px;">更多信息</view>
+				<view class="sub-title">更多信息</view>
 				<view class="form-field-wrap" style="margin-top: 0;">
 					<t-input
 					 cursor-spacing="20"
@@ -111,6 +117,7 @@
 					<t-textarea
 					 cursor-spacing="20"
 					 maxlength="300"
+					 autosize
 					 indicator
 					 placeholder="填写活动描述"
 					 placeholder-class="placeholder"
@@ -146,16 +153,7 @@
 />
 
 <t-popup visible="{{typePickerVisible}}" bind:visible-change="onVisibleChange" placement="bottom">
-	<view class="block">
-		<view class="header">
-			<view class="btn btn--cancel" aria-role="button">取消</view>
-      <view class="title">选择活动类型</view>
-      <view class="btn"></view>
-    </view>
-    <view class="content">
-      
-    </view>
-	</view>
+	<type-picker bind:confirm="onTypePickerConfirm" bind:cancel="hideTypePicker"/>
 </t-popup>
 
 <t-navbar

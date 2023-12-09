@@ -8,6 +8,7 @@
     "t-avatar": "tdesign-miniprogram/avatar/avatar",
     "t-textarea": "tdesign-miniprogram/textarea/textarea",
     "t-date-time-picker": "tdesign-miniprogram/date-time-picker/date-time-picker",
-    "t-popup": "tdesign-miniprogram/popup/popup"
+    "t-popup": "tdesign-miniprogram/popup/popup",
+    "type-picker": "../../components/type-picker/index"
   }
 }

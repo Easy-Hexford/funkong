@@ -13,7 +13,6 @@ App({
         Items: []
       }
     },
-
   },
   onLaunch() {
     request.login()
