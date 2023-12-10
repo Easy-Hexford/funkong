@@ -8,6 +8,16 @@ const typeCheck = require('type-check').typeCheck;
 const app = getApp()
 const ACTIVITY_PIC_CATALOG = 'activity/'
 
+interface Illustration {
+  idx: number
+  tempFilePath: string,
+  url: string; 
+  size?: number; 
+  fileType: 'image' | 'video'; 
+  percent?: number; 
+  status: 'loading' | 'reload' | 'failed' | 'done'
+}
+
 // pages/activity-create/index.ts
 Component({
   behaviors: [uploadBehavior],
@@ -32,8 +42,8 @@ Component({
       ActivityTypes: {
         Items: []
       },
-      Province: '',
-      City: '',
+      Province: '广东省',
+      City: '广州市',
       LocationType: 'gcj02',
       Location: {},
       LocationName: '',
@@ -43,11 +53,14 @@ Component({
     EndTime: '',
     dateType: 'Begin',
     datePickerVisible: false,
-    start: dayjs().valueOf(),
-    end: dayjs().add(1, 'year').valueOf(),
+    start: 0,
+    end: 0,
     typePickerVisible: false,
     submittable: false,
-    activityTypes: []
+    activityTypes: [],
+
+    maxCount: 8,
+    illustrations: [],
   },
 
   observers: {
@@ -59,8 +72,18 @@ Component({
   },
 
   lifetimes: {
+    created() {
+      const today = dayjs().format('DD/MM/YYYY')
+      const startTime = dayjs(today, 'DD/MM/YYYY')
+      const endTime = startTime.add(1, 'year')
+      this.setData({
+        start: startTime.valueOf(),
+        end: endTime.valueOf()
+      })
+    },
+
     attached() {
-      this.data.Activity.ClubId = this.data.ClubId
+      console.info('ClubId: ', this.data.ClubId)
     }
   },
 
@@ -68,7 +91,34 @@ Component({
     submit() {
       if (!this.data.submittable) return
       const Activity: ICreateActivityReq = this.data.Activity as any
-      request.createActivity(Activity)
+      const illustrations: Array<Illustration> = this.data.illustrations
+      request.createActivity({
+        ClubId: this.data.ClubId,
+        Title: Activity.Title,
+        Content: Activity.Content,
+        CoverUrls: Activity.CoverUrls,
+        ActivityTypes: Activity.ActivityTypes,
+        BeginTime: Activity.BeginTime,
+        EndTime: Activity.EndTime,
+        PicList: {
+          Items: illustrations.map(i => i.url)
+        },
+        Province: Activity.Province,
+        City: Activity.City,
+        LocationType: 'gcj02',
+        Location: Activity.Location,
+        LocationName: Activity.LocationName,
+        ActivityRule: Activity.ActivityRule,
+      }).then(() => {
+        wx.showToast({
+          icon: 'success',
+          title: '已提交审核',
+        })
+
+        setTimeout(() => {
+          wx.navigateBack()
+        }, 2000)
+      })
     },
 
     checkFormFields() {
@@ -80,7 +130,7 @@ Component({
           && Activity.EndTime 
           && Activity.LocationName 
           && Activity.ActivityRule?.Price
-          && Activity.ActivityRule?.MaxSiguUpNumber
+          && Activity.ActivityRule?.MaxSignUpNumber
           && Activity.ActivityTypes.Items[0]
       ) {
         return true
@@ -181,7 +231,7 @@ Component({
     onSignUpNumberInputDone(e: any) {
       const value = e.detail.value
       this.setData({
-        'Activity.ActivityRule.MaxSiguUpNumber': value
+        'Activity.ActivityRule.MaxSignUpNumber': +value
       })
     },
 
@@ -190,6 +240,56 @@ Component({
       this.setData({
         'Activity.Content': value
       })
+    },
+
+    addIllustration() {
+      const illustrations: Array<Illustration> = this.data.illustrations
+      const lastIdx = illustrations.length - 1
+      const count = this.data.maxCount - illustrations.length 
+      wx.chooseMedia({
+        count,
+        mediaType: ['image'],
+        sizeType: ['original'],
+        success: (res) => {
+          res.tempFiles.forEach((item, index) => {
+            const idx = lastIdx + index + 1
+            const newIllustration: Illustration = {
+              idx,
+              tempFilePath: item.tempFilePath,
+              url: '',
+              size: item.size,
+              percent: 0,
+              fileType: item.fileType,
+              status: 'loading'
+            }
+            illustrations.push(newIllustration);
+
+            (this as unknown as IUploadBehavior).pureUploadImage({
+              catalog: ACTIVITY_PIC_CATALOG,
+              tempFile: item.tempFilePath
+            }).then(resp => {
+              if (this.data.illustrations.length > idx) {
+                const obj: any = {}
+                newIllustration.url = resp.tempFileURL
+                newIllustration.status = 'done'
+                obj[`illustrations[${idx}]`] = newIllustration
+                this.setData(obj)
+              }
+            })
+            
+          })
+          this.setData({
+            illustrations: illustrations as any
+          })
+        }
+      })
+    },
+
+    delIllustration(e: any) {
+      const idx = e.currentTarget.dataset.idx
+      const { illustrations } = this.data
+      illustrations.splice(idx, 1)
+      this.setData({ illustrations })
     }
   }
 })

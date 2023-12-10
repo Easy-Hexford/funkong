@@ -27,7 +27,7 @@
 		<view class="sheet">
 			<view class="content-wrap active">
 				<view class="sub-title">基本信息</view>
-				<view class="form-field-wrap" style="margin-top: 0;">
+				<view>
 					<t-input
 					 clearable
 					 tips="最大输入32个字符，汉字算两个"
@@ -84,21 +84,56 @@
 
 				<view class="form-field-wrap">
 					<view class="input-field row-between" bind:tap="showTypePicker">
-            <text wx:if="{{Activity.ActivityTypes.Items[0]}}">{{Activity.ActivityTypes.Items[0]}}</text>
+						<text wx:if="{{Activity.ActivityTypes.Items[0]}}">{{Activity.ActivityTypes.Items[0]}}</text>
 						<text wx:else class="placeholder">选择活动类型</text>
 						<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
 					</view>
-        </view>
-        
-       <view class="tips--insure">
-        <view>购买保险费用(将从活动费用中扣除)</view>
-        <view class="insure-price">普通活动保险2.00元，极限类运动5.00元</view>
-       </view>
+				</view>
+
+				<view class="tips--insure">
+					<view>购买保险费用(将从活动费用中扣除)</view>
+					<view class="insure-price">普通活动保险2.00元，极限类运动5.00元</view>
+				</view>
 
 				<view class="sub-title">活动配图</view>
 
+				<view class="grid">
+					<block wx:for="{{illustrations}}" wx:key="idx">
+						<view class="cell center">
+							<t-image
+							 src="{{item.tempFilePath}}"
+							 shape="round"
+							 mode="aspectFill"
+							 style="width: 100%; height: 100%;"
+							/>
+							<t-loading
+							 class="loading"
+							 loading="{{item.status === 'loading'}}"
+							 theme="spinner"
+							 inherit-color
+							 layout="vertical"
+							 size="40rpx"
+							 text="上传中..."
+							/>
+							<view class="btn--xmark center" data-idx="{{index}}" bind:tap="delIllustration">
+								<t-icon name="close" size="16" color="rgba(0, 0, 0, 0.9)" />
+							</view>
+						</view>
+					</block>
+
+					<block wx:if="{{illustrations.length < maxCount}}">
+						<view class="cell center" bind:tap="addIllustration">
+							<t-icon name="add" size="28" color="rgba(0, 0, 0, 0.3)" />
+						</view>
+					</block>
+
+					<view wx:if="{{illustrations.length <= 2}}" class="cell hide" />
+					<view wx:if="{{illustrations.length <= 1}}" class="cell hide" />
+					<view wx:if="{{illustrations.length <= 0}}" class="cell hide" />
+				</view>
+
 				<view class="sub-title">更多信息</view>
-				<view class="form-field-wrap" style="margin-top: 0;">
+				<view>
 					<t-input
 					 cursor-spacing="20"
 					 type="number"
@@ -153,7 +188,7 @@
 />
 
 <t-popup visible="{{typePickerVisible}}" bind:visible-change="onVisibleChange" placement="bottom">
-	<type-picker bind:confirm="onTypePickerConfirm" bind:cancel="hideTypePicker"/>
+	<type-picker bind:confirm="onTypePickerConfirm" bind:cancel="hideTypePicker" />
 </t-popup>
 
 <t-navbar

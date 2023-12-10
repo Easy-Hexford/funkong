@@ -1,0 +1,36 @@
+<view class="container">
+	<view class="cover-area">
+		<view class="club-info row">
+			<image class="club-icon" src="{{activity.Club.ClubIcon}}" style="margin-right: 7px;" />
+			<text class="club-name">{{activity.Club.ClubName}}</text>
+		</view>
+		<image class="activity-cover" mode="aspectFill" src="{{activity.CoverUrls.Items[0]}}" />
+	</view>
+	<view class="gap" />
+	<view class="activity-area">
+		<view class="title">{{activity.Title}}</view>
+		<view class="row" style="margin-top: 8px;">
+			<t-icon
+			 style="margin-right: 2px;"
+			 name="location"
+			 size="16"
+			 color="rgba(0, 0, 0, 0.55)"
+			/>
+			<text class="ellipsis"> · {{activity.LocationName}}</text>
+		</view>
+		<view class="row" style="margin-top: 4px;">
+			<t-icon
+			 style="margin-right: 2px;"
+			 name="time"
+			 size="16"
+			 color="rgba(0, 0, 0, 0.55)"
+			/>
+			<text class="ellipsis"> · {{activity.BeginTime}}</text>
+		</view>
+		<view class="footer row-between">
+			<text>已有2人</text>
+			<view class="btn--enter">冲啊</view>
+		</view>
+	</view>
+</view>
+

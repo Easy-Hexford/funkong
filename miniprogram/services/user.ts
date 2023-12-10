@@ -60,6 +60,8 @@ export type IClubType = 'NormalClub' | 'SpecialClub'
 
 export type IAuditRole = 'NormalAuditRole' | 'UnknownAuditRole'
 
+export type IDeleteFlag = 'Deleted' | 'Exist'
+
 export interface IUserInfo {
   UserId: string,
   OpenId: string,
@@ -82,7 +84,7 @@ export interface IUserInfo {
   BirthdayDate: string,
   CreateTime: string,
   UpdateTime: string,
-  DeleteFlag: string
+  DeleteFlag: IDeleteFlag
 }
 
 export interface IUserInfoNullable {
@@ -115,7 +117,7 @@ export interface IClubInfo {
   AuditStatus: IClubAuditStatus
   CreateTime: string,
   UpdateTime: string,
-  DeleteFlag: string
+  DeleteFlag: IDeleteFlag
 }
 
 export interface IClubInfoNullable {
@@ -163,7 +165,7 @@ export interface IUpdateUserReq {
   BirthdayDate?: string,
   CreateTime?: string,
   UpdateTime?: string,
-  DeleteFlag?: string
+  DeleteFlag?: IDeleteFlag
 }
 
 export interface IGetInviteListResp {

@@ -1,6 +1,6 @@
 {
   "component": true,
   "usingComponents": {
-    "activity": "../../components/activity/index"
+    "activity-card": "../../components/activity-card/index"
   }
 }

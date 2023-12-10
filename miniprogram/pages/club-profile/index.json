@@ -4,6 +4,6 @@
   "usingComponents": {
     "t-icon": "tdesign-miniprogram/icon/icon",
     "member-list": "../../components/member-list/index",
-    "activity": "../../components/activity/index"
+    "activity-card": "../../components/activity-card/index"
   }
 }

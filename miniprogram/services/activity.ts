@@ -1,6 +1,6 @@
 import call from './base';
 import { ICreateClubResp } from './club';
-import { ICoverUrls } from './user';
+import { IClubInfo, ICoverUrls, IDeleteFlag } from './user';
 
 export function createActivity(req: ICreateActivityReq): Promise<ICreateClubResp> {
   return call({
@@ -60,7 +60,7 @@ export interface ICreateActivityReq {
   },
   LocationName: string,
   ActivityRule?: {
-    MaxSiguUpNumber?: number,
+    MaxSignUpNumber?: number,
     Price?: number,
   }
 }
@@ -88,11 +88,12 @@ export interface ISignUpctivityResp {
 export type IActivityAuditStatus = 'AuditFail' | 'AuditSucc' | 'Auditing'
 
 export interface IGetActicityListReq {
-  ClubId: string,
-  City: string,
-  Offset: 0,
-  Limit: 0,
-  AuditStatus: IActivityAuditStatus
+  ClubId?: string,
+  Province?: string,
+  City?: string,
+  Offset?: number,
+  Limit?: number,
+  AuditStatus?: IActivityAuditStatus
 }
 
 export interface IGetActicityListResp {
@@ -126,8 +127,9 @@ export interface IActivityInfo {
   },
   CreateTime: string,
   UpdateTime: string,
-  DeleteFlag: string,
+  DeleteFlag: IDeleteFlag,
   AuditStatus: IActivityAuditStatus,
+  Club: IClubInfo
 }
 
 export type IActivitySignUpTag = 'All' | 'Begin' | 'End'
@@ -146,7 +148,7 @@ export interface ISignUpActicityInfo {
   OrderId: string,
   CreateTime: string,
   UpdateTime: string,
-  DeleteFlag: string,
+  DeleteFlag: IDeleteFlag,
   DeleteTime: string,
   Activity: IActivityInfo
 }

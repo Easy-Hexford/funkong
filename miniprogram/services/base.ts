@@ -24,7 +24,13 @@ async function call(options: WechatMiniprogram.RequestOption) {
     data: options.data || {}
   })
   console.info(`云调用 ${options.url} 结果: `, result.data)
-  return result.data.data || result.data
+  if (result.data.code != 0) {
+    const code = result.data.code
+    const message = result.data.message
+    return Promise.reject(new Error(message))
+  }
+  return result.data.data
+
 }
 
 export default call
