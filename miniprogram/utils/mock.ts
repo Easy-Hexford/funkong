@@ -1,4 +1,4 @@
-import { IClubInfo, IGetActicityListResp } from "../services";
+import { IClubInfo, IGetMineActicityListResp } from "../services";
 
 export const MockClub: IClubInfo = {
   "ClubId": "vek5mu09000cxfnfdggggwu4h00z3iu1",
@@ -20,7 +20,7 @@ export const MockClub: IClubInfo = {
   }
 }
 
-export const MockActivityList: IGetActicityListResp = {
+export const MockActivityList: IGetMineActicityListResp = {
   "ActivityList": [
     {
       "ActivityId": "1teouue9000cxjt4v9aj1p71c0p8s5p7",

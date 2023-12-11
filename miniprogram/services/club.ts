@@ -39,11 +39,11 @@ export type IClubAuditStatus = 'AuditFail' | 'AuditSucc' | 'Auditing'
 export interface ICreateClubReq {
   ClubType: IClubType,
   ClubName: string,
-  CoverUrls: ICoverUrls,
   ClubIcon: string,
+  ClubDesc: string,
+  CoverUrls?: ICoverUrls,
   Province: string,
   City: string,
-  ClubDesc: string,
 }
 
 export interface ICreateClubResp {
@@ -56,7 +56,6 @@ export interface IFollowClubReq {
 }
 
 export interface IGetClubReq {
-  ClubType: IClubType,
   ClubId: string
 }
 
@@ -69,6 +68,10 @@ export interface IUpdateClubInfoReq {
   ClubId?: string,
   ClubName?: string,
   ClubIcon?: string,
+  ClubDesc?: string,
+  Province?: string,
   City?: string,
+  CoverUrls?: ICoverUrls,
   DeleteFlag?: IDeleteFlag
+  AuditStatus?: IClubAuditStatus
 }

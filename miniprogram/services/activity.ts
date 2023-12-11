@@ -1,8 +1,7 @@
 import call from './base';
-import { ICreateClubResp } from './club';
 import { IClubInfo, ICoverUrls, IDeleteFlag } from './user';
 
-export function createActivity(req: ICreateActivityReq): Promise<ICreateClubResp> {
+export function createActivity(req: ICreateActivityReq): Promise<ICreateActivityResp> {
   return call({
     url: '/activity/create',
     method: 'POST',
@@ -10,7 +9,23 @@ export function createActivity(req: ICreateActivityReq): Promise<ICreateClubResp
   })
 }
 
-export function signUpctivity(req: ISignUpctivityReq): Promise<ISignUpctivityResp> {
+export function updateActivity(req: IUpdateActivityReq) {
+  return call({
+    url: '/activity/update',
+    method: 'POST',
+    data: req
+  })
+}
+
+export function createInsurance(req: ICreateInsuranceReq): Promise<void> {
+  return call({
+    url: '/activity/create_insurance',
+    method: 'POST',
+    data: req,
+  })
+}
+
+export function signUpActivity(req: ISignUpctivityReq): Promise<ISignUpctivityResp> {
   return call({
     url: '/activity/create_sign_up',
     method: 'POST',
@@ -18,9 +33,40 @@ export function signUpctivity(req: ISignUpctivityReq): Promise<ISignUpctivityRes
   })
 }
 
-export function getActicityList(req: IGetActicityListReq): Promise<IGetActicityListResp> {
+export function exitActivity(req: IExitctivityReq): Promise<void> {
+  return call({
+    url: '/activity/delete_sign_up',
+    method: 'POST',
+    data: req
+  })
+}
+
+export function getActivity(req: IGetActivityReq): Promise<IActivityInfo> {
+  return call({
+    url: '/activity/get',
+    method: 'POST',
+    data: req
+  })
+}
+
+export function getInsuranceProductList(): Promise<IGetInsuranceProductListResp> {
+  return call({
+    url: '/activity/get_insurance_product_list',
+    method: 'POST',
+  })
+}
+
+export function getMineActicityList(req: IGetMineActicityListReq): Promise<IGetMineActicityListResp> {
   return call({
     url: '/activity/get_list',
+    method: 'POST',
+    data: req
+  })
+}
+
+export function getPulicActivityList(req: IGetPublicActivityListReq): Promise<IGetPublicActivityListResp> {
+  return call({
+    url: '/activity/get_public_list',
     method: 'POST',
     data: req
   })
@@ -40,32 +86,94 @@ export interface IActivityTypes {
   Items: Array<string>
 }
 
+export interface IActivityPicList {
+  Items: Array<string>
+}
+
+export interface ILocation {
+  lat: number,
+  lon: number
+}
+
+export interface ISimpleUserInfo {
+  UserId: string,
+  OpenId: string,
+  NickName: string,
+  Icon: string
+}
+
+export interface ISignUpInfo {
+  SignUpId: string,
+  ActivityId: string,
+  UserId: string,
+  ActivitySignUpStatus: string,
+  User: ISimpleUserInfo
+}
+
+export interface IInsuranceProduct {
+  ActivityType: string,
+  InsuranceType: string,
+  InsuranceProductId: string,
+  EarlyBirdPrice: number,
+  NormalPrice: number
+}
+
+export interface IWxPaymentParams {
+  appId: string,
+  timeStamp: string,
+  nonceStr: string,
+  package: string,
+  signType: string,
+  paySign: string
+}
+
 export interface ICreateActivityReq {
   ClubId: string,
+  Province: string,
+  City: string,
   Title: string,
   Content: string,
   CoverUrls: ICoverUrls,
   ActivityTypes: IActivityTypes,
   BeginTime: string,
   EndTime: string,
-  PicList?: {
-    Items: Array<string>
-  },
-  Province: string,
-  City: string,
-  LocationType?: ILocationType,
-  Location: {
-    lat: number,
-    lon: number
-  },
+  PicList?: IActivityPicList,
+  LocationType: ILocationType,
+  Location: ILocation,
   LocationName: string,
+  ActivityRule: {
+    MaxSignUpNumber: number,
+    Price: number,
+    InsuranceProduct?: IInsuranceProduct,
+  }
+}
+
+export interface IUpdateActivityReq {
+  ActivityId: string,
+  Province?: string,
+  City?: string,
+  Title?: string,
+  Content?: string,
+  CoverUrls?: ICoverUrls,
+  ActivityTypes?: IActivityTypes,
+  BeginTime?: string,
+  EndTime?: string,
+  PicList?: IActivityPicList,
+  LocationType?: ILocationType,
+  Location?: ILocation,
+  LocationName?: string,
   ActivityRule?: {
-    MaxSignUpNumber?: number,
-    Price?: number,
+    MaxSignUpNumber: number,
+    Price: number,
+    InsuranceProduct?: IInsuranceProduct,
   }
 }
 
 export interface ICreateActivityResp {
+  ActivityId: string
+}
+
+export interface ICreateInsuranceReq {
   ActivityId: string
 }
 
@@ -76,19 +184,20 @@ export interface ISignUpctivityReq {
 export interface ISignUpctivityResp {
   SignUpId: string,
   PrepayId: string,
-  Payment: {
-    appId: string,
-    timeStamp: string,
-    nonceStr: string,
-    package: string,
-    signType: string,
-    paySign: string
-  }
+  Payment: IWxPaymentParams
 }
+
+export interface IExitctivityReq {
+  ActivityId: string
+}
+
+export interface IGetActivityReq {
+  ActivityId: string
+}
+
 export type IActivityAuditStatus = 'AuditFail' | 'AuditSucc' | 'Auditing'
 
-export interface IGetActicityListReq {
-  ClubId?: string,
+export interface IGetMineActicityListReq {
   Province?: string,
   City?: string,
   Offset?: number,
@@ -96,7 +205,23 @@ export interface IGetActicityListReq {
   AuditStatus?: IActivityAuditStatus
 }
 
-export interface IGetActicityListResp {
+export interface IGetInsuranceProductListResp {
+  InsuranceProducts: Array<IInsuranceProduct>
+}
+
+export interface IGetMineActicityListResp {
+  ActivityList: Array<IActivityInfo>,
+  TotalCount: number,
+}
+
+export interface IGetPublicActivityListReq {
+  Province?: string,
+  City?: string,
+  Offset?: number,
+  Limit?: number,
+}
+
+export interface IGetPublicActivityListResp {
   ActivityList: Array<IActivityInfo>,
   TotalCount: number,
 }
@@ -113,38 +238,23 @@ export interface IActivityInfo {
   ActivityTypes: IActivityTypes,
   BeginTime: string,
   EndTime: string,
-  PicList: {
-    Items: Array<string>
-  },
-  Location: {
-    lat: number,
-    lon: number
-  },
+  PicList: IActivityPicList,
+  Location: ILocation,
+  LocationType: ILocationType,
   LocationName: string,
   ActivityRule: {
-    MaxSignUpNumber: number,
     Price: number,
-    InsuranceProduct: {
-      ActivityType: string,
-      InsuranceType: string,
-      InsuranceProductId: string,
-      EarlyBirdPrice: number,
-      NormalPrice: number
-    }
+    MaxSignUpNumber: number,
+    InsuranceProduct: IInsuranceProduct,
   },
-  ActivitySignUp: any,
+  ActivitySignUp: Array<ISignUpInfo>,
   SignUpNum: number,
-  OwnerUser: {
-    UserId: string,
-    OpenId: string,
-    NickName: string,
-    Icon: string,
-  },
+  OwnerUser: ISimpleUserInfo,
+  Club: IClubInfo
   CreateTime: string,
   UpdateTime: string,
   DeleteFlag: IDeleteFlag,
   AuditStatus: IActivityAuditStatus,
-  Club: IClubInfo
 }
 
 export type IActivitySignUpTag = 'All' | 'Begin' | 'End'

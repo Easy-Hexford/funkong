@@ -8,6 +8,14 @@ export function login(): Promise<ILoginResp> {
   })
 }
 
+export function register(req: IRegisterUserReq) {
+  return call({
+    url: '/user/register',
+    method: 'POST',
+    data: req
+  })
+}
+
 export function getUser(): Promise<IGetUserResp> {
   return call({
     url: '/user/get',
@@ -70,7 +78,6 @@ export interface IUserInfo {
   Icon: string,
   Gender: IGender,
   Role: IRole,
-  AuditRole: IAuditRole,
   RegisterType: IRegisterType,
   RegisterInfo: {
     ClubId: string,
@@ -85,6 +92,7 @@ export interface IUserInfo {
   CreateTime: string,
   UpdateTime: string,
   DeleteFlag: IDeleteFlag
+  AuditRole: IAuditRole,
 }
 
 export interface IUserInfoNullable {
@@ -108,8 +116,8 @@ export interface IClubInfo {
   ClubId: string,
   ClubType: IClubType,
   ClubName: string,
-  ClubDesc: string,
   ClubIcon: string,
+  ClubDesc: string,
   CoverUrls: ICoverUrls,
   Province: string,
   City: string,
@@ -143,29 +151,37 @@ export interface ICoverUrls {
   Items: Array<string>
 }
 
+export interface IRegisterUserReq {
+  RegisterType: IRegisterType,
+  RegisterInfo?: {
+    ClubId?: string,
+    ActivityId?: string
+  },
+  Phone: string
+}
+
 export interface IUpdateUserReq {
   UserId?: string,
+  RegisterType?: IRegisterType,
+  RegisterInfo?: {
+    ClubId?: string,
+    ActivityId?: string
+  },
   OpenId?: string,
   NickName?: string,
   CoverUrls?: ICoverUrls,
   Icon?: string,
   Gender?: IGender,
   Role?: IRole,
-  AuditRole?: IAuditRole,
-  RegisterType?: IRegisterType,
-  RegisterInfo?: {
-    ClubId?: string,
-    ActivityId?: string
-  },
-  InvitedClubId?: string,
   Phone?: string,
   Name?: string,
-  IdCardType?: string,
+  IdCardType?: IIDCardType,
   IdCardNo?: string,
   BirthdayDate?: string,
   CreateTime?: string,
   UpdateTime?: string,
   DeleteFlag?: IDeleteFlag
+  AuditRole?: IAuditRole,
 }
 
 export interface IGetInviteListResp {
