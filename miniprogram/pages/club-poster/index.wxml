@@ -6,7 +6,7 @@
 />
 <scroll-view scroll-y type="list" class="scrollable">
 	<view class="column-cross-center">
-		<snapshot class="club-invite-poster">
+		<snapshot class="invite-poster">
 			<view class="poster">
 				<view class="poster-inner column-cross-center">
 					<image mode="aspectFill" class="club-icon" src="{{Club.ClubIcon}}" />

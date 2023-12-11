@@ -55,7 +55,7 @@ Component({
         }
 
         const ClubId = (this.data.Club as IClubInfo).ClubId
-        const selector = '.club-invite-poster'
+        const selector = '.invite-poster'
         const filePath = `${wx.env.USER_DATA_PATH}/${ClubId}_club_poster.png`
 
         fs.access({

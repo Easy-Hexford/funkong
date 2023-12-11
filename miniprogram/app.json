@@ -4,11 +4,12 @@
     "pages/activity/index",
     "pages/activity-detail/index",
     "pages/activity-create/index",
+    "pages/activity-poster/index",
     "pages/mine/index",
     "pages/apply/index",
-    "pages/poster/index",
     "pages/customer-service/index",
     "pages/profile/index",
+    "pages/club-poster/index",
     "pages/club-create/index",
     "pages/club-profile/index",
     "pages/audit/index"

@@ -1,25 +1,37 @@
 // pages/activity-detail/index.ts
+import { MockActivityList } from '../../utils/mock'
+
 Component({
 
-  /**
-   * 组件的属性列表
-   */
   properties: {
 
   },
 
-  /**
-   * 组件的初始数据
-   */
   data: {
-    poster: '',
-    members: [1,2,3,4,5,6,7,8]
+    Activity: MockActivityList.ActivityList[0],
   },
 
-  /**
-   * 组件的方法列表
-   */
   methods: {
+    share() {
 
+    },
+
+    sharePoster() {
+      wx.navigateTo({
+        url: '../activity-poster/index'
+      })
+    },
+
+    openLocation() {
+      const Activity = this.data.Activity
+      wx.openLocation({
+        latitude: Activity.Location.lat,
+        longitude: Activity.Location.lon,
+        name: Activity.LocationName,
+        complete() {
+
+        }
+      })
+    }
   }
 })

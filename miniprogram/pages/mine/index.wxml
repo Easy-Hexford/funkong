@@ -50,7 +50,7 @@
 							<navigator
 							 style="padding: 17px 0;"
 							 class="row-between"
-							 url="../poster/index"
+							 url="../club-poster/index"
 							 hover-class="none"
 							>
 								<text>邀请粉丝</text>

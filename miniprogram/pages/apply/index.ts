@@ -1,25 +1,28 @@
-// pages/apply/index.ts
+import { MockActivity } from '../../utils/mock'
+
 Component({
 
-  /**
-   * 组件的属性列表
-   */
   properties: {
 
   },
 
-  /**
-   * 组件的初始数据
-   */
   data: {
+    Activity : MockActivity,
     visible: false,
   },
 
-  /**
-   * 组件的方法列表
-   */
   methods: {
-    onVisibleChange(e) {
+    register() {
+      this.setData({
+        visible: true
+      })
+    },
+
+    getRealtimePhoneNumber(e) {
+      console.info('@@@ getRealtimePhoneNumber: ', e.detail)
+    },
+
+    onVisibleChange(e: any) {
       this.setData({
         visible: e.detail.visible,
       });

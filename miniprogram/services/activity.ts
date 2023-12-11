@@ -122,8 +122,23 @@ export interface IActivityInfo {
   },
   LocationName: string,
   ActivityRule: {
-    MaxSiguUpNumber: number,
+    MaxSignUpNumber: number,
     Price: number,
+    InsuranceProduct: {
+      ActivityType: string,
+      InsuranceType: string,
+      InsuranceProductId: string,
+      EarlyBirdPrice: number,
+      NormalPrice: number
+    }
+  },
+  ActivitySignUp: any,
+  SignUpNum: number,
+  OwnerUser: {
+    UserId: string,
+    OpenId: string,
+    NickName: string,
+    Icon: string,
   },
   CreateTime: string,
   UpdateTime: string,
