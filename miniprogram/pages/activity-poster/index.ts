@@ -83,7 +83,7 @@ Component({
 
     getWxaCode(): Promise<string> {
       const ActivityId = (this.data.Activity as IActivityInfo).ActivityId
-      const filePath = `${wx.env.USER_DATA_PATH}/${ActivityId}_activity_poster.png`
+      const filePath = `${wx.env.USER_DATA_PATH}/${ActivityId}_activity_qrcode.png`
       return new Promise((resolve, reject) => {
         fs.access({
           path: filePath,

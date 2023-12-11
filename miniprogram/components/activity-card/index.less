@@ -1,4 +1,30 @@
-@import '../../style/common.less';
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.row-between {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.line-clamp-2-ellipsis {
+  word-break: break-all;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
 
 .container {
   box-sizing: border-box;
@@ -32,7 +58,8 @@
   color: #FFF;
   font-size: 17px;
   font-weight: 500;
-  line-height: 140%; /* 23.8px */
+  line-height: 140%;
+  /* 23.8px */
 }
 
 .activity-cover {
@@ -54,22 +81,16 @@
   color: rgba(0, 0, 0, 0.60);
   font-size: 14px;
   font-weight: 400;
-  line-height: 140%; /* 19.6px */
+  line-height: 140%;
+  /* 19.6px */
 }
 
 .title {
   color: #000;
   font-size: 17px;
   font-weight: 500;
-  line-height: 140%; /* 23.8px */
-
-  word-break: break-all;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-
+  line-height: 140%;
+  /* 23.8px */
 }
 
 .footer {
@@ -83,7 +104,8 @@
   padding: 8px 20px;
   font-size: 15px;
   font-weight: 600;
-  line-height: 140%; /* 21px */
+  line-height: 140%;
+  /* 21px */
   background: rgba(0, 0, 0, 0.10);
   color: #FFF;
 

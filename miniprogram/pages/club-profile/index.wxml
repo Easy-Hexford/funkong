@@ -22,13 +22,13 @@
 					<t-icon name="add" size="24" color="rgba(0, 0, 0, 0.5)" />
 					<text style="margin-left: 8px;">创建活动</text>
 				</view>
-      </navigator>
-      
-      <block wx:for="{{ActivityList}}" wx:key="ActivityId" wx:for-item="activity">
-        <view class="activity-wrap">
-          <activity-card activity="{{activity}}"></activity-card>
-        </view>
-      </block>
+			</navigator>
+
+			<block wx:for="{{ActivityList}}" wx:key="ActivityId" wx:for-item="activity">
+				<view class="activity-wrap">
+					<activity-card activity="{{activity}}" />
+				</view>
+			</block>
 
 		</view>
 		<view class="avatar-wrap row">
