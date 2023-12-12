@@ -2,6 +2,13 @@ import { SERVICE_NAME, SERVICE_ENV_ID, CLOUD_ENV_ID } from '../config'
 
 let _initCloud = false
 
+class RequestError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'RequestError'
+  }
+}
+
 async function call(options: WechatMiniprogram.RequestOption) {
   if (!_initCloud) {
     wx.cloud.init({
@@ -27,7 +34,7 @@ async function call(options: WechatMiniprogram.RequestOption) {
   if (result.data.code != 0) {
     const code = result.data.code
     const message = result.data.message
-    return Promise.reject(new Error(message))
+    throw new RequestError(`ur: ${options.url}, code=${code}, message=${message}`)
   }
   return result.data.data
 

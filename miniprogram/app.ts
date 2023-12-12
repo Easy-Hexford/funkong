@@ -1,23 +1,16 @@
 // app.ts
+import { IAppOption } from '../typings';
 import * as request from './services/index'
+import { IClubInfo, IInsuranceProduct, IUserInfo } from './services/index';
 
 const QQMapWX = require('./libs/qqmap-wx-jssdk.min.js');
 
-App({
+App<IAppOption>({
   globalData: {
-    User: {
-      CoverUrls: {
-        Items: []
-      }
-    },
-    Club: {
-      CoverUrls: {
-        Items: []
-      }
-    },
-
-    loc: {},
     qqmapsdk: null,
+    User: <IUserInfo>{},
+    Club: <IClubInfo>{},
+    InsuranceProductList: <Array<IInsuranceProduct>>[],
   },
   onLaunch() {
     request.login()

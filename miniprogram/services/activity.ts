@@ -56,7 +56,7 @@ export function getInsuranceProductList(): Promise<IGetInsuranceProductListResp>
   })
 }
 
-export function getMineActicityList(req: IGetMineActicityListReq): Promise<IGetMineActicityListResp> {
+export function getActicityList(req: IGetActicityListReq): Promise<IGetMineActicityListResp> {
   return call({
     url: '/activity/get_list',
     method: 'POST',
@@ -119,8 +119,13 @@ export interface IInsuranceProduct {
   ActivityType: string,
   InsuranceType: string,
   InsuranceProductId: string,
-  EarlyBirdPrice: number,
-  NormalPrice: number
+  NormalPrice: number,
+  BeginAge: number,
+  EndAge: number,
+  DeathCompensation: number,
+  HospitalizationCosts: number,
+  HospitalizationAllowance: number,
+  HospitalizationTimeLimit: number
 }
 
 export interface IWxPaymentParams {
@@ -138,7 +143,7 @@ export interface ICreateActivityReq {
   City: string,
   Title: string,
   Content: string,
-  CoverUrls: ICoverUrls,
+  CoverUrls?: ICoverUrls,
   ActivityTypes: IActivityTypes,
   BeginTime: string,
   EndTime: string,
@@ -147,7 +152,6 @@ export interface ICreateActivityReq {
   ActivityRule: {
     MaxSignUpNumber: number,
     Price: number,
-    InsuranceProduct?: IInsuranceProduct,
   }
 }
 
@@ -198,7 +202,8 @@ export interface IGetActivityReq {
 
 export type IActivityAuditStatus = 'AuditFail' | 'AuditSucc' | 'Auditing'
 
-export interface IGetMineActicityListReq {
+export interface IGetActicityListReq {
+  ClubId?: string,
   Province?: string,
   City?: string,
   Offset?: number,

@@ -1,5 +1,5 @@
-// components/acvitity-type-picker/index.ts
-import { MockTypes } from './mock'
+// import { MockTypes } from './mock'
+import { IInsuranceProduct } from '../../services/index';
 
 Component({
   options: {
@@ -14,7 +14,7 @@ Component({
 
     types: {
       type: Array,
-      value: MockTypes
+      value: []
     },
   },
 
@@ -37,11 +37,12 @@ Component({
     },
 
     confirm() {
-      const { selected, types } = this.data
+      const selected = this.data.selected
+      const types: Array<IInsuranceProduct> = this.data.types
       if (selected < 0) return
       this.triggerEvent('confirm', {
         index: selected,
-        value: types[selected]
+        activityType: types[selected].ActivityType
       })
     },
 

@@ -10,7 +10,7 @@
 			<view class="grid">
 				<block wx:for="{{types}}" wx:key="*this">
 					<view class="cell center {{selected === index ? 'active' : ''}}" data-idx="{{index}}" bind:tap="select">
-						<text class="ellipsis">{{item}}</text>
+						<text class="ellipsis">{{item.ActivityType}}</text>
 					</view>
 				</block>
 			</view>
@@ -20,7 +20,7 @@
 		<view class="row">
 			<text>已选</text>
 			<view wx:if="{{selected >= 0}}" class="cell--selected row" bind:tap="reset">
-				<text class="ellipsis" style="margin-right: 10px; max-width: 120px;">{{types[selected]}}</text>
+				<text class="ellipsis" style="margin-right: 10px; max-width: 120px;">{{types[selected].ActivityType}}</text>
 				<t-icon name="close" size="16" />
 			</view>
 		</view>

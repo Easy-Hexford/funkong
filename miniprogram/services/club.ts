@@ -60,7 +60,7 @@ export interface IGetClubReq {
 }
 
 export interface IGetClubResp {
-  CLub: IClubInfo
+  Club: IClubInfo
 }
 
 export interface IUpdateClubInfoReq {

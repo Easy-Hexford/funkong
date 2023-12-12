@@ -60,40 +60,47 @@
 
 				<view class="form-field-wrap" bind:tap="chooseLocation">
 					<view class="input-field row-between">
-						<text wx:if="{{Activity.LocationName}}">{{Activity.LocationName}}</text>
+						<text wx:if="{{Activity.Location.Name}}">{{Activity.Location.Name}}</text>
 						<text wx:else class="placeholder">添加活动地点</text>
 						<t-icon name="location" size="24" color="rgba(0, 0, 0, 0.3)" />
 					</view>
 				</view>
 
-				<view class="form-field-wrap">
+        <view class="form-field-wrap">
+					<view class="input-field row-between" bind:tap="showTypePicker">
+						<text wx:if="{{ActivityType}}">{{ActivityType}}</text>
+						<text wx:else class="placeholder">选择活动类型</text>
+						<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+					</view>
+        </view>
+
+        <view class="tips--insure">
+					<view>购买保险费用(将从活动费用中扣除)</view>
+					<view class="insure-price">
+            <text wx:if="{{ActivityType}}">{{InsurancePrice}}元</text>
+            <text wx:else>普通活动保险2.00元，极限类运动5.00元</text>
+          </view>
+        </view>
+
+        <view class="form-field-wrap">
 					<t-input
-					 value="{{Activity.ActivityRule.Price}}"
+					 value="{{ActivityPrice}}"
 					 cursor-spacing="20"
 					 placeholder="活动价格"
 					 type="digit"
 					 placeholder-class="placeholder"
 					 borderless="{{true}}"
-					 t-class="custom-input-field"
+           t-class="custom-input-field"
+           bind:focus="resetPriceErr"
 					 bind:blur="onPriceInputDone"
 					 bind:enter="onPriceInputDone"
 					>
 						<view slot="suffix" style="display: inline-block; width: 24px; text-align: center;">元</view>
 					</t-input>
-				</view>
-
-				<view class="form-field-wrap">
-					<view class="input-field row-between" bind:tap="showTypePicker">
-						<text wx:if="{{Activity.ActivityTypes.Items[0]}}">{{Activity.ActivityTypes.Items[0]}}</text>
-						<text wx:else class="placeholder">选择活动类型</text>
-						<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
-					</view>
-				</view>
-
-				<view class="tips--insure">
-					<view>购买保险费用(将从活动费用中扣除)</view>
-					<view class="insure-price">普通活动保险2.00元，极限类运动5.00元</view>
-				</view>
+        </view>
+        
+        <view class="err" wx:if="{{errPrice}}"><text>{{errPrice}}</text></view>
+        
 
 				<view class="sub-title">活动配图</view>
 
@@ -177,8 +184,10 @@
 </block>
 
 <t-date-time-picker
+ wx:if="{{showDateTimePicker}}"
  title="{{dateType === 'Begin' ? '开始时间' : '结束时间'}}"
  visible="{{datePickerVisible}}"
+ steps="{{steps}}"
  format="YYYY-MM-DD HH:mm"
  mode="{{['minute']}}"
  bind:confirm="onConfirmDate"
@@ -187,8 +196,8 @@
  end="{{end}}"
 />
 
-<t-popup visible="{{typePickerVisible}}" bind:visible-change="onVisibleChange" placement="bottom">
-	<type-picker bind:confirm="onTypePickerConfirm" bind:cancel="hideTypePicker" />
+<t-popup visible="{{typePickerVisible}}" bind:visible-change="onTypePickerVisibleChange" placement="bottom">
+	<activity-type-picker types="{{InsuranceProductList}}" bind:confirm="onTypePickerConfirm" bind:cancel="hideTypePicker" />
 </t-popup>
 
 <t-navbar

@@ -102,7 +102,7 @@ Component({
               // scene: `ClubId=${ClubId}`,
               scene: 'ClubId=12344',
               path: `pages/club-profile/index`,
-              check_path: true,
+              check_path: false,
               env_version: 'develop',
               width: 300,
             }).then(resp => {
