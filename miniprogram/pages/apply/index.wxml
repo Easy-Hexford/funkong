@@ -42,8 +42,8 @@
 </scroll-view>
 
 <view class="tool-bar center">
-	<!-- <view class="btn--manage center" bind:tap="register">¥{{Activity.ActivityRule.Price}} 走起</view> -->
-	<button open-type="getRealtimePhoneNumber" bindgetrealtimephonenumber="getRealtimePhoneNumber" class="btn--manage center">¥{{Activity.ActivityRule.Price}} 走起</button>
+	<view class="btn--manage center" bind:tap="register">¥{{Activity.ActivityRule.Price}} 走起</view>
+	<!-- <button open-type="getRealtimePhoneNumber" bindgetrealtimephonenumber="getRealtimePhoneNumber" class="btn--manage center">¥{{Activity.ActivityRule.Price}} 走起</button> -->
 </view>
 
 <t-popup
@@ -53,6 +53,13 @@
  placement="bottom"
  t-class="custom-popup"
 >
-	<register/>
+ <!--  <insurance-form></insurance-form>
+  
+<register-success></register-success>
+
+-->
+
+<apply-success></apply-success> 
+
 </t-popup>
 

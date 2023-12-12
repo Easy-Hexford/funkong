@@ -1,14 +1,21 @@
-<t-navbar title="我的活动" fixed="{{false}}" t-class-title="nav-title" />
-<view class="row select-btns">
-  <view class="select-btn active">全部</view>
-  <view class="select-btn">进行中</view>
-  <view class="select-btn">已结束</view>
-</view>
-<scroll-view scroll-y type="list" class="scrollable">
-	<block wx:for="{{list}}">
-		<view class="scroll-item">
-			<activity/>
-		</view>
-	</block>
-</scroll-view>
+<t-navbar title="我的活动" t-class="custom-navbar" />
+
+<block wx:if="{{false}}">
+  <view class="selection">
+    <view class="btn active">全部</view>
+    <view class="btn">进行中</view>
+    <view class="btn">已结束</view>
+  </view>
+  
+  <scroll-view scroll-y type="list" class="scrollable">
+    <activity wx:for="{{ActivityList}}"/>
+  </scroll-view>
+</block>
+
+<block wx:else>
+  <view style="margin-top: 160px;" class="column-cross-center">
+    <image style="width: 56px; height: 82px;" mode="aspectFill" src="../../assets/images/@chartlet_woman_music_2.png"></image>
+    <view class="tip-1" style="margin-top: 26px;"><text>你还没有参加过活动</text></view>
+  </view>
+</block>
 

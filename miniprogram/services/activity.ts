@@ -80,6 +80,16 @@ export function getSignActicityList(req: IGetSignUpActicityListReq): Promise<IGe
   })
 }
 
+export interface ILocation {
+  Name: string,
+  Address: string,
+  LocationType: ILocationType,
+  Point: {
+    lat: number,
+    lon: number
+  }
+}
+
 export type ILocationType = 'gcj02' | 'wgs84'
 
 export interface IActivityTypes {
@@ -88,11 +98,6 @@ export interface IActivityTypes {
 
 export interface IActivityPicList {
   Items: Array<string>
-}
-
-export interface ILocation {
-  lat: number,
-  lon: number
 }
 
 export interface ISimpleUserInfo {
@@ -138,9 +143,7 @@ export interface ICreateActivityReq {
   BeginTime: string,
   EndTime: string,
   PicList?: IActivityPicList,
-  LocationType: ILocationType,
   Location: ILocation,
-  LocationName: string,
   ActivityRule: {
     MaxSignUpNumber: number,
     Price: number,
@@ -159,9 +162,7 @@ export interface IUpdateActivityReq {
   BeginTime?: string,
   EndTime?: string,
   PicList?: IActivityPicList,
-  LocationType?: ILocationType,
   Location?: ILocation,
-  LocationName?: string,
   ActivityRule?: {
     MaxSignUpNumber: number,
     Price: number,
@@ -240,8 +241,6 @@ export interface IActivityInfo {
   EndTime: string,
   PicList: IActivityPicList,
   Location: ILocation,
-  LocationType: ILocationType,
-  LocationName: string,
   ActivityRule: {
     Price: number,
     MaxSignUpNumber: number,

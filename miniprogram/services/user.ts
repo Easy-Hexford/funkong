@@ -8,14 +8,6 @@ export function login(): Promise<ILoginResp> {
   })
 }
 
-export function register(req: IRegisterUserReq) {
-  return call({
-    url: '/user/register',
-    method: 'POST',
-    data: req
-  })
-}
-
 export function getUser(): Promise<IGetUserResp> {
   return call({
     url: '/user/get',
@@ -62,7 +54,7 @@ export type IRole = 'NormalRole' | 'SuperRole'
 
 export type IGender = 'Man' | 'Woman' | 'Unknown' | ''
 
-export type IIDCardType = 'ShenFenZheng' | 'HuZhao'
+export type IIDCardType = 'ShenFenZheng' | 'HuZhao' | 'GangAoShenFenZheng'
 
 export type IClubType = 'NormalClub' | 'SpecialClub'
 
@@ -151,17 +143,7 @@ export interface ICoverUrls {
   Items: Array<string>
 }
 
-export interface IRegisterUserReq {
-  RegisterType: IRegisterType,
-  RegisterInfo?: {
-    ClubId?: string,
-    ActivityId?: string
-  },
-  Phone: string
-}
-
 export interface IUpdateUserReq {
-  UserId?: string,
   RegisterType?: IRegisterType,
   RegisterInfo?: {
     ClubId?: string,
@@ -174,6 +156,8 @@ export interface IUpdateUserReq {
   Gender?: IGender,
   Role?: IRole,
   Phone?: string,
+  PhoneCode?: string,
+  PhoneCountryCode?: string,
   Name?: string,
   IdCardType?: IIDCardType,
   IdCardNo?: string,

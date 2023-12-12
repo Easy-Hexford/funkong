@@ -1,0 +1,25 @@
+<!--components/apply-success/index.wxml-->
+<view class="container-placeholder">
+	<view class="container column-cross-center">
+		<view class="bar-wrap">
+			<view class="bar center">
+				<t-icon name="chevron-down" size="16" color="rgba(0, 0, 0, 0.3)" />
+			</view>
+		</view>
+		<view class="column" style="margin-top: 28px;">
+			<image class="icon" mode="aspectFill" src="../../assets/images/@chartlet_boat.png" />
+			<view class="tip-1">
+				<text>已上车</text>
+			</view>
+			<view class="tip-2 line-clamp-2-ellipsis">
+				<text>3天后体育西广场见</text>
+			</view>
+		</view>
+		<view class="footer center">
+			<view class="btn center">
+				<text>看车票</text>
+			</view>
+		</view>
+	</view>
+</view>
+

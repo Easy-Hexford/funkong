@@ -113,5 +113,3 @@
 	</view>
 </scroll-view>
 
-<t-navbar left-arrow fixed t-class="custom-navbar" />
-

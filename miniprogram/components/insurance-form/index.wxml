@@ -1,0 +1,67 @@
+<!--components/register/index.wxml-->
+<view class="container">
+	<view class="bar" />
+	<view class="title">请添加保险保障人</view>
+	<view class="content">
+		<view class="form-field-wrap row" style="margin-top: 21px;">
+			<view class="label">
+				<text>证件</text>
+			</view>
+			<view class="input-field row-between" bind:tap="showIDCardTypePicker">
+				<text>{{idCardType}}</text>
+				<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+			</view>
+		</view>
+
+		<view class="form-field-wrap row">
+			<view class="label">
+				<text>姓名</text>
+			</view>
+			<input
+			 borderless="{{true}}"
+			 t-class="custom-input-field"
+			 class="input"
+			 placeholder="填写真实名字"
+			 placeholder-class="placeholder"
+			 bind:blur="onNameInputDone"
+			 bind:enter="onNameInputDone"
+			/>
+		</view>
+
+		<view class="form-field-wrap row">
+			<view class="label">
+				<text>{{idCardType}}</text>
+			</view>
+			<input
+			 borderless="{{true}}"
+			 t-class="custom-input-field"
+			 class="input"
+			 placeholder="填写证件号码"
+			 placeholder-class="placeholder"
+			 bind:blur="onIDInputDone"
+			 bind:enter="onIDInputDone"
+			/>
+    </view>
+    
+    <view wx:if="{{idCardNoErr}}" class="tip-err">{{idCardNoErr}}</view>
+
+		<view class="footer center">
+			<view class="btn {{submittable ? 'active' : ''}}" bind:tap="submit">
+				<text>支付并领取保险</text>
+			</view>
+		</view>
+	</view>
+</view>
+
+<t-picker
+ visible="{{idCardTypePickerVisible}}"
+ title="选择证件类型"
+ value="{{idCardType}}"
+ cancelBtn="取消"
+ confirmBtn="确认"
+ bind:confirm="onConfirmIDCardType"
+ bind:cancel="hideIDCardTypePicker"
+>
+	<t-picker-item options="{{idCardTypes}}" />
+</t-picker>
+

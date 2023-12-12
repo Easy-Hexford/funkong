@@ -9,19 +9,19 @@ page {
   overflow: auto;
   box-sizing: border-box;
   padding: 4px 8px;
-  padding-bottom: calc(env(safe-area-inset-bottom) + 60px);
-  background-color: rgba(247, 247, 247, 1);
+  padding-bottom: calc(env(safe-area-inset-bottom) + 56px);
+  background-color: #fff;
 }
 
 .scroll-item {
   margin-bottom: 8px;
 }
 
-.select-btns {
-  padding: 18px 11px 4px;
+.selection {
+  padding: 16px;
 }
 
-.select-btn {
+.btn {
   display: inline-flex;
   border-radius: 4px;
   background: #F7F7F7;
@@ -34,4 +34,16 @@ page {
     color: #000;
     font-weight: 500;
   }
+}
+
+.custom-navbar {
+  --td-navbar-bg-color: transparent !important;
+  --td-navbar-color: rgba(0, 0, 0, 0.90);
+}
+
+.tip-1 {
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 140%; 
 }

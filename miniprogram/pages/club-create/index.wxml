@@ -1,6 +1,6 @@
 <block wx:if="{{Club.AuditStatus === 'Auditing'}}">
 	<view class="audit-result">
-		<image class="icon--result" mode="aspectFit" src="../../assets/images/@charlet_happy_woman.png" />
+		<image class="icon--result" mode="aspectFit" src="../../assets/images/@chartlet_happy_woman.png" />
 		<view class="result-title">已提交</view>
 		<view class="result-content">我们已收到您的俱乐部创建申请，将在3个工作日完成审核，到时会通过短信/微信与您联系。</view>
 	</view>

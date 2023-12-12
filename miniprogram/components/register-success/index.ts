@@ -1,4 +1,4 @@
-// components/register/index.ts
+// components/welcome/index.ts
 Component({
 
   /**
