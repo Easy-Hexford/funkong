@@ -30,7 +30,7 @@ Component({
   },
 
   lifetimes: {
-    created() { 
+    created() {
       // TODO 
       // 上拉加载更多
     },
@@ -44,28 +44,16 @@ Component({
           ClubMembers: [resp.OwnerUser]
         })
 
-        wx.getLocation({
-          type: 'gcj02',
-          isHighAccuracy: false,
-          success:(res) => {
-            console.info('getLocation: ', res)
-            app.globalData.Loc = {
-              lat: res.latitude,
-              lon: res.longitude
-            }
-
-            request.getActicityList({
-              ClubId: this.data.ClubId,
-              Offset: this.data._offset,
-              Limit: this.data._page,
-            }).then(resp => {
-              this.setData({
-                ActivityTotalCount: resp.TotalCount,
-                ActivityList: resp.ActivityList
-              })
-              this.data._offset = resp.ActivityList.length
-            })
-          }
+        request.getActicityList({
+          ClubId: this.data.ClubId,
+          Offset: this.data._offset,
+          Limit: this.data._page,
+        }).then(resp => {
+          this.setData({
+            ActivityTotalCount: resp.TotalCount,
+            ActivityList: resp.ActivityList
+          })
+          this.data._offset = resp.ActivityList.length
         })
       })
     }

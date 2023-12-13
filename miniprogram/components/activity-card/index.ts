@@ -1,5 +1,5 @@
 import { formatActivityTime, formatDistance } from '../../utils/util'
-import { calcDistance } from '../../utils/location'
+import { calcDistance, getLocation } from '../../utils/location'
 import { IActivityInfo, IPoint } from '../../services'
 
 const app = getApp()
@@ -30,17 +30,16 @@ Component({
 
   methods: {
     calcDistance() {
-      const Loc = app.globalData.Loc as IPoint
-      if (!Loc.lat) return
-
       const Activity = this.data.activity as IActivityInfo
-      const from = Loc
-      const to = Activity.Location.Point
-      calcDistance(from, to)
-        .then(resp => {
-          this.setData({
-            distance: formatDistance(resp.distance)
-          })
+      getLocation()
+        .then(from => {
+          const to = Activity.Location.Point
+          calcDistance(from, to)
+            .then(resp => {
+              this.setData({
+                distance: formatDistance(resp.distance)
+              })
+            })
         })
     },
   }

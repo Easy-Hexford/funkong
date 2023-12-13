@@ -2,12 +2,11 @@ import { uploadBehavior } from '../../behaviors/upload'
 import type { IUploadBehavior} from '../../behaviors/upload'
 import * as request from '../../services/index'
 import type { IUserInfo, IUserInfoNullable } from '../../services/index'
-import _ from '../../miniprogram_npm/lodash-es/index'
 import dayjs from 'dayjs'
 
-const app = getApp()
-
+const _ = require('../../libs/lodash_4.17.10.min')
 const USER_PIC_CATALOG = 'user/'
+const app = getApp()
 
 Component({
   behaviors: [uploadBehavior],

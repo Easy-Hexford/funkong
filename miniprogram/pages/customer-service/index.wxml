@@ -1,13 +1,9 @@
-<!--pages/customer-service/index.wxml-->
-
+<!-- pages/customer-service/index.wxml -->
 <image class="chartlet-1" mode="aspectFit" src="../../assets/images/@chartlet_woman_1.svg" />
 <image class="chartlet-2" mode="aspectFit" src="../../assets/images/@chartlet_woman_2.svg" />
-
 <view class="container center column">
-	<image show-menu-by-longpress class="qrcode" src="../../assets/images/qrcode.png" />
-	<view class="tip-1" style="margin-top: 15px;">添加客服微信</view>
-	<view class="tip-2" style="margin-top: 10px;">长按识别二维码</view>
+		<image show-menu-by-longpress class="qrcode" src="{{kefuImg}}" />
+		<view class="tip-1" style="margin-top: 15px;">添加客服微信</view>
+		<view class="tip-2" style="margin-top: 10px;">长按识别二维码</view>
 </view>
-
 <t-navbar title="联系客服" left-arrow class="custom-navbar" />
-

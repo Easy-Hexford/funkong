@@ -26,7 +26,6 @@
   "description": "",
   "dependencies": {
     "eventemitter3": "^5.0.1",
-    "lodash-es": "^4.17.21",
     "tdesign-miniprogram": "^1.2.4",
     "type-check": "^0.4.0"
   }

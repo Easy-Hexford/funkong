@@ -3,31 +3,26 @@ import { IPoint } from '../services'
 
 const BASE_URL = 'https://apis.map.qq.com/ws'
 
-export interface IGetAddressResp {
-  address_component: {
-    nation: string,
-    province: string,
-    city: string,
-    district: string,
-    street: string,
-    street_number: string
-  },
-  ad_info: {
-    nation_code: string,
-    adcode: string,
-    city_code: string,
-    phone_area_code: string,
-    name: string,
-    nation: string,
-    province: string,
-    city: string,
-    district: string,
-  }
-}
+let _locationPromise: Promise<IPoint>
+export function getLocation() {
+  if (_locationPromise) return _locationPromise
+  _locationPromise = new Promise((resolve, reject) => {
+    wx.getLocation({
+      type: 'gcj02',
+      isHighAccuracy: false,
+      success(res) {
+        resolve({
+          lat: res.latitude,
+          lon: res.longitude
+        })
+      },
+      fail(res) {
+        reject(res)
+      }
+    })
+  })
 
-const createUrl = (path: string, params: Record<string, any>): string => {
-  const query = Object.keys(params).map(k => `${k}=${params[k]}`).join('&')
-  return `${BASE_URL}/${path}/?${query}`
+  return _locationPromise
 }
 
 export function getAddress(point: IPoint): Promise<IGetAddressResp> {
@@ -52,11 +47,6 @@ export function getAddress(point: IPoint): Promise<IGetAddressResp> {
   })
 }
 
-export interface ICalcDistanceResp {
-  distance: number,
-  duration: number
-}
-
 export function calcDistance(from: IPoint, to: IPoint): Promise<ICalcDistanceResp> {
   const url = createUrl('distance/v1/matrix', {
     key: MAP_KEY,
@@ -75,10 +65,42 @@ export function calcDistance(from: IPoint, to: IPoint): Promise<ICalcDistanceRes
         }
       },
       fail: (res: any) => {
-        reject(new Error(`getAddress fail: ${res}`))
+        reject(new Error(`calcDistance fail: ${res}`))
       }
     })
 
   })
 }
 
+const createUrl = (path: string, params: Record<string, any>): string => {
+  const query = Object.keys(params).map(k => `${k}=${params[k]}`).join('&')
+  return `${BASE_URL}/${path}/?${query}`
+}
+
+
+export interface ICalcDistanceResp {
+  distance: number,
+  duration: number
+}
+
+export interface IGetAddressResp {
+  address_component: {
+    nation: string,
+    province: string,
+    city: string,
+    district: string,
+    street: string,
+    street_number: string
+  },
+  ad_info: {
+    nation_code: string,
+    adcode: string,
+    city_code: string,
+    phone_area_code: string,
+    name: string,
+    nation: string,
+    province: string,
+    city: string,
+    district: string,
+  }
+}
