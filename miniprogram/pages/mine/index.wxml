@@ -20,12 +20,12 @@
 							<navigator
 							 style="padding: 17px 0;"
 							 class="row-between"
-							 url="{{isAuditing ? '../club-create/index' : '../club-profile/index'}}"
+							 url="{{isAuditing ? '../club-create/index' : '../club-profile/index'}}?ClubId={{Club.ClubId}}"
 							 hover-class="none"
 							>
 								<view class="row">
 									<image class="icon--club circle" mode="aspectFill" src="{{Club.ClubIcon}}" />
-									<text>{{Club.ClubName || '逐浪青年'}}</text>
+									<text>{{Club.ClubName}}</text>
                 </view>
                 <view class="row">
                   <text wx:if="{{isAuditing}}" class="tip-auditing">审核中</text>
@@ -38,7 +38,7 @@
 							<navigator
 							 style="padding: 17px 0;"
 							 class="row-between"
-							 url="{{isAuditing ? '' : '../activity-create/index'}}"
+							 url="{{isAuditing ? '' : '../activity-create/index?ClubId=' + Club.ClubId}}"
 							 hover-class="none"
 							>
 								<text class="{{isAuditing ? 'disabled' : ''}}">创建活动</text>

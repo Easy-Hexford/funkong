@@ -1,4 +1,13 @@
-<scroll-view scroll-y type="list" class="scrollable">
+<scroll-view
+ scroll-y
+ type="list"
+ class="scrollable"
+ refresher-enabled
+ refresher-triggered="{{triggered}}"
+ refresher-default-style="black"
+ refresher-background="#fff"
+ bind:refresherrefresh="onRefresh"
+>
 	<view class="banner" bind:tap="chooseCover">
 		<image class="cover" mode="aspectFill" src="{{Club.CoverUrls.Items[0]}}" />
 	</view>

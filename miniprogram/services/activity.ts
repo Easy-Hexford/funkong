@@ -80,14 +80,16 @@ export function getSignActicityList(req: IGetSignUpActicityListReq): Promise<IGe
   })
 }
 
+export interface IPoint {
+  lat: number,
+  lon: number
+}
+
 export interface ILocation {
   Name: string,
   Address: string,
   LocationType: ILocationType,
-  Point: {
-    lat: number,
-    lon: number
-  }
+  Point: IPoint
 }
 
 export type ILocationType = 'gcj02' | 'wgs84'

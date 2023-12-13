@@ -3,6 +3,8 @@ import type { IActivityInfo, ICreateActivityReq, IInsuranceProduct } from "../..
 import { uploadBehavior } from '../../behaviors/upload'
 import type { IUploadBehavior } from '../../behaviors/upload'
 import dayjs from 'dayjs'
+import { getAddress } from '../../utils/location'
+import { MAP_KEY } from '../../config';
 
 const typeCheck = require('type-check').typeCheck;
 const app = getApp()
@@ -195,6 +197,24 @@ Component({
               }
             },
           })
+
+          getAddress({
+            lat: res.latitude,
+            lon: res.longitude
+          })
+            .then(resp => {
+              const { province, city } = resp.address_component
+              this.setData({
+                'Activity.Province': province,
+                'Activity.City': city,
+              })
+            }, (err) => {
+              console.error(err)
+              this.setData({
+                'Activity.Province': 'unKnown',
+                'Activity.City': 'unKnown',
+              })
+            })
         }
       })
     },
@@ -235,7 +255,7 @@ Component({
       this.setData({
         typePickerVisible: false,
         ActivityType: activityType,
-        InsurancePrice: insurancePrice,  
+        InsurancePrice: insurancePrice,
         'Activity.ActivityTypes.Items[0]': activityType,
       })
     },

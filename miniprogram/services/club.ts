@@ -1,3 +1,4 @@
+import { ISimpleUserInfo } from "./activity";
 import call from "./base";
 import type { IClubInfo, IClubType, ICoverUrls, IDeleteFlag } from "./user";
 
@@ -60,7 +61,8 @@ export interface IGetClubReq {
 }
 
 export interface IGetClubResp {
-  Club: IClubInfo
+  Club: IClubInfo,
+  OwnerUser: ISimpleUserInfo
 }
 
 export interface IUpdateClubInfoReq {
