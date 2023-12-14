@@ -1,5 +1,5 @@
 <!-- pages/activity-poster/index.wxml -->
-<t-navbar fixed="{{false}}" left-arrow class="custom-navbar" />
+<t-navbar fixed="{{false}}" left-arrow class="navbar" />
 <scroll-view scroll-y type="list" class="scrollable">
 		<view class="column-cross-center">
 				<snapshot class="invite-poster">

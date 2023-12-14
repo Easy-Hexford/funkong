@@ -2,7 +2,7 @@
  title="邀请粉丝"
  fixed="{{false}}"
  left-arrow
- class="custom-navbar"
+ class="navbar"
 />
 <scroll-view scroll-y type="list" class="scrollable">
 	<view class="column-cross-center">

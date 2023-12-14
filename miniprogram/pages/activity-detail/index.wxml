@@ -79,5 +79,5 @@
 	<view class="btn--manage">¥12.00 走起</view>
 </view>
 
-<t-navbar left-arrow fixed t-class="custom-navbar" />
+<t-navbar left-arrow fixed t-class="navbar" />
 
