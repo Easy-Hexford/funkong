@@ -3,7 +3,7 @@
 
 .container-placeholder {
   position: relative;
-  height: 75vh;
+  height: calc(75vh - env(safe-area-inset-bottom));
 }
 
 .container {
@@ -11,7 +11,7 @@
   top: 0;
   left: 0;
   right: 0;
-  height: calc(75vh + env(safe-area-inset-bottom));
+  height: calc(75vh);
   box-sizing: border-box;
   overflow: hidden;
   border-radius: 12px 12px 0px 0px;
@@ -62,7 +62,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 12px;
+  bottom: calc(env(safe-area-inset-bottom) + 12px);
 }
 
 .tip--jump {

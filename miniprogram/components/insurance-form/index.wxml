@@ -1,6 +1,10 @@
 <!--components/register/index.wxml-->
+<wxs src="../../utils/filter.wxs" module="filter" />
+
 <view class="container">
-	<view class="bar" />
+  <view class="bar-wrap center">
+    <view class="bar" />
+  </view>
 	<view class="title">请添加保险保障人</view>
 	<view class="content">
 		<view class="form-field-wrap row" style="margin-top: 21px;">
@@ -33,21 +37,46 @@
 				<text>{{idCardType}}</text>
 			</view>
 			<input
-			 borderless="{{true}}"
+       borderless="{{true}}"
 			 t-class="custom-input-field"
 			 class="input"
 			 placeholder="填写证件号码"
-			 placeholder-class="placeholder"
+       placeholder-class="placeholder"
+       bind:focus="resetIdCarNoErr"
 			 bind:blur="onIDInputDone"
 			 bind:enter="onIDInputDone"
 			/>
-    </view>
-    
-    <view wx:if="{{idCardNoErr}}" class="tip-err">{{idCardNoErr}}</view>
+		</view>
+
+		<view wx:if="{{idCardNoErr}}" class="tip-err">{{idCardNoErr}}</view>
+
+    <block wx:if="{{idCardType !== '身份证'}}">
+      <view class="form-field-wrap row">
+        <view class="label">
+          <text>生日</text>
+        </view>
+        <view class="input-field row-between" bind:tap="showDatePicker">
+          <text wx:if="{{User.BirthdayDate}}">{{filter.birthday(User.BirthdayDate)}}</text>
+          <text wx:else class="placeholder">选择出生日期</text>
+          <t-icon name="menu" size="24" color="rgba(0, 0, 0, 0.3)" />
+        </view>
+      </view>
+  
+      <view class="form-field-wrap row">
+        <view class="label">
+          <text>性别</text>
+        </view>
+        <view class="input-field row-between" bind:tap="showGenderPicker">
+          <text wx:if="{{User.Gender}}">{{User.Gender === 'Man' ? '男' : '女'}}</text>
+          <text wx:else class="placeholder">选择性别</text>
+          <t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+        </view>
+      </view>
+    </block>
 
 		<view class="footer center">
 			<view class="btn {{submittable ? 'active' : ''}}" bind:tap="submit">
-				<text>支付并领取保险</text>
+				<text>领取保险并支付</text>
 			</view>
 		</view>
 	</view>
@@ -64,4 +93,27 @@
 >
 	<t-picker-item options="{{idCardTypes}}" />
 </t-picker>
+
+<t-picker
+ visible="{{genderPickerVisible}}"
+ title="性别"
+ cancelBtn="取消"
+ confirmBtn="确认"
+ bind:confirm="onConfirmGender"
+ bind:cancel="hideGenderPicker"
+>
+	<t-picker-item options="{{genders}}" />
+</t-picker>
+
+<t-date-time-picker
+ title="生日"
+ visible="{{datePickerVisible}}"
+ mode="date"
+ defaultValue="{{date}}"
+ format="YYYY-MM-DD HH:mm:ss"
+ bind:confirm="onConfirmDate"
+ bind:cancel="hideDatePicker"
+ start="{{start}}"
+ end="{{end}}"
+/>
 

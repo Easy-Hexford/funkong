@@ -8,13 +8,11 @@ export function login(): Promise<ILoginResp> {
   })
 }
 
-export function getUser(): Promise<IGetUserResp> {
+export function getUser(req: IGetUserReq): Promise<IGetUserResp> {
   return call({
     url: '/user/get',
     method: 'POST',
-    data: {
-      UseCache: true
-    }
+    data: req
   })
 }
 

@@ -29,7 +29,7 @@ export const MockUser: IUserInfo = {
   "Role": "SuperRole",
   "RegisterType": "",
   "InvitedClubId": "",
-  "Phone": "",
+  "Phone": "17665735535",
   "Name": "",
   "IdCardType": "",
   "IdCardNo": "",

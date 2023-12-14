@@ -12,10 +12,10 @@
 			</view>
 		</view>
 		<view class="footer column-cross-center">
-			<view class="btn center">
+			<view class="btn center" data-btn="fill" bind:tap="onTap">
 				<text>填写个人资料</text>
 			</view>
-			<view class="tip--jump">
+			<view class="tip--jump" data-btn="skip" bind:tap="onTap">
 				<text>跳过</text>
 			</view>
 		</view>

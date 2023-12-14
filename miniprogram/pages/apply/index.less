@@ -140,3 +140,43 @@ page {
   --td-popup-border-radius: 12px;
   --td-popup-bg-color: #fff !important;
 }
+
+.dialog--phone-auauthorize {
+  height: calc(75vh - env(safe-area-inset-bottom));
+  background-color: #fff;
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+
+  .bar-wrap {
+    height: 28px;
+  }
+
+  .bar {
+    width: 40px;
+    height: 4px;
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .icon {
+    width: 80px;
+    height: 135px;
+  }
+
+  .footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100px;
+  }
+
+  .btn--authorize {
+    width: 240px;
+    height: 56px;
+    border-radius: 18px;
+    background: #4321F5;
+    color: #AFF164;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 140%;
+  }
+}

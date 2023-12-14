@@ -25,11 +25,19 @@ export function createInsurance(req: ICreateInsuranceReq): Promise<void> {
   })
 }
 
-export function signUpActivity(req: ISignUpctivityReq): Promise<ISignUpctivityResp> {
+export function createSignUpActivity(req: ISignUpctivityReq): Promise<ISignUpctivityResp> {
   return call({
     url: '/activity/create_sign_up',
     method: 'POST',
     data: req,
+  })
+}
+
+export function deleteSignUpActivity(req: ISignUpctivityReq) {
+  return call({
+    url: '/activity/delete_sign_up',
+    method: 'POST',
+    data: req
   })
 }
 
@@ -135,7 +143,7 @@ export interface IWxPaymentParams {
   timeStamp: string,
   nonceStr: string,
   package: string,
-  signType: string,
+  signType: 'MD5' | 'HMAC-SHA256' | 'RSA' | undefined,
   paySign: string
 }
 

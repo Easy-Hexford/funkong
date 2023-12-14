@@ -110,7 +110,6 @@ Component({
       this.hideGenderPicker();
     },
 
-
     showDatePicker() {
       this.setData({
         datePickerVisible: true,

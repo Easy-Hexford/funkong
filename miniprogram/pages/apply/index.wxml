@@ -86,7 +86,7 @@
 	>
 		<text>支付 ¥{{filter.money(Activity.ActivityRule.Price)}}</text>
 	</button>
-	<view wx:else class="btn--manage center" bind:tap="register">支付 ¥{{filter.money(Activity.ActivityRule.Price)}}</view>
+	<view wx:else class="btn--manage center" bind:tap="signUp">支付 ¥{{filter.money(Activity.ActivityRule.Price)}}</view>
 </view>
 
 <t-popup
@@ -96,14 +96,34 @@
  placement="bottom"
  t-class="custom-popup"
 >
-	<block wx:if="{{1}}">
-		<register-success/>
+	<block wx:if="{{popupContent === 'RegisterSuccess'}}">
+		<register-success bind:userTap="onRegisterSuccessUserTap"/>
 	</block>
-	<block wx:if="{{1}}">
-		<insurance-form/>
+	<block wx:if="{{popupContent === 'InsuranceForm'}}">
+		<insurance-form bind:submit="onInsuranceFormSumit"/>
 	</block>
-	<block wx:if="{{1}}">
+	<block wx:if="{{popupContent === 'ApplySuccess'}}">
 		<apply-success/>
-	</block>
+  </block>
+  
+  <block wx:if="{{popupContent === 'PhoneAuthorize'}}">
+    <view class="dialog--phone-auauthorize">
+      <view class="bar-wrap center">
+        <view class="bar" />
+      </view>
+      <view class="column-cross-center" style="margin-top: 80px;">
+        <image class="icon" src="https://7072-prod-1gsl7u0x17e23d06-1322287298.tcb.qcloud.la/static/%40chartlet_man_chair.png?sign=f51233d9fd35971b0b75e788be016188&t=1702556578" />
+        <view style="margin-top: 26px;">
+          <text>授权手机号后，才可以购买活动</text>
+        </view>
+      </view>
+  
+      <view class="footer center">
+        <button open-type="getPhoneNumber" bind:getphonenumber="getPhoneNumber" class="btn--authorize center">
+          <text>去授权</text>
+        </button>
+      </view>
+    </view>
+  </block>
 </t-popup>
 

@@ -3,24 +3,25 @@
 
 .container {
   position: relative;
-  height: 75vh;
-  padding: 24px;
+  height: calc(75vh - env(safe-area-inset-bottom));
+  padding: 0 24px;
   border-radius: 12px 12px 0px 0px;
   background: var(--bg-5, #FFF);
 }
 
+.bar-wrap {
+  height: 28px;
+}
+
 .bar {
-  position: absolute;
-  top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
   width: 40px;
   height: 4px;
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+
 .title {
-  margin-top: 24px;
+  margin-top: 20px;
   color: #000;
   font-size: 20px;
   font-weight: 500;
