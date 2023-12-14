@@ -1,9 +1,11 @@
 <t-navbar
- title="邀请粉丝"
- fixed="{{false}}"
- left-arrow
- class="navbar"
+title="邀请粉丝"
+fixed="{{false}}"
+left-arrow
+class="navbar"
+t-class-center="custom-navbar-center"
 />
+
 <scroll-view scroll-y type="list" class="scrollable">
 	<view class="column-cross-center">
 		<snapshot class="invite-poster">
@@ -33,6 +35,4 @@
 		</snapshot>
 		<view class="btn--invite center" bind:tap="share">邀请粉丝</view>
 	</view>
-
 </scroll-view>
-
