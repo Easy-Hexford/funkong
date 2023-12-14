@@ -12,50 +12,50 @@
 
 	<view class="sheet">
 		<view class="content-wrap active">
-			<block wx:if="{{isSuperRole}}">
-				<view wx:if="{{Club.AuditStatus === 'AuditSucc' || isAuditing}}">
+			<block wx:if="{{User.Role === 'SuperRole'}}">
+				<view wx:if="{{isAuditing || Club.AuditStatus === 'AuditSucc'}}">
 					<view class="field-title">俱乐部</view>
 					<view class="form-field-wrap">
 						<view class="input-field" style="padding-top: 0; padding-bottom: 0;">
-							<navigator
+							<view
 							 style="padding: 17px 0;"
 							 class="row-between"
-							 url="{{isAuditing ? '../club-create/index' : '../club-profile/index'}}?ClubId={{Club.ClubId}}"
 							 hover-class="none"
+							 bind:tap="viewClub"
 							>
 								<view class="row">
 									<image class="icon--club circle" mode="aspectFill" src="{{Club.ClubIcon}}" />
 									<text>{{Club.ClubName}}</text>
-                </view>
-                <view class="row">
-                  <text wx:if="{{isAuditing}}" class="tip-auditing">审核中</text>
-								  <t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
-                </view>
-							</navigator>
+								</view>
+								<view class="row">
+									<text wx:if="{{isAuditing}}" class="tip-auditing">审核中</text>
+									<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+								</view>
+							</view>
 
 							<t-divider t-class="custom-divider" />
 
-							<navigator
+							<view
 							 style="padding: 17px 0;"
 							 class="row-between"
-							 url="{{isAuditing ? '' : '../activity-create/index?ClubId=' + Club.ClubId}}"
 							 hover-class="none"
+							 bind:tap="createActivity"
 							>
 								<text class="{{isAuditing ? 'disabled' : ''}}">创建活动</text>
 								<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
-							</navigator>
+							</view>
 
 							<t-divider t-class="custom-divider" />
 
-							<navigator
+							<view
 							 style="padding: 17px 0;"
 							 class="row-between"
-							 url="../club-poster/index"
 							 hover-class="none"
+							 bind:tap="invite"
 							>
-								<text>邀请粉丝</text>
+								<text class="{{isAuditing ? 'disabled' : ''}}">邀请粉丝</text>
 								<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
-							</navigator>
+							</view>
 						</view>
 					</view>
 				</view>
@@ -66,9 +66,9 @@
 						<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
 					</navigator>
 				</view>
-      </block>
-      
-      <view class="form-field-wrap" wx:if="{{User.AuditRole === 'NormalAuditRole'}}">
+			</block>
+
+			<view class="form-field-wrap" wx:if="{{User.AuditRole === 'NormalAuditRole'}}">
 				<navigator class="input-field row-between" url="../audit/index" hover-class="none">
 					<text>审核台</text>
 					<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
@@ -108,7 +108,8 @@
 				 color="#6CCEA2"
 				/>
 			</navigator>
-			<view class="identity-badge">{{isSuperRole ? '主理人' : User.Phone ? '' : '游客'}}</view>
+			<view class="identity-badge">{{User.Role === 'SuperRole' ? '主理人' : User.Phone ? '' : '游客'}}</view>
 		</view>
 	</view>
 </scroll-view>
+
