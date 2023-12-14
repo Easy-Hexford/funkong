@@ -1,6 +1,7 @@
 <!--pages/apply/index.wxml-->
-<t-navbar left-arrow fixed title="搞起" />
+<wxs src="../../utils/filter.wxs" module="filter" />
 
+<t-navbar left-arrow fixed title="搞起" />
 <scroll-view scroll-y type="list" class="scrollable">
 	<view class="content-wrap">
 		<view class="activity-info row" style="margin-top: 14px;">
@@ -8,16 +9,16 @@
 			<view class="activity-area column-main-center">
 				<view class="ellipsis title">{{Activity.Title}}</view>
 				<view class="ellipsis" style="margin-top: 12px;">
-					<text>{{Activity.LocationName}}</text>
+					<text>{{Activity.Location.Name}}</text>
 				</view>
 				<view style="margin-top: 8px;">
-					<text>{{Activity.BeginTime}}</text>
+					<text>{{beginTime}}</text>
 				</view>
 			</view>
 		</view>
 		<view class="cell row-between">
 			<text>支付金额</text>
-			<text class="money">¥{{Activity.ActivityRule.Price}}</text>
+			<text class="money">¥{{filter.money(Activity.ActivityRule.Price)}}</text>
 		</view>
 		<view class="cell row-between">
 			<text>支付方式</text>
@@ -26,24 +27,66 @@
 				<text class="txt-gray" style="font-size: 16px;">微信支付</text>
 			</view>
 		</view>
-		<view class="cell">
-			<text>领取意外险「至尊保障」</text>
+		<view class="cell row">
+			<image mode="aspectFill" class="icon--shield" src="../../assets/images/@icon_shield.png" />
+			<text style="margin-left: 4px;">免费保险</text>
+		</view>
+		<view class="insurance-wrap">
+			<view class="row-between">
+				<text>保障时间</text>
+				<text class="gray">{{activityTime}}全天</text>
+			</view>
+			<view class="row-between" style="margin-top: 12px;">
+				<text>意外身故/残疾</text>
+				<text class="gray">￥{{filter.localeMoney(InsuranceProduct.DeathCompensation)}}</text>
+			</view>
+			<view class="row-between" style="margin-top: 12px;">
+				<text>意外医疗费用</text>
+				<text class="gray">￥{{filter.localeMoney(InsuranceProduct.HospitalizationCosts)}}</text>
+			</view>
+			<view class="row-between" style="margin-top: 12px;">
+				<text>意外住院津贴（{{filter.localeMoney(InsuranceProduct.HospitalizationTimeLimit)}}天内）</text>
+				<text class="gray">{{filter.localeMoney(InsuranceProduct.HospitalizationAllowance)}}元/天</text>
+			</view>
 		</view>
 		<view class="cell">
 			<text>支付说明</text>
 		</view>
-		<view class="txt-gray" style="margin-top: 16px;">退换规则</view>
-
-		<view class="txt-gray" style="color: rgba(0, 0, 0, 0.88); margin-top: 10px;">
-			如果商品描述中有明确的退换货说明，应以此说明为主要退换货处理原则。 如果因卖家未对商品作瑕疵描述或实际收到的商品与商品描述不符所引起商品退换，买家已提供相应证据证明不符的，应由卖家承担退换所需的全部运费。 如果因买家自身的主观原因或未提交有效证明而引起的商品退换货，则需由买家承担退换所需的全部运费。 商品退换货以双方协商一致的退换货协议处理，卖家同意退货后，买家安排退货，卖家收到退货确认无误后，再为买家进行换货或者退款。 买家在退换商品时应尽量保持商品原状，包括结构的完整、功能的完整、价值的完整、附件（配件）的完整。 退换商品的过程中，如由于承运方的原因造成商品损坏影响使用或者遗失，由确定承运方的一方联系承运方，并先行承担相应损失。 卖家发货到买家指定地点的过程中，如因承运方的原因造成商品损坏或者影响使用或者遗失，应由卖家联系承运方，并承担相应损失。
+		<view class="intro-title">退换规则</view>
+		<view class="intro-content">
+			<text>距活动开始8小时前，随时可退
+        距活动不足8小时，仅退款一半
+        距活动不足4小时，无法退款</text>
+		</view>
+		<view class="intro-title">无条件退换规则</view>
+		<view class="intro-content">
+			<text>因天气恶劣导致活动无法正常举行
+      因不可抗力导致活动无法举办
+        疫情原因导致活动无法举办</text>
+		</view>
+		<view class="intro-title">运动意外保障服务声明</view>
+		<view class="intro-content">
+			<text>运动意外保障投保年龄范围为1岁(含) -70岁(含)不符合年龄范围会导致投保失败。
+        运动意外保障服务需要填写身份信息才会生效，因身份信息填写错误或未领取保障服务，需在线下与俱乐部确认保险服务是否生效，未确认则视为自动放弃该项服务。</text>
+		</view>
+		<view class="intro-title">免责声明</view>
+		<view class="intro-content">
+			<text>因活动造成的意外损伤风险自担，平台及活动组织方无任何责任，报名成功视为自愿受本声明约束。</text>
 		</view>
 	</view>
 
 </scroll-view>
 
 <view class="tool-bar center">
-	<view class="btn--manage center" bind:tap="register">¥{{Activity.ActivityRule.Price}} 走起</view>
-	<!-- <button open-type="getRealtimePhoneNumber" bindgetrealtimephonenumber="getRealtimePhoneNumber" class="btn--manage center">¥{{Activity.ActivityRule.Price}} 走起</button> -->
+	<button
+	 wx:if="{{!User.Phone && !PhoneCode}}"
+	 open-type="getPhoneNumber"
+	 bind:getphonenumber="getPhoneNumber"
+	 class="btn--manage center"
+	>
+		<text>支付 ¥{{filter.money(Activity.ActivityRule.Price)}}</text>
+	</button>
+	<view wx:else class="btn--manage center" bind:tap="register">支付 ¥{{filter.money(Activity.ActivityRule.Price)}}</view>
 </view>
 
 <t-popup
@@ -53,13 +96,14 @@
  placement="bottom"
  t-class="custom-popup"
 >
- <!--  <insurance-form></insurance-form>
-  
-<register-success></register-success>
-
--->
-
-<apply-success></apply-success> 
-
+	<block wx:if="{{1}}">
+		<register-success/>
+	</block>
+	<block wx:if="{{1}}">
+		<insurance-form/>
+	</block>
+	<block wx:if="{{1}}">
+		<apply-success/>
+	</block>
 </t-popup>
 

@@ -1,12 +1,13 @@
 // pages/activity-poster/index.ts
+import dayjs from 'dayjs'
 import * as request from '../../services/index'
-import { IActivityInfo, IClubInfo } from '../../services/index'
+import { IActivityInfo } from '../../services/index'
 import { MockActivity } from '../../utils/mock'
+import { compareVersion, WeekNames } from '../../utils/util'
 
 const app = getApp()
-const fs = wx.getFileSystemManager()
-
 const logger = wx.getRealtimeLogManager()
+const fs = wx.getFileSystemManager()
 
 Component({
   properties: {
@@ -15,29 +16,61 @@ Component({
 
   data: {
     qrcode: '',
-    User: {},
-    Club: {},
-    Activity: {},
+    date: '',
+    time: '',
+    Activity: <IActivityInfo>{},
     _poster: '',
   },
 
   lifetimes: {
     attached() {
-      this.setData({
-        User: app.globalData.User,
-        Club: app.globalData.Club,
-        Activity: MockActivity
-      })
+      const SystemInfo = app.globalData.SystemInfo as WechatMiniprogram.SystemInfo
+      const SDKVersion = SystemInfo.SDKVersion
+      if (compareVersion(SDKVersion, '3.0.0') < 0) {
+        wx.updateWeChatApp()
+        return
+      }
 
-      this.getWxaCode().then((qrcode: string) => {
-        this.setData({
-          qrcode
+      this.initData()
+      this.getWxaCode()
+        .then((qrcode: string) => {
+          this.setData({
+            qrcode
+          })
         })
-      })
     }
   },
 
   methods: {
+    initData() {
+      const eventChannel = this.getOpenerEventChannel()
+      if (eventChannel?.on) {
+        eventChannel.on('initData', (data) => {
+          this.setData({
+            Activity: data.Activity
+          })
+          this.formatDate()
+        })
+      } else {
+        this.setData({
+          Activity: MockActivity
+        })
+        this.formatDate()
+      }
+    },
+
+    formatDate() {
+      const Activity = this.data.Activity
+      const BeginTime = Activity.BeginTime
+      const t = dayjs(BeginTime)
+      const date = t.format('YYYY年MM月DD日')
+      const week = `${WeekNames[t.day()]} ${t.format('HH:mm')}`
+      this.setData({
+        week,
+        date,
+      })
+    },
+
     share() {
       this.takeSnapshot().then((filePath: string) => {
         wx.showShareImageMenu({
@@ -56,7 +89,7 @@ Component({
           resolve(this.data._poster)
         }
 
-        const ActivityId = (this.data.Activity as IActivityInfo).ActivityId
+        const ActivityId = this.data.Activity.ActivityId
         const selector = '.invite-poster'
         const filePath = `${wx.env.USER_DATA_PATH}/${ActivityId}_activity_poster.png`
 
@@ -82,29 +115,30 @@ Component({
     },
 
     getWxaCode(): Promise<string> {
-      const ActivityId = (this.data.Activity as IActivityInfo).ActivityId
+      const ActivityId = this.data.Activity.ActivityId
       const filePath = `${wx.env.USER_DATA_PATH}/${ActivityId}_activity_qrcode.png`
       return new Promise((resolve, reject) => {
+        request.getWxaCode({
+          scene: '123',
+          path: 'pages/activity-detail/index',
+          check_path: false,
+          env_version: 'trial',
+          width: 300,
+        }).then(resp => {
+          const buffer: any = resp.buffer
+          fs.writeFileSync(filePath, buffer, 'base64')
+          resolve(filePath)
+        }, () => {
+          reject()
+        })
+
         fs.access({
           path: filePath,
           success() {
             resolve(filePath)
           },
           fail: () => {
-            request.getWxaCode({
-              // scene: `ClubId=${ClubId}`,
-              scene: 'ActivityId=12344',
-              path: `pages/club-profile/index`,
-              check_path: true,
-              env_version: 'develop',
-              width: 300,
-            }).then(resp => {
-              const buffer: any = resp.buffer
-              fs.writeFileSync(filePath, buffer, 'base64')
-              resolve(filePath)
-            }, () => {
-              reject()
-            })
+            
           }
         })
       })

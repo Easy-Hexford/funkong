@@ -8,5 +8,6 @@ interface IAppOption {
     Club: IClubInfo
     InsuranceProductList: Array<IInsuranceProduct>
     Loc: IPoint
+    SystemInfo: WechatMiniprogram.SystemInfo
   }
 }

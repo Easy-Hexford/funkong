@@ -1,6 +1,6 @@
-import { formatActivityTime, formatDistance } from '../../utils/util'
+import { formatActivityTime } from '../../utils/util'
 import { calcDistance, getLocation } from '../../utils/location'
-import { IActivityInfo, IPoint } from '../../services'
+import { IActivityInfo } from '../../services'
 
 const app = getApp()
 
@@ -13,22 +13,24 @@ Component({
   },
 
   data: {
-    distance: '',
-    formatBeginTime: '',
+    distance: 0,
+    beginTime: '',
   },
 
   lifetimes: {
     attached() {
-      const BeginTime = this.data.activity.BeginTime
-      this.setData({
-        formatBeginTime: formatActivityTime(BeginTime)
-      })
-
+      this.formatDate()
       this.calcDistance()
     }
   },
 
   methods: {
+    formatDate() {
+      this.setData({
+        beginTime: formatActivityTime(this.data.activity.BeginTime)
+      })
+    },
+
     calcDistance() {
       const Activity = this.data.activity as IActivityInfo
       getLocation()
@@ -37,7 +39,7 @@ Component({
           calcDistance(from, to)
             .then(resp => {
               this.setData({
-                distance: formatDistance(resp.distance)
+                distance: resp.distance
               })
             })
         })

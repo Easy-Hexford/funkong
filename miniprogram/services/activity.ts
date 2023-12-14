@@ -41,7 +41,7 @@ export function exitActivity(req: IExitctivityReq): Promise<void> {
   })
 }
 
-export function getActivity(req: IGetActivityReq): Promise<IActivityInfo> {
+export function getActivity(req: IGetActivityReq): Promise<IGetActivityResp> {
   return call({
     url: '/activity/get',
     method: 'POST',
@@ -202,6 +202,10 @@ export interface IGetActivityReq {
   ActivityId: string
 }
 
+export interface IGetActivityResp {
+  Activity: IActivityInfo
+}
+
 export type IActivityAuditStatus = 'AuditFail' | 'AuditSucc' | 'Auditing'
 
 export interface IGetActicityListReq {
@@ -253,7 +257,7 @@ export interface IActivityInfo {
     MaxSignUpNumber: number,
     InsuranceProduct: IInsuranceProduct,
   },
-  ActivitySignUp: Array<ISignUpInfo>,
+  ActivitySignUpList: Array<ISignUpInfo>,
   SignUpNum: number,
   OwnerUser: ISimpleUserInfo,
   Club: IClubInfo

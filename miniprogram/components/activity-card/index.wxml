@@ -1,3 +1,5 @@
+<wxs src="../../utils/filter.wxs" module="filter"></wxs>
+
 <view class="container">
 	<view class="cover-area">
 		<view class="club-info row">
@@ -11,21 +13,21 @@
 			<view class="title line-clamp-2-ellipsis">{{activity.Title}}</view>
 			<view class="row" style="margin-top: 8px;">
 				<t-icon
-				 style="margin-right: 2px;"
+				 style="margin-right: 4px;"
 				 name="location-1"
 				 size="16"
 				 color="rgba(0, 0, 0, 0.55)"
 				/>
-				<text class="ellipsis" space="ensp"> {{activity.Location.Name}} {{distance}}</text>
+				<text class="ellipsis" space="ensp">{{activity.Location.Name}} {{filter.distance(distance)}}</text>
 			</view>
 			<view class="row" style="margin-top: 4px;">
 				<t-icon
-				 style="margin-right: 2px;"
+				 style="margin-right: 4px;"
 				 name="time"
 				 size="16"
 				 color="rgba(0, 0, 0, 0.55)"
 				/>
-				<text class="ellipsis" space="ensp"> {{formatBeginTime}}</text>
+				<text class="ellipsis" space="ensp">{{beginTime}}</text>
 			</view>
 			<view class="footer row-between">
 				<text>已有{{activity.SignUpNum}}人</text>

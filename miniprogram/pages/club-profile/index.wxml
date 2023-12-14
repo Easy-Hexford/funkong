@@ -34,9 +34,9 @@
 			</navigator>
 
 			<block wx:for="{{ActivityList}}" wx:key="ActivityId" wx:for-item="activity">
-				<view class="activity-wrap">
+				<navigator class="activity-wrap" url="../activity-detail/index?ActivityId={{activity.ActivityId}}">
 					<activity-card activity="{{activity}}" />
-				</view>
+				</navigator>
 			</block>
 
 		</view>

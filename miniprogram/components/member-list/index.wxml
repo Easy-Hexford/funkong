@@ -5,7 +5,7 @@
 			<view class="column-cross-center">
 				<image class="avatar" src="{{User.Icon}}" />
 				<text class="nickname">{{User.NickName}}</text>
-				<view wx:if="{{User.Role === 'SuperRole'}}" class="identity">{{User.Role === 'SuperRole' ? '主理人' : ''}}</view>
+				<!-- <view class="identity">主理人</view> -->
 			</view>
 		</view>
 	</block>

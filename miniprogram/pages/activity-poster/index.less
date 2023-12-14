@@ -36,8 +36,7 @@ page {
   border: 0.5px solid transparent;
   box-sizing: border-box;
   border-radius: 10px;
-  background-image: url('https://7072-prod-1gsl7u0x17e23d06-1322287298.tcb.qcloud.la/static/activity_share_card.png?sign=2a994afc71bb94485d04c4c51e546453&t=1702213530');
-  background-repeat: no-repeat;
+  background: linear-gradient(206deg, #C6FE83 -0.05%, #2FA37F 100%);
 }
 
 .club-info {
@@ -90,7 +89,29 @@ page {
   font-style: normal;
   font-weight: 600;
   line-height: 140%;
-  /* 28px */
+}
+
+.float-half-cicle {
+  position:absolute;
+  bottom: 80px;
+  left: 0;
+  right: 0;
+
+  .left-cicle {
+    width: 12px;
+    height: 24px;
+    background: #8B54FF;
+    border-radius: 12px 0 0 12px;
+    transform: translateX(2px);
+  }
+
+  .right-cicle {
+    width: 12px;
+    height: 24px;
+    background: #8B54FF;
+    border-radius: 0 12px 12px 0;
+    transform: translateX(-2px);
+  }
 }
 
 .qrcode-area {

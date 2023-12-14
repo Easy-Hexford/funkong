@@ -26,10 +26,10 @@
 																<text>时间</text>
 														</view>
 														<view class="sub-content line-clamp-2-ellipsis" style="margin-top: 8px;">
-																<text>周二 15:00</text>
+																<text>{{week}}</text>
 														</view>
 														<view class="sub-content line-clamp-2-ellipsis" style="font-size: 12px; font-weight: 400;">
-																<text>2023年11月03日</text>
+																<text>{{date}}</text>
 														</view>
 												</view>
 												<view style="margin-top: 36px;">
@@ -37,10 +37,15 @@
 																<text>地址</text>
 														</view>
 														<view class="sub-content line-clamp-2-ellipsis" style="margin-top: 8px;">
-																<text>{{Activity.LocationName}}</text>
+																<text>{{Activity.Location.Address}}</text>
 														</view>
 												</view>
-										</view>
+                    </view>
+                    
+                    <view class="float-half-cicle row-between">
+                      <view class="right-cicle"></view>
+                      <view class="left-cicle"></view>
+                    </view>
 										<view class="qrcode-area">
 												<view class="row-between" style="padding: 10px 14px 0 18px;">
 														<view class="column">

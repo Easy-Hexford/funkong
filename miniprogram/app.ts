@@ -9,9 +9,15 @@ App<IAppOption>({
     User: <IUserInfo>{},
     Club: <IClubInfo>{},
     InsuranceProductList: <Array<IInsuranceProduct>>[],
+    SystemInfo: <WechatMiniprogram.SystemInfo>{}
   },
   onLaunch() {
     request.login()
+    wx.getSystemInfo({
+      success:(res) => {
+        this.globalData.SystemInfo = res
+      }
+    })
   },
 
 })

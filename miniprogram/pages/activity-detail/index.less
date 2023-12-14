@@ -43,10 +43,9 @@
   font-size: 15px;
   font-weight: 400;
   line-height: 140%;
-  padding: 24px 0;
 
   &.active {
-    border-radius: 20px;
+    border-radius: 20px 20px 0 0;
     overflow: hidden;
   }
 }
@@ -85,8 +84,9 @@
   font-size: 20px;
   font-weight: 500;
   line-height: 140%;
+  margin-top: 24px;
   margin-left: 24px;
-  margin-bottom: 24px;
+  margin-bottom: 14px;
 }
 
 .tip--join {
@@ -144,15 +144,30 @@
   font-weight: 400;
   line-height: 140%; 
 
+  .btn--share {
+    background-color: transparent;
+    color: #4321F5;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 140%; 
+    padding: 0;
+    margin: 0;
+
+    &::after {
+      content: '';
+      border: none;
+    }
+  }
+
   .icon {
     width: 32px;
     height: 32px;
   }
 
-  .btn--manage {
+  .btn--manage, .btn--apply {
     border-radius: 12px;
     background: #4321F5;
-    padding: 8px 24px;
+    padding: 9px 16px;
     color: #AFF164;
     font-size: 18px;
     font-weight: 600;
