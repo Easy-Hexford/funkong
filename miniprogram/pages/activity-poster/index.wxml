@@ -1,66 +1,78 @@
 <!-- pages/activity-poster/index.wxml -->
-<t-navbar fixed="{{false}}" left-arrow class="custom-navbar" />
+<t-navbar
+ fixed="{{false}}"
+ left-arrow
+ class="navbar"
+ t-class-center="custom-navbar-center"
+/>
+
 <scroll-view scroll-y type="list" class="scrollable">
-		<view class="column-cross-center">
-				<snapshot class="invite-poster">
-						<view class="poster">
-								<view class="poster-inner">
-										<view class="divider-wrap">
-												<divider color="#C4C8CA" />
-										</view>
-										<view class="club-info column-cross-center">
-												<image mode="aspectFill" class="club-icon" src="{{Activity.Club.ClubIcon}}" />
-												<view class="club-name" style="margin-top: 9px;">{{Activity.Club.ClubName}}</view>
-										</view>
-										<view style="padding: 20px;">
-												<view style="margin-top: 20px;">
-														<view class="sub-title">
-																<text>来吧！！</text>
-														</view>
-														<view class="sub-content line-clamp-2-ellipsis" style="width: 120px;">
-																<text>{{Activity.Title}}</text>
-														</view>
-												</view>
-												<view style="margin-top: 76px;">
-														<view class="sub-title">
-																<text>时间</text>
-														</view>
-														<view class="sub-content line-clamp-2-ellipsis" style="margin-top: 8px;">
-																<text>{{week}}</text>
-														</view>
-														<view class="sub-content line-clamp-2-ellipsis" style="font-size: 12px; font-weight: 400;">
-																<text>{{date}}</text>
-														</view>
-												</view>
-												<view style="margin-top: 36px;">
-														<view class="sub-title">
-																<text>地址</text>
-														</view>
-														<view class="sub-content line-clamp-2-ellipsis" style="margin-top: 8px;">
-																<text>{{Activity.Location.Address}}</text>
-														</view>
-												</view>
-                    </view>
-                    
-                    <view class="float-half-cicle row-between">
-                      <view class="right-cicle"></view>
-                      <view class="left-cicle"></view>
-                    </view>
-										<view class="qrcode-area">
-												<view class="row-between" style="padding: 10px 14px 0 18px;">
-														<view class="column">
-																<view style="margin-bottom: 5px;">看这里👇👇</view>
-																<view class="tips">
-																		<view style="margin-bottom: 3px;">扫码加入邀请团</view>
-																		<view>参与后将成为该俱乐部首批成员</view>
-																</view>
-														</view>
-														<image class="qrcode" mode="aspectFit" bind:load="onQrcodeLoad" src="{{qrcode}}" />
-												</view>
-										</view>
-								</view>
+	<view class="column-cross-center">
+		<snapshot class="invite-poster">
+			<view class="poster">
+				<view class="poster-inner">
+					<view class="divider-wrap">
+						<divider color="#C4C8CA" />
+					</view>
+					<view class="club-info column-cross-center">
+						<image mode="aspectFill" class="club-icon" src="{{Activity.Club.ClubIcon}}" />
+						<view class="club-name" style="margin-top: 9px;">{{Activity.Club.ClubName}}</view>
+					</view>
+					<view style="padding: 20px;">
+						<view style="margin-top: 20px;">
+							<view class="sub-title">
+								<text>来吧！！</text>
+							</view>
+							<view class="sub-content line-clamp-2-ellipsis" style="width: 120px;">
+								<text>{{Activity.Title}}</text>
+							</view>
 						</view>
-				</snapshot>
-				<view class="btn--invite center" bind:tap="share">邀请朋友</view>
-		</view>
+						<view style="margin-top: 76px;">
+							<view class="sub-title">
+								<text>时间</text>
+							</view>
+							<view class="sub-content line-clamp-2-ellipsis" style="margin-top: 8px;">
+								<text>{{week}}</text>
+							</view>
+							<view class="sub-content line-clamp-2-ellipsis" style="font-size: 12px; font-weight: 400;">
+								<text>{{date}}</text>
+							</view>
+						</view>
+						<view style="margin-top: 36px;">
+							<view class="sub-title">
+								<text>地址</text>
+							</view>
+							<view class="sub-content line-clamp-2-ellipsis" style="margin-top: 8px;">
+								<text>{{Activity.Location.Address}}</text>
+							</view>
+						</view>
+					</view>
+
+					<view class="float-half-cicle row-between">
+						<view class="right-cicle" />
+						<view class="left-cicle" />
+					</view>
+					<view class="qrcode-area">
+						<view class="row-between" style="padding: 10px 14px 0 18px;">
+							<view class="column">
+								<view style="margin-bottom: 5px;">看这里👇👇</view>
+								<view class="tips">
+									<view style="margin-bottom: 3px;">扫码加入邀请团</view>
+									<view>参与后将成为该俱乐部首批成员</view>
+								</view>
+							</view>
+							<image
+							 class="qrcode"
+							 mode="aspectFit"
+							 bind:load="onQrcodeLoad"
+							 src="{{qrcode}}"
+							/>
+						</view>
+					</view>
+				</view>
+			</view>
+		</snapshot>
+		<view class="btn--invite center" bind:tap="share">邀请朋友</view>
+	</view>
 </scroll-view>
+

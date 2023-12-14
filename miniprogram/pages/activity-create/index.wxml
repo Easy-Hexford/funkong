@@ -204,6 +204,6 @@
  left-arrow
  fixed
  title="创建活动"
- t-class="custom-navbar"
+ t-class="navbar"
 />
 

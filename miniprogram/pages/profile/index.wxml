@@ -105,5 +105,5 @@
  left-arrow
  fixed
  title="修改个人资料"
- t-class="custom-navbar"
+ t-class="navbar"
 />

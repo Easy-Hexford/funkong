@@ -3,17 +3,16 @@
 		<view wx:for="{{ActivityList}}" class="scroll-item">
 			<activity/>
 		</view>
-  </block>
-  <block wx:else>
-    <view style="margin-top: 160px;" class="column-cross-center">
-      <image style="width: 48px; height: 124px;" mode="aspectFill" src="../../assets/images/@chartlet_man_book.png"></image>
-      <view class="tip-1" style="margin-top: 20px;"><text>暂无新活动</text></view>
-    </view>
-  </block>
+	</block>
+	<block wx:else>
+		<view style="padding-top: 160px;" class="column-cross-center">
+			<image style="width: 48px; height: 124px;" mode="aspectFill" src="../../assets/images/@chartlet_man_book.png" />
+			<view class="tip-1" style="margin-top: 20px;">
+				<text>暂无新活动</text>
+			</view>
+		</view>
+	</block>
 </scroll-view>
 
-<t-navbar
- fixed
- title="Fun空"
- t-class="custom-navbar"
-/>
+<t-navbar fixed title="Fun空" class="navbar" />
+

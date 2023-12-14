@@ -98,6 +98,6 @@
  left-arrow
  fixed
  title="创建俱乐部"
- t-class="custom-navbar"
+ t-class="navbar"
 />
 

@@ -1,0 +1,22 @@
+<!--components/expand-member-list/index.wxml-->
+<view class="container">
+	<view class="bar-wrap">
+		<view class="bar center">
+			<t-icon name="chevron-down" size="16" color="rgba(0, 0, 0, 0.3)" />
+		</view>
+	</view>
+	<view class="title">{{title}}</view>
+
+	<scroll-view scroll-y class="scrollable">
+		<view class="content">
+			<view class="grid">
+				<block wx:for="{{types}}" wx:key="*this">
+					<view class="cell center {{selected === index ? 'active' : ''}}" data-idx="{{index}}" bind:tap="select">
+						<text class="ellipsis">{{item.ActivityType}}</text>
+					</view>
+				</block>
+			</view>
+		</view>
+	</scroll-view>
+</view>
+
