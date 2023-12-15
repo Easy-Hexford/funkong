@@ -69,7 +69,19 @@
 	</view>
 </scroll-view>
 
-<view class="tool-bar row-between">
+
+<view wx:if="{{mode === 'audit'}}" class="tool-bar center">
+  <view class="btn row" style="margin-right: 24px;" data-status="AuditFail" bind:tap="audit">
+    <t-icon wx:if="{{auditResult === 'AuditFail'}}" name="close" size="20" color="#4321F5" style="margin-right: 6px;"></t-icon>
+    <text>不通过</text>
+  </view>
+  <view class="btn active row" data-status="AuditSucc" bind:tap="audit">
+    <t-icon wx:if="{{auditResult === 'AuditSucc'}}" name="check" size="20" color="#AFF164" style="margin-right: 6px;"></t-icon>
+    <text>通过</text>
+  </view>
+</view>
+
+<view wx:else class="tool-bar row-between">
 	<view class="row">
 		<button open-type="share" class="btn--share" bind:tap="share">
 			<view class="column-cross-center">
@@ -89,6 +101,7 @@
     <view bind:tap="apply" class="btn--apply">¥{{filter.money(Activity.ActivityRule.Price)}} 走起</view>
   </block>
 </view>
+
 
 <t-navbar left-arrow fixed t-class="navbar" />
 

@@ -177,6 +177,7 @@ export interface IUpdateActivityReq {
   EndTime?: string,
   PicList?: IActivityPicList,
   Location?: ILocation,
+  AuditStatus?: IActivityAuditStatus
   ActivityRule?: {
     MaxSignUpNumber: number,
     Price: number,

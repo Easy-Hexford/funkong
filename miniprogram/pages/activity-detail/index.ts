@@ -1,6 +1,6 @@
 // pages/activity-detail/index.ts
 import * as request from '../../services/index'
-import type { IActivityInfo, ISimpleUserInfo, IUserInfo } from '../../services'
+import type { IActivityAuditStatus, IActivityInfo, ISimpleUserInfo, IUserInfo } from '../../services'
 import { calcDistance, getLocation } from '../../utils/location'
 import { formatActivityTime } from '../../utils/util'
 import { getPosterQuery } from '../../utils/bind'
@@ -16,6 +16,11 @@ Component({
 
     scene: {
       type: String,
+    },
+
+    mode: {
+      type: String,
+      value: 'audit' // audit
     }
   },
 
@@ -26,6 +31,8 @@ Component({
     ActivityMembers: <Array<ISimpleUserInfo>>[],
     OwnerUserId: '',
     User: <IUserInfo>{},
+
+    auditResult: <IActivityAuditStatus>''
   },
 
   pageLifetimes: {
@@ -127,6 +134,18 @@ Component({
         name: Location.Name,
         address: Location.Address
       })
-    }
+    },
+
+    audit(e: any) {
+      const status = e.currentTarget.dataset.status
+      request.updateActivity({
+        ActivityId: this.data.ActivityId,
+        AuditStatus: status
+      }).then(() => {
+        this.setData({
+          auditResult: status
+        })
+      })
+    },
   }
 })

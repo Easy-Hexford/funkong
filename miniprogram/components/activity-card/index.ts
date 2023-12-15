@@ -11,11 +11,18 @@ Component({
       type: Object,
       value: {}
     },
+
+    mode: {
+      type: String,
+      value: 'normal' // 'audit
+    }
   },
 
   data: {
     distance: 0,
     beginTime: '',
+
+    auditStatus: ''
   },
 
   lifetimes: {
@@ -32,6 +39,8 @@ Component({
         beginTime: formatActivityTime(BeginTime)
       })
     },
+
+    
 
     calcDistance() {
       const Activity = this.data.activity as IActivityInfo

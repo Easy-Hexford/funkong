@@ -1,4 +1,5 @@
 import { SERVICE_NAME, SERVICE_ENV_ID, CLOUD_ENV_ID } from '../config'
+import env from '../utils/env'
 
 let _initCloud = false
 
@@ -34,8 +35,16 @@ async function call(options: WechatMiniprogram.RequestOption) {
   if (result.data.code != 0) {
     const code = result.data.code
     const message = result.data.message
+
+    if (env.kDebugMode) {
+      wx.showModal({
+        title: `code=${code}`,
+        content: message
+      })
+    }
     throw new RequestError(`ur: ${options.url}, code=${code}, message=${message}`)
   }
+  
   return result.data.data
 
 }
