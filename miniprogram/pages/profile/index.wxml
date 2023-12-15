@@ -1,109 +1,115 @@
-<wxs src="../../utils/filter.wxs" module="filter"></wxs>
-
 <scroll-view scroll-y type="list" class="scrollable">
 	<view class="banner">
-		<block wx:if="{{UserCoverTempFile}}">
-			<image class="cover" mode="aspectFill" src="{{UserCoverTempFile}}" />
+		<block wx:if="{{User.CoverUrls.Items[0]}}">
+			<image class="cover" mode="aspectFill" src="{{User.CoverUrls.Items[0]}}" />
 		</block>
 		<block wx:else>
 			<view style="transform: translateY(-47px);" class="column-cross-center" bind:tap="chooseCover">
 				<image class="banner-bg" src="../../assets/images/@chartlet_man_bath.png" />
-				<view class="center">
-					<t-icon name="add" size="24" color="rgba(0, 0, 0, 0.3)" />
-					<text style="margin-left: 8px;">添加背景</text>
-				</view>
 			</view>
 		</block>
 	</view>
 
 	<view class="sheet">
-		<view class="content-wrap {{UserCoverTempFile ? 'active' : ''}}">
-			<view class="form-field-wrap">
-        <t-input
-         value="{{User.NickName}}"
-         clearable
-				 placeholder="名字"
-				 type="nickname"
-				 placeholder-class="placeholder"
-				 borderless="{{true}}"
-         t-class="custom-input-field"
-         bind:blur="onNameInputDone"
-         bind:enter="onNameInputDone"
-				/>
-			</view>
+		<view class="content-wrap active">
+			<block wx:if="{{User.Role === 'SuperRole'}}">
+				<view wx:if="{{isAuditing || Club.AuditStatus === 'AuditSucc'}}">
+					<view class="field-title">俱乐部</view>
+					<view class="form-field-wrap">
+						<view class="input-field" style="padding-top: 0; padding-bottom: 0;">
+							<view
+							 style="padding: 17px 0;"
+							 class="row-between"
+							 hover-class="none"
+							 bind:tap="viewClub"
+							>
+								<view class="row">
+									<image class="icon--club circle" mode="aspectFill" src="{{Club.ClubIcon}}" />
+									<text>{{Club.ClubName}}</text>
+								</view>
+								<view class="row">
+									<text wx:if="{{isAuditing}}" class="tip-auditing">审核中</text>
+									<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+								</view>
+							</view>
 
-			<view class="form-field-wrap">
-				<view class="input-field row-between" bind:tap="showGenderPicker">
-					<text wx:if="{{User.Gender}}">{{User.Gender === 'Man' ? '男' : '女'}}</text>
-					<text wx:else class="placeholder">性别</text>
-					<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
-				</view>
-			</view>
+							<t-divider t-class="custom-divider" />
 
-			<view class="form-field-wrap">
-				<view class="input-field row-between" bind:tap="showDatePicker">
-					<text wx:if="{{User.BirthdayDate}}">{{filter.birthday(User.BirthdayDate)}}</text>
-					<text wx:else class="placeholder">生日</text>
-					<t-icon name="menu" size="24" color="rgba(0, 0, 0, 0.3)" />
-				</view>
-			</view>
+							<view
+							 style="padding: 17px 0;"
+							 class="row-between"
+							 hover-class="none"
+							 bind:tap="createActivity"
+							>
+								<text class="{{isAuditing ? 'disabled' : ''}}">创建活动</text>
+								<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+							</view>
 
-			<view class="form-field-wrap">
-				<view class="center" style="margin-top: 90px;">
-					<view class="btn--modiry center {{submittable ? 'active' : ''}}" bind:tap="submit">
-						<text>修改</text>
+							<t-divider t-class="custom-divider" />
+
+							<view
+							 style="padding: 17px 0;"
+							 class="row-between"
+							 hover-class="none"
+							 bind:tap="invite"
+							>
+								<text class="{{isAuditing ? 'disabled' : ''}}">邀请粉丝</text>
+								<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+							</view>
+						</view>
 					</view>
 				</view>
+
+				<view wx:else class="form-field-wrap">
+					<navigator class="input-field row-between" url="../club-create/index" hover-class="none">
+						<text>创建俱乐部</text>
+						<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+					</navigator>
+				</view>
+			</block>
+
+			<view class="form-field-wrap" wx:if="{{User.AuditRole === 'NormalAuditRole'}}">
+				<navigator class="input-field row-between" url="../audit/index" hover-class="none">
+					<text>审核台</text>
+					<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+				</navigator>
+			</view>
+
+			<view class="form-field-wrap">
+				<navigator class="input-field row-between" url="../customer-service/index" hover-class="none">
+					<text>联系客服</text>
+					<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+				</navigator>
 			</view>
 		</view>
+
 		<view class="avatar-wrap column-cross-center">
-			<button class="btn--add center" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+			<view class="btn--add center">
 				<t-avatar
-				 wx:if="{{UserIconTempFile}}"
+				 wx:if="{{User.Icon}}"
 				 alt="头像"
-				 image="{{UserIconTempFile}}"
+				 image="{{User.Icon}}"
 				 size="96px"
 				/>
-				<t-icon
+				<image
 				 wx:else
-				 name="add"
-				 size="28"
-				 color="rgba(0, 0, 0, 0.3)"
+				 class="avatar"
+				 mode="aspectFill"
+				 src="../../assets/images/@avatar_woman.svg"
 				/>
-			</button>
-			<text style="margin-top: 10px">{{UserIconTempFile ? '更换头像' : '添加头像'}}</text>
+			</view>
+
+			<navigator class="nickname center" url="../user-info/index" hover-class="none">
+				<text>{{User.NickName || '尊嘟假嘟'}}</text>
+				<t-icon
+				 style="margin-left: 4px;"
+				 name="edit"
+				 size="20"
+				 color="#6CCEA2"
+				/>
+			</navigator>
+			<view class="identity-badge">{{User.Role === 'SuperRole' ? '主理人' : User.Phone ? '' : '游客'}}</view>
 		</view>
 	</view>
-
 </scroll-view>
 
-<t-picker
-  visible="{{genderPickerVisible}}"
-  title="性别"
-  cancelBtn="取消"
-  confirmBtn="确认"
-  bind:confirm="onConfirmGender"
-  bind:cancel="hideGenderPicker"
->
-  <t-picker-item options="{{genders}}" />
-</t-picker>
-
-<t-date-time-picker
- title="生日"
- visible="{{datePickerVisible}}"
- mode="date"
- defaultValue="{{date}}"
- format="YYYY-MM-DD HH:mm:ss"
- bind:confirm="onConfirmDate"
- bind:cancel="hideDatePicker"
- start="{{start}}"
- end="{{end}}"
-/>
-
-
-<t-navbar
- left-arrow
- fixed
- title="修改个人资料"
- t-class="navbar"
-/>

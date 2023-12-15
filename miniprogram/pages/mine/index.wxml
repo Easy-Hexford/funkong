@@ -1,115 +1,70 @@
-<scroll-view scroll-y type="list" class="scrollable">
-	<view class="banner">
-		<block wx:if="{{User.CoverUrls.Items[0]}}">
-			<image class="cover" mode="aspectFill" src="{{User.CoverUrls.Items[0]}}" />
-		</block>
-		<block wx:else>
-			<view style="transform: translateY(-47px);" class="column-cross-center" bind:tap="chooseCover">
-				<image class="banner-bg" src="../../assets/images/@chartlet_man_bath.png" />
+<t-navbar title="我的活动" class="navbar" />
+
+<scroll-view
+ class="scrollable"
+ scroll-y
+ type="list"
+ refresher-enabled
+ refresher-triggered="{{triggered}}"
+ refresher-default-style="black"
+ refresher-background="#ffffff00"
+ bind:refresherrefresh="onRefresh"
+ bind:scrolltolower="loadMore"
+>
+	<block wx:if="{{loading}}">
+		<view style="width: 100%; height: 100%;" class="center">
+			<t-loading indicator="{{false}}" text="加载中..." />
+		</view>
+	</block>
+	<block wx:else>
+		<view class="selection">
+			<view
+			 wx:for="{{selections}}"
+			 wx:key="index"
+			 data-tag="{{item.tag}}"
+			 bind:tap="select"
+			 class="btn {{signUpTag === item.tag ? 'active': ''}}"
+			>{{item.name}}
 			</view>
-		</block>
-	</view>
+		</view>
+		<view class="content" wx:if="{{ActivitySignUpList.length}}">
+			<navigator
+			 class="activity-wrap"
+			 wx:for="{{ActivitySignUpList}}"
+			 wx:key="ActivityId"
+			 wx:for-item="SignUpActivity"
+			 url="../activity-detail/index?ActivityId={{SignUpActivity.Activity.ActivityId}}"
+			>
+				<sign-up-activity-card signUpActivity="{{SignUpActivity}}" />
+			</navigator>
+			<view class="load-more">
+				<view wx:if="{{ActivityList.length < ActivityTotalCount}}">
+					<t-loading
+					 theme="circular"
+					 size="17px"
+					 text="正在寻找更多活动..."
+					 class="tip--loading"
+					/>
+				</view>
+				<view wx:else class="center">
+					<text class="tip--nomore">----- 暂无更多活动 -----</text>
+				</view>
+			</view>
+		</view>
 
-	<view class="sheet">
-		<view class="content-wrap active">
-			<block wx:if="{{User.Role === 'SuperRole'}}">
-				<view wx:if="{{isAuditing || Club.AuditStatus === 'AuditSucc'}}">
-					<view class="field-title">俱乐部</view>
-					<view class="form-field-wrap">
-						<view class="input-field" style="padding-top: 0; padding-bottom: 0;">
-							<view
-							 style="padding: 17px 0;"
-							 class="row-between"
-							 hover-class="none"
-							 bind:tap="viewClub"
-							>
-								<view class="row">
-									<image class="icon--club circle" mode="aspectFill" src="{{Club.ClubIcon}}" />
-									<text>{{Club.ClubName}}</text>
-								</view>
-								<view class="row">
-									<text wx:if="{{isAuditing}}" class="tip-auditing">审核中</text>
-									<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
-								</view>
-							</view>
-
-							<t-divider t-class="custom-divider" />
-
-							<view
-							 style="padding: 17px 0;"
-							 class="row-between"
-							 hover-class="none"
-							 bind:tap="createActivity"
-							>
-								<text class="{{isAuditing ? 'disabled' : ''}}">创建活动</text>
-								<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
-							</view>
-
-							<t-divider t-class="custom-divider" />
-
-							<view
-							 style="padding: 17px 0;"
-							 class="row-between"
-							 hover-class="none"
-							 bind:tap="invite"
-							>
-								<text class="{{isAuditing ? 'disabled' : ''}}">邀请粉丝</text>
-								<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
-							</view>
-						</view>
+		<block wx:else>
+			<view class="empty-container">
+				<view class="column-cross-center">
+					<image style="width: 56px; height: 82px;" mode="aspectFill" src="../../assets/images/@chartlet_woman_music_2.png" />
+					<view class="tip-1" style="margin-top: 26px;">
+						<text wx:if="{{signUpTag === 'All'}}">暂未报名任何活动</text>
+						<text wx:if="{{signUpTag === 'Begin'}}">暂无等待中的活动</text>
+						<text wx:if="{{signUpTag === 'End'}}">暂无已结束的活动</text>
 					</view>
 				</view>
-
-				<view wx:else class="form-field-wrap">
-					<navigator class="input-field row-between" url="../club-create/index" hover-class="none">
-						<text>创建俱乐部</text>
-						<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
-					</navigator>
-				</view>
-			</block>
-
-			<view class="form-field-wrap" wx:if="{{User.AuditRole === 'NormalAuditRole'}}">
-				<navigator class="input-field row-between" url="../audit/index" hover-class="none">
-					<text>审核台</text>
-					<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
-				</navigator>
 			</view>
+		</block>
+	</block>
 
-			<view class="form-field-wrap">
-				<navigator class="input-field row-between" url="../customer-service/index" hover-class="none">
-					<text>联系客服</text>
-					<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
-				</navigator>
-			</view>
-		</view>
-
-		<view class="avatar-wrap column-cross-center">
-			<view class="btn--add center">
-				<t-avatar
-				 wx:if="{{User.Icon}}"
-				 alt="头像"
-				 image="{{User.Icon}}"
-				 size="96px"
-				/>
-				<image
-				 wx:else
-				 class="avatar"
-				 mode="aspectFill"
-				 src="../../assets/images/@avatar_woman.svg"
-				/>
-			</view>
-
-			<navigator class="nickname center" url="../profile/index" hover-class="none">
-				<text>{{User.NickName || '尊嘟假嘟'}}</text>
-				<t-icon
-				 style="margin-left: 4px;"
-				 name="edit"
-				 size="20"
-				 color="#6CCEA2"
-				/>
-			</navigator>
-			<view class="identity-badge">{{User.Role === 'SuperRole' ? '主理人' : User.Phone ? '' : '游客'}}</view>
-		</view>
-	</view>
 </scroll-view>
 

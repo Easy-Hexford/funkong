@@ -2,8 +2,8 @@
 
 const tabUrls = [
   '/pages/home/index',
-  '/pages/activity/index',
-  '/pages/mine/index'
+  '/pages/mine/index',
+  '/pages/profile/index'
 ]
 
 Component({

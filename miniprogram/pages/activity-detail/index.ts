@@ -109,7 +109,7 @@ Component({
 
     apply() {
       wx.navigateTo({
-        url: '../apply/index',
+        url: '../sign-up/index',
         success: (res) => {
           res.eventChannel.emit('initData', {
             User: this.data.User,

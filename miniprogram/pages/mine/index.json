@@ -1,10 +1,9 @@
 {
   "component": true,
   "usingComponents": {
-    "t-divider": "tdesign-miniprogram/divider/divider",
+    "t-loading": "tdesign-miniprogram/loading/loading",
     "t-icon": "tdesign-miniprogram/icon/icon",
-    "t-avatar": "tdesign-miniprogram/avatar/avatar"
-
-
+    "sign-up-activity-card": "../../components/sign-up-activity-card/index"
+   
   }
 }

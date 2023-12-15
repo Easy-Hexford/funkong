@@ -96,7 +96,7 @@ Component({
       const btn = e.detail.btn
       if (btn === 'fill') {
         wx.navigateTo({
-          url: '../profile/index'
+          url: '../user-info/index'
         })
       }
       this.hidePopup()

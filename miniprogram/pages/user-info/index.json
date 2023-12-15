@@ -1,0 +1,13 @@
+{
+  "component": true,
+  "disableScroll": true,
+  "usingComponents": {
+    "t-upload": "tdesign-miniprogram/upload/upload",
+    "t-input": "tdesign-miniprogram/input/input",
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-picker": "tdesign-miniprogram/picker/picker",
+    "t-picker-item": "tdesign-miniprogram/picker-item/picker-item",
+    "t-date-time-picker": "tdesign-miniprogram/date-time-picker/date-time-picker",
+    "t-avatar": "tdesign-miniprogram/avatar/avatar"
+  }
+}

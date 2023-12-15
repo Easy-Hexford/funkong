@@ -1,14 +1,14 @@
 {
   "pages": [
     "pages/home/index",
-    "pages/activity/index",
+    "pages/mine/index",
     "pages/activity-detail/index",
     "pages/activity-create/index",
     "pages/activity-poster/index",
-    "pages/mine/index",
-    "pages/apply/index",
-    "pages/customer-service/index",
     "pages/profile/index",
+    "pages/sign-up/index",
+    "pages/customer-service/index",
+    "pages/user-info/index",
     "pages/club-poster/index",
     "pages/club-create/index",
     "pages/club-profile/index",
@@ -28,7 +28,7 @@
       "sdkVersionEnd": "15.255.255"
     }
   },
-  "requiredPrivateInfos": [ 
+  "requiredPrivateInfos": [
     "getLocation",
     "chooseLocation"
   ],
@@ -49,15 +49,19 @@
     "color": "#000000",
     "selectedColor": "#000000",
     "backgroundColor": "#000000",
-    "list": [{
-      "pagePath": "pages/home/index",
-      "text": "Fun空"
-    }, {
-      "pagePath": "pages/activity/index",
-      "text": "活动"
-    },{
-      "pagePath": "pages/mine/index",
-      "text": "我"
-    }]
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "Fun空"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "text": "活动"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我"
+      }
+    ]
   }
 }
