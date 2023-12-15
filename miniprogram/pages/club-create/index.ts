@@ -9,6 +9,10 @@ const log = wx.getRealtimeLogManager()
 const CLUB_PIC_CATALOG = 'club/'
 
 Component({
+  options: {
+    pureDataPattern: /^_/
+  },
+
   behaviors: [uploadBehavior],
 
   properties: {
@@ -25,6 +29,7 @@ Component({
       }
     },
     submittable: false,
+    _submitting: false,
   },
 
   attached() {
@@ -43,8 +48,13 @@ Component({
 
   methods: {
     submit() {
+      if (this.data._submitting) {
+        return
+      }
+
       if (!this.data.submittable) return
       
+      this.data._submitting = true
       const Club: IClubInfo = this.data.Club as any
       request.createClub({
         ClubType: 'NormalClub',
@@ -54,6 +64,8 @@ Component({
         Province: Club.Province,
         City: Club.City,
         ClubDesc: Club.ClubDesc
+      }).finally(() => {
+        this.data._submitting = false
       })
       this.setData({
         'Club.AuditStatus': 'Auditing'

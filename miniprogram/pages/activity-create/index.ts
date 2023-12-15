@@ -23,6 +23,10 @@ interface Illustration {
 Component({
   behaviors: [uploadBehavior],
 
+  options: {
+    pureDataPattern: /^_/
+  },
+  
   properties: {
     ClubId: {
       type: String,
@@ -58,6 +62,7 @@ Component({
     illustrations: [],
 
     submittable: false,
+    _submitting: false,
   },
 
   observers: {
@@ -81,6 +86,10 @@ Component({
 
   methods: {
     submit() {
+      if (this.data._submitting) {
+        return
+      }
+
       if (this.data.errPrice) {
         return
       }
@@ -92,6 +101,7 @@ Component({
 
       if (!this.data.submittable) return
 
+      this.data._submitting = true
       const Activity = this.data.Activity
       const illustrations: Array<Illustration> = this.data.illustrations
       request.createActivity({
@@ -114,10 +124,16 @@ Component({
           icon: 'success',
           title: '已提交审核',
         })
-
         setTimeout(() => {
           wx.navigateBack()
         }, 1500)
+      }, () => {
+        wx.showToast({
+          icon: 'error',
+          title: '提交失败',
+        })
+      }).finally(() => {
+        this.data._submitting = false
       })
     },
 

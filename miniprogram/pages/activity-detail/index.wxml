@@ -8,8 +8,10 @@
 	<view class="sheet">
 		<view class="content-wrap active">
 			<view class="title">
-				<text>{{Activity.Title}}</text>
-				<text style="margin-left: 8px;" class="tip--join">已参团</text>
+        <text>{{Activity.Title}}</text>
+        <block wx:if="{{Activity.SelfActivitySignUp}}">
+          <text style="margin-left: 8px;" class="tip--join">已参团</text>
+        </block>
 			</view>
 
 			<view class="activity-addr row">
