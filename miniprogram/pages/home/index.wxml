@@ -1,18 +1,59 @@
-<scroll-view scroll-y type="list" class="scrollable">
-	<block wx:if="{{ActivityList.length}}">
-		<view wx:for="{{ActivityList}}" class="scroll-item">
-			<activity/>
+<t-navbar fixed="{{false}}" class="navbar" t-class-center="navbar-center">
+	<view slot="title">
+    <text>Fun空</text>
+    <block wx:if="{{ActivityList.length}}">
+      <image class="icon--man-book" src="../../assets/images/@chartlet_man_book.png" />
+      <image class="icon--pumpkin" src="../../assets/images/@icon_pumpkin.svg" />
+    </block>
+	</view>
+</t-navbar>
+
+<scroll-view
+ class="scrollable"
+ scroll-y
+ type="list"
+ refresher-enabled
+ refresher-triggered="{{triggered}}"
+ refresher-default-style="black"
+ refresher-background="#ffffff00"
+ bind:refresherrefresh="onRefresh"
+ bind:scrolltolower="loadMore"
+>
+	<block wx:if="{{loading}}">
+		<view class="loading column-cross-center">
+			<view style="padding-top: 100px;">
+				<image class="icon--loading-pumpkin" src="../../assets/images/@icon_pumpkin.svg" />
+			</view>
+			<view style="margin-top: 20px;">
+				<text class="tip">活动即将来袭，稍等片刻</text>
+			</view>
 		</view>
+  </block>
+  <block wx:elif="{{ActivityList.length}}">
+		<navigator
+		 class="activity-wrap"
+		 wx:for="{{ActivityList}}"
+		 wx:key="ActivityId"
+		 wx:for-item="activity"
+		 url="../activity-detail/index?ActivityId={{activity.ActivityId}}"
+		>
+			<activity-card activity="{{activity}}" />
+    </navigator>
+    <view class="load-more">
+      <text wx:if="{{ActivityList.length < ActivityTotalCount}}">加载更多...</text>
+      <text wx:else>没有更多啦</text>
+    </view>
 	</block>
 	<block wx:else>
 		<view style="padding-top: 160px;" class="column-cross-center">
-			<image style="width: 48px; height: 124px;" mode="aspectFill" src="../../assets/images/@chartlet_man_book.png" />
-			<view class="tip-1" style="margin-top: 20px;">
+			<image class="icon-1" mode="aspectFill" src="../../assets/images/@chartlet_man_book.png" />
+			<view class="tip" style="margin-top: 20px;">
 				<text>暂无新活动</text>
+			</view>
+			<view class="tip" style="margin-top: 14px;">
+				<text >下拉刷新看看</text>
 			</view>
 		</view>
 	</block>
 </scroll-view>
-
-<t-navbar fixed title="Fun空" class="navbar" />
 
