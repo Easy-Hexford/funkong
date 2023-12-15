@@ -1,0 +1,84 @@
+/* components/sign-up-activity-card/index.wxss */
+@import '../../style//common.less';
+
+.step-container {
+  padding-left: 16px;
+  padding-bottom: 32px;
+  border-left: 2px dashed rgba(0, 0, 0, 0.19);
+
+  .date {
+    position: relative;
+    color: #4321F5;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
+
+  .step-dot {
+    position: absolute;
+    left: -17px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #4321F5;
+  }
+
+  .addr {
+    margin-top: 8px;
+    color: rgba(0, 0, 0, 0.60);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%;
+  }
+
+  .content {
+    margin-top: 12px;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+
+  }
+
+  .cover {
+    width: 100%;
+    height: 178px;
+  }
+
+  .overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 75px;
+    padding: 16px;
+    box-sizing: border-box;
+    border-radius: 0px 0px 8px 8px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.77) 100%);
+  }
+
+  .title-wrap {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    text-align: justify;
+  }
+
+  .title {
+    color: #FFF;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 140%;
+  }
+
+  .status {
+    color: rgba(255, 255, 255, 0.60);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 140%;
+  }
+}

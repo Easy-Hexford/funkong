@@ -1,4 +1,4 @@
-<wxs src="../../utils/filter.wxs" module="filter"></wxs>
+<wxs src="../../utils/filter.wxs" module="filter" />
 
 <view class="container">
 	<view class="cover-area">

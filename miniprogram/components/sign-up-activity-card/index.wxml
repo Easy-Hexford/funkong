@@ -1,0 +1,26 @@
+<!--components/sign-up-Activity-card/index.wxml-->
+<view class="step-container">
+	<view class="date row-between">
+		<view class="step-dot" />
+		<text>{{beginTime}}</text>
+		<t-icon name="ellipsis" size="24" color="rgba(0, 0, 0, 0.55)" />
+	</view>
+	<view class="addr row">
+		<t-icon
+		 style="margin-right: 4px;"
+		 name="location-1"
+		 size="16"
+		 color="rgba(0, 0, 0, 0.55)"
+		/>
+    <text class="ellipsis" space="ensp">{{Activity.Location.Name}} {{filter.distance(distance)}}</text>
+	</view>
+	<view class="content">
+		<image class="cover" mode="aspectFill" src="{{Activity.CoverUrls.Items[0]}}" />
+		<view class="overlay">
+			<view class="title-wrap row-between">
+				<text class="title">{{Activity.Title}}</text>
+				<text class="status">等待成团加入</text>
+			</view>
+		</view>
+	</view>
+</view>

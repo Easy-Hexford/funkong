@@ -82,7 +82,7 @@ export function getPulicActivityList(req: IGetPublicActivityListReq): Promise<IG
 
 export function getSignActicityList(req: IGetSignUpActicityListReq): Promise<IGetSignUpActicityListResp> {
   return call({
-    url: '/aactivity/get_sign_up_list',
+    url: '/activity/get_sign_up_list',
     method: 'POST',
     data: req
   })
@@ -279,8 +279,8 @@ export type IActivitySignUpTag = 'All' | 'Begin' | 'End'
 
 export interface IGetSignUpActicityListReq {
   ActivitySignUpTag: IActivitySignUpTag,
-  Offset: 0,
-  Limit: 0
+  Offset: number,
+  Limit: number
 }
 
 export interface ISignUpActicityInfo {
@@ -297,6 +297,6 @@ export interface ISignUpActicityInfo {
 }
 
 export interface IGetSignUpActicityListResp {
-  ActivitySignUp: Array<ISignUpActicityInfo>,
+  ActivitySignUpList: Array<ISignUpActicityInfo>,
   TotalCount: number
 }

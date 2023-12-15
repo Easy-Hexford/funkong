@@ -4,7 +4,7 @@ import * as request from '../../services/index'
 import type { IUserInfo, IUserInfoNullable } from '../../services/index'
 import dayjs from 'dayjs'
 
-const _ = require('../../libs/lodash_4.17.10.min')
+// const _ = require('../../libs/lodash_4.17.10.min')
 const USER_PIC_CATALOG = 'user/'
 const app = getApp()
 
@@ -43,7 +43,8 @@ Component({
       const UserIconTempFile = User.Icon
 
       this.setData({
-        User: _.cloneDeep(User),
+        // User: _.cloneDeep(User),
+        User,
         UserCoverTempFile,
         UserIconTempFile,
       })

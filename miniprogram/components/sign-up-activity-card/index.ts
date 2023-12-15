@@ -1,13 +1,12 @@
-import { formatActivityTime } from '../../utils/util'
 import { calcDistance, getLocation } from '../../utils/location'
-import { IActivityInfo } from '../../services'
+import { IActivityInfo, ISignUpActicityInfo } from '../../services'
 import dayjs from 'dayjs'
 
 const app = getApp()
 
 Component({
   properties: {
-    activity: {
+    signUpActivity: {
       type: Object,
       value: {}
     },
@@ -16,10 +15,15 @@ Component({
   data: {
     distance: 0,
     beginTime: '',
+    Activity: <IActivityInfo>{}
   },
 
   lifetimes: {
     attached() {
+      const SignUpActivity = this.data.signUpActivity as ISignUpActicityInfo
+      this.setData({
+        Activity: SignUpActivity.Activity
+      })
       this.formatDate()
       this.calcDistance()
     }
@@ -27,17 +31,17 @@ Component({
 
   methods: {
     formatDate() {
-      const BeginTime = this.data.activity.BeginTime
+      const BeginTime = this.data.Activity.BeginTime
+      console.info('@@@ BeginTime', BeginTime, 'Activity', this.data.Activity)
       this.setData({
-        beginTime: formatActivityTime(BeginTime)
+        beginTime: dayjs(BeginTime).format('MM月DD日 HH:mm'),
       })
     },
 
     calcDistance() {
-      const Activity = this.data.activity as IActivityInfo
       getLocation()
         .then(from => {
-          const to = Activity.Location.Point
+          const to = this.data.Activity.Location.Point
           calcDistance(from, to)
             .then(resp => {
               this.setData({

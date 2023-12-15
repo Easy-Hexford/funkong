@@ -1,6 +1,9 @@
 {
   "component": true,
   "usingComponents": {
-    "activity-card": "../../components/activity-card/index"
+    "t-loading": "tdesign-miniprogram/loading/loading",
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "sign-up-activity-card": "../../components/sign-up-activity-card/index"
+   
   }
 }
