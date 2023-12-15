@@ -52,12 +52,17 @@ Component({
     },
 
     invite() {
-      if (this.data.isAuditing)
-      return
+      if (this.data.isAuditing) {
+        return
+      }
 
-      const ClubId = this.data.Club.ClubId
       wx.navigateTo({
-        url: `../club-poster/index?ClubId=${ClubId}`
+        url: `../club-poster/index`,
+        success:(res) => {
+          res.eventChannel.emit('initData', {
+            Club: this.data.Club,
+          })
+        }
       })
     },
 
@@ -69,7 +74,9 @@ Component({
     },
 
     async updateUserInfo() {
-      const info = await request.getUser()
+      const info = await request.getUser({
+        UseCache: false
+      })
       this.setData({
         isAuditing: info.Club.AuditStatus === 'Auditing',
         User: info.User,

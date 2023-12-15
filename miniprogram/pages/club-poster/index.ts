@@ -1,10 +1,12 @@
 import * as request from '../../services/index'
-import { IClubInfo } from '../../services/index'
+import type { IClubInfo } from '../../services/index'
 import { MockClub } from '../../utils/mock'
+import env from '../../utils/env'
+import { Month } from '../../utils/constant'
+import { compareVersion, objectToQueryString } from '../../utils/util'
 
 const app = getApp()
 const fs = wx.getFileSystemManager()
-
 const logger = wx.getRealtimeLogManager()
 
 Component({
@@ -14,28 +16,45 @@ Component({
 
   data: {
     qrcode: '',
-    User: {},
-    Club: {},
+    Club: <IClubInfo>{},
     _poster: '',
   },
 
   lifetimes: {
     attached() {
-      this.setData({
-        User: app.globalData.User,
-        Club: app.globalData.Club,
-        // Club: MockClub
-      })
+      const SystemInfo: WechatMiniprogram.SystemInfo = app.globalData.SystemInfo
+      const SDKVersion = SystemInfo.SDKVersion
+      if (compareVersion(SDKVersion, '3.0.0') < 0) {
+        wx.updateWeChatApp()
+        return
+      }
 
-      this.getWxaCode().then((qrcode: string) => {
-        this.setData({
-          qrcode
+      this.initData()
+      this.getWxaCode()
+        .then((qrcode: string) => {
+          this.setData({
+            qrcode
+          })
         })
-      })
     }
   },
 
   methods: {
+    initData() {
+      const eventChannel = this.getOpenerEventChannel()
+      if (eventChannel?.on) {
+        eventChannel.on('initData', (data) => {
+          this.setData({
+            Club: data.Club
+          })
+        })
+      } else if (env.kDebugMode) {
+        this.setData({
+          Club: MockClub
+        })
+      }
+    },
+
     share() {
       this.takeSnapshot().then((filePath: string) => {
         wx.showShareImageMenu({
@@ -54,65 +73,57 @@ Component({
           resolve(this.data._poster)
         }
 
-        const ClubId = (this.data.Club as IClubInfo).ClubId
+        const ClubId = this.data.Club.ClubId
         const selector = '.invite-poster'
         const filePath = `${wx.env.USER_DATA_PATH}/${ClubId}_club_poster.png`
 
-        fs.access({
-          path: filePath,
-          success() {
-            resolve(filePath)
-          },
-
-          fail:() => {
-            this.createSelectorQuery()
-            .select(selector)
-            .node()
-            .exec(res => {
-              const node = res[0].node
-              node.takeSnapshot({
-                type: 'arraybuffer',
-                format: 'png',
-                success: (res: any) => {
-                  fs.writeFileSync(filePath, res.data, 'binary')
-                  this.data._poster = filePath
-                  resolve(filePath)
-                },
-                fail(e: any) {
-                  reject(e)
-                }
-              })
+        this.createSelectorQuery()
+          .select(selector)
+          .node()
+          .exec(res => {
+            const node = res[0].node
+            node.takeSnapshot({
+              type: 'arraybuffer',
+              format: 'png',
+              success: (res: any) => {
+                fs.writeFileSync(filePath, res.data, 'binary')
+                this.data._poster = filePath
+                resolve(filePath)
+              },
+              fail(e: any) {
+                reject(e)
+              }
             })
-          }
-        })
+          })
       })
     },
 
     getWxaCode(): Promise<string> {
-      const ClubId = (this.data.Club as IClubInfo).ClubId
+      const ClubId = this.data.Club.ClubId
       const filePath = wx.env.USER_DATA_PATH + `/${ClubId}_club_qrcode.png`
       return new Promise((resolve, reject) => {
-        fs.access({
-          path: filePath,
-          success () {
+        const queryObject = {
+          ClubId,
+          ActivityId: '',
+          RegisterType: 'ClubInvite',
+        }
+        request.setSceneValue({
+          Value: objectToQueryString(queryObject),
+          ExpireSeconds: Month
+        }).then(resp => {
+          request.getWxaCode({
+            scene: resp.Scene,
+            page: `pages/club-profile/index`,
+            check_path: false,
+            env_version: env.envVersion,
+            width: 300,
+          }).then(resp => {
+            const buffer: any = resp.buffer
+            fs.writeFileSync(filePath, buffer, 'base64')
             resolve(filePath)
-          },
-          fail: () => {
-            request.getWxaCode({
-              // scene: `ClubId=${ClubId}`,
-              scene: 'ClubId=12344',
-              path: `pages/club-profile/index`,
-              check_path: false,
-              env_version: 'develop',
-              width: 300,
-            }).then(resp => {
-              const buffer: any = resp.buffer
-              fs.writeFileSync(filePath, buffer, 'base64')
-              resolve(filePath)
-            }, () => {
-              reject()
-            })
-          }
+          }, () => {
+            reject()
+          })
         })
       })
     },

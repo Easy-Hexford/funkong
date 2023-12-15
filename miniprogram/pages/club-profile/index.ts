@@ -1,6 +1,7 @@
 // pages/club-profile/index.ts
 import * as request from '../../services/index'
-import type { IClubInfo, IActivityInfo, IGetActicityListReq, ISimpleUserInfo } from '../../services/index'
+import type { IClubInfo, IActivityInfo, ISimpleUserInfo, IUserInfo } from '../../services/index'
+import { getPosterQuery } from '../../utils/bind'
 // import { MockClub } from '../../utils/mock'
 
 const app = getApp()
@@ -14,6 +15,10 @@ Component({
     ClubId: {
       type: String,
     },
+
+    scene: {
+      type: String,
+    }
 
   },
 
@@ -35,48 +40,68 @@ Component({
       // 上拉加载更多
     },
 
-    attached() {
-      request.getClub({
+    async attached() {
+      if (this.data.scene) {
+        const posterQuery = await getPosterQuery(this.data.scene)
+        this.data.ClubId = posterQuery.ClubId
+      }
+
+      this.refreshClub()
+      this.refreshClubActivityList()
+    }
+  },
+
+  methods: {
+    async refreshClub() {
+      return request.getClub({
         ClubId: this.data.ClubId
       }).then(resp => {
         this.setData({
           Club: resp.Club,
           ClubMembers: [resp.OwnerUser]
         })
+      })
+    },
 
-        request.getActicityList({
-          ClubId: this.data.ClubId,
-          Offset: this.data._offset,
-          Limit: this.data._page,
-        }).then(resp => {
-          this.setData({
-            ActivityTotalCount: resp.TotalCount,
-            ActivityList: resp.ActivityList
-          })
-          this.data._offset = resp.ActivityList.length
+    async refreshClubActivityList() {
+      return request.getActicityList({
+        ClubId: this.data.ClubId,
+        Offset: 0,
+        Limit: this.data._page,
+      }).then(resp => {
+        this.setData({
+          ActivityTotalCount: resp.TotalCount,
+          ActivityList: resp.ActivityList,
+          _offset: resp.ActivityList.length
         })
       })
-    }
-  },
+    },
 
-  methods: {
-    onRefresh() {
-      if (this.data._freshing) return
-      this.data._freshing = true
-      this.data._offset = 0
-      request.getActicityList({
+    async loadMore() {
+      const ActivityList = this.data.ActivityList
+      return request.getActicityList({
         ClubId: this.data.ClubId,
         Offset: this.data._offset,
         Limit: this.data._page,
       }).then(resp => {
-        this.data._freshing = false
+        ActivityList.push(...resp.ActivityList)
         this.setData({
-          triggered: false,
-          ActivityTotalCount: resp.TotalCount,
-          ActivityList: resp.ActivityList
+          ActivityList,
+          _offset: ActivityList.length
         })
-        this.data._offset = resp.ActivityList.length
       })
+    },
+
+    onRefresh() {
+      if (this.data._freshing) return
+      this.data._freshing = true
+      this.refreshClubActivityList()
+        .then(() => {
+          this.data._freshing = false
+          this.setData({
+            triggered: false,
+          })
+        })
     },
   }
 })

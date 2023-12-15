@@ -41,7 +41,7 @@ export function compareVersion(version1: string, version2: string) {
     v2.push('0')
   }
 
-  for (let i = 0; i <len; i++) {
+  for (let i = 0; i < len; i++) {
     const num1 = parseInt(v1[i])
     const num2 = parseInt(v2[i])
 
@@ -103,6 +103,29 @@ export function isValidPassport(passportNumber: string) {
 }
 
 export function isValidHKMCPassport(passportNumber: string) {
-  const regExp = /^[HMhm]{1}([0-9]{10}|[0-9]{6})$/;
-  return regExp.test(passportNumber);
+  const regExp = /^[HMhm]{1}([0-9]{10}|[0-9]{6})$/
+  return regExp.test(passportNumber)
+}
+
+export function objectToQueryString(obj: Record<string, any>) {
+  let queryString = ''
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      if (queryString !== '') {
+        queryString += '&'
+      }
+      queryString += encodeURIComponent(key) + '=' + encodeURIComponent(obj[key])
+    }
+  }
+  return queryString
+}
+
+export function queryStringToObject(queryString: string) {
+  const obj: Record<string, any> = {}
+  const keyValuePairs = queryString.split('&')
+  keyValuePairs.forEach(pair => {
+    const [key, value] = pair.split('=')
+    obj[decodeURIComponent(key)] = decodeURIComponent(value)
+  })
+  return obj
 }

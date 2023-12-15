@@ -10,10 +10,26 @@ export function getWxaCode(req: IGetWxaCodeReq): Promise<IGetWxaCodeResp> {
   })
 }
 
+export function setSceneValue(req: ISetSceneValueReq): Promise<ISetSceneValueResp> {
+  return call({
+    url: '/wxa_api/setscenevalue',
+    method: 'POST',
+    data: req
+  })
+}
+
+export function getSceneValue(req: IGetSceneValueReq): Promise<IGetSceneValueResp> {
+  return call({
+    url: '/wxa_api/getscenevalue',
+    method: 'POST',
+    data: req
+  })
+}
+
 export interface IGetWxaCodeReq {
   // 最大32个可见字符，只支持数字，大小写英文以及部分特殊字符
   scene: string,
-  path?: string,
+  page?: string,
   check_path?: boolean,
   env_version: IEnvVersion,
   width?: number,
@@ -22,4 +38,21 @@ export interface IGetWxaCodeReq {
 
 export interface IGetWxaCodeResp {
   buffer: string
+}
+
+export interface ISetSceneValueReq {
+  Value: string,
+  ExpireSeconds: number
+}
+
+export interface ISetSceneValueResp {
+  Scene: string
+}
+
+export interface IGetSceneValueReq {
+  Scene: string
+}
+
+export interface IGetSceneValueResp {
+  Value: string
 }

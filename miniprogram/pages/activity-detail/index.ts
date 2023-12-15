@@ -3,6 +3,9 @@ import * as request from '../../services/index'
 import type { IActivityInfo, ISimpleUserInfo, IUserInfo } from '../../services'
 import { calcDistance, getLocation } from '../../utils/location'
 import { formatActivityTime } from '../../utils/util'
+import { getPosterQuery } from '../../utils/bind'
+
+const app = getApp()
 
 Component({
   properties: {
@@ -26,20 +29,28 @@ Component({
   },
 
   pageLifetimes: {
-    show() {}
+    show() { }
   },
 
   lifetimes: {
-    attached() {
-      console.info('@@@ scene: ', decodeURIComponent(this.data.scene))
+    async attached() {
+      if (this.data.scene) {
+        const posterQuery = await getPosterQuery(this.data.scene)
+        this.data.ActivityId = posterQuery.ActivityId
+      }
 
-      request.getUser()
-        .then(resp => {
-          this.setData({
-            User: resp.User
-          })
-        })
+      this.refreshActivity()
+      const User = await app.getUser()
+      this.setData({ User })
 
+      wx.showShareMenu({
+        menus: ['shareAppMessage']
+      })
+    }
+  },
+
+  methods: {
+    refreshActivity() {
       request.getActivity({
         ActivityId: this.data.ActivityId
       }).then(resp => {
@@ -55,14 +66,8 @@ Component({
         this.formatDate()
         this.calcDistance()
       })
+    },
 
-      wx.showShareMenu({
-        menus: ['shareAppMessage', 'shareTimeline']
-      })
-    }
-  },
-
-  methods: {
     onShareAppMessage(_: WechatMiniprogram.Page.IShareAppMessageOption): WechatMiniprogram.Page.ICustomShareContent {
       const Activity = this.data.Activity
       return {
@@ -93,9 +98,10 @@ Component({
     sharePoster() {
       wx.navigateTo({
         url: '../activity-poster/index',
-        success:(res) => {
+        success: (res) => {
           res.eventChannel.emit('initData', {
-            Activity: this.data.Activity
+            User: this.data.User,
+            Activity: this.data.Activity,
           })
         }
       })
@@ -104,7 +110,7 @@ Component({
     apply() {
       wx.navigateTo({
         url: '../apply/index',
-        success:(res) => {
+        success: (res) => {
           res.eventChannel.emit('initData', {
             User: this.data.User,
             Activity: this.data.Activity

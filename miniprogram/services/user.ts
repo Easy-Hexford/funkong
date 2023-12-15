@@ -99,7 +99,7 @@ export interface IUserInfoNullable {
 }
 
 export interface ILoginResp {
-  User: IUserInfo
+  PlatformClubId: string
 }
 
 export interface IClubInfo {

@@ -1,9 +1,11 @@
 // pages/activity-poster/index.ts
 import dayjs from 'dayjs'
 import * as request from '../../services/index'
-import { IActivityInfo } from '../../services/index'
+import { IActivityInfo, IUserInfo } from '../../services/index'
+import { IPosterQuery } from '../../utils/bind'
+import { Month } from '../../utils/constant'
 import { MockActivity } from '../../utils/mock'
-import { compareVersion, WeekNames } from '../../utils/util'
+import { compareVersion, objectToQueryString, WeekNames } from '../../utils/util'
 
 const app = getApp()
 const logger = wx.getRealtimeLogManager()
@@ -18,6 +20,7 @@ Component({
     qrcode: '',
     date: '',
     time: '',
+    User: <IUserInfo>{},
     Activity: <IActivityInfo>{},
     _poster: '',
   },
@@ -32,12 +35,6 @@ Component({
       }
 
       this.initData()
-      this.getWxaCode()
-        .then((qrcode: string) => {
-          this.setData({
-            qrcode
-          })
-        })
     }
   },
 
@@ -47,9 +44,17 @@ Component({
       if (eventChannel?.on) {
         eventChannel.on('initData', (data) => {
           this.setData({
+            User: data.User,
             Activity: data.Activity
           })
           this.formatDate()
+
+          this.getWxaCode()
+            .then((qrcode: string) => {
+              this.setData({
+                qrcode
+              })
+            })
         })
       } else {
         this.setData({
@@ -115,31 +120,45 @@ Component({
     },
 
     getWxaCode(): Promise<string> {
-      const ActivityId = this.data.Activity.ActivityId
+      const { User, Activity } = this.data
+      const ClubId = Activity.ClubId
+      const ActivityId = Activity.ActivityId
       const filePath = `${wx.env.USER_DATA_PATH}/${ActivityId}_activity_qrcode.png`
       return new Promise((resolve, reject) => {
-        request.getWxaCode({
-          scene: '123',
-          path: 'pages/activity-detail/index',
-          check_path: false,
-          env_version: 'trial',
-          width: 300,
-        }).then(resp => {
-          const buffer: any = resp.buffer
-          fs.writeFileSync(filePath, buffer, 'base64')
-          resolve(filePath)
-        }, () => {
-          reject()
-        })
-
-        fs.access({
-          path: filePath,
-          success() {
-            resolve(filePath)
-          },
-          fail: () => {
-            
+        let queryObject: IPosterQuery
+        // 主理人创建活动海报
+        if (User.UserId === Activity.UserId) {
+          queryObject = {
+            ClubId,
+            ActivityId,
+            RegisterType: 'ActivityInvite',
           }
+        } else {
+          // 非主理人创建活动海报
+          queryObject = {
+            ClubId: app.globalData.PlatformClubId,
+            ActivityId: '',
+            RegisterType: 'Normal',
+          }
+        }
+
+        request.setSceneValue({
+          Value: objectToQueryString(queryObject),
+          ExpireSeconds: Month
+        }).then(resp => {
+          request.getWxaCode({
+            scene: resp.Scene,
+            page: 'pages/activity-detail/index',
+            check_path: false,
+            env_version: 'develop',
+            width: 300,
+          }).then(resp => {
+            const buffer: any = resp.buffer
+            fs.writeFileSync(filePath, buffer, 'base64')
+            resolve(filePath)
+          }, () => {
+            reject()
+          })
         })
       })
     },
