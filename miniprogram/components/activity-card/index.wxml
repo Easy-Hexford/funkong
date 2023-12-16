@@ -30,14 +30,13 @@
 				<text class="ellipsis" space="ensp">{{beginTime}}</text>
 			</view>
 			<view wx:if="{{mode === 'audit'}}" class="footer row-between">
-				<text/>
 				<view wx:if="{{activity.AuditStatus === 'Auditing'}}" class="btn--enter active">待审核</view>
 				<view wx:if="{{activity.AuditStatus === 'AuditFail'}}" class="btn--enter">未通过</view>
 				<view wx:if="{{activity.AuditStatus === 'AuditSucc'}}" class="btn--enter">已通过</view>
 			</view>
 			<view wx:else class="footer row-between">
-				<text>已有{{activity.SignUpNum}}人</text>
-				<view class="btn--enter active">冲啊</view>
+				<text >{{signUpText}}</text>
+				<view class="btn--enter {{canSignUp ? 'active' : ''}}">冲啊</view>
 			</view>
 
 		</view>
