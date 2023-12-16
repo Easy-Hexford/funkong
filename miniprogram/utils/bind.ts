@@ -63,7 +63,7 @@ async function bindClub(posterQuery: IPosterQuery) {
   })
 
   // 刷新用户信息
-  app.updateUser()
+  app.getLatestUser()
 }
 
 async function bindPlatform(PlatformClubId: string) {
@@ -76,7 +76,7 @@ async function bindPlatform(PlatformClubId: string) {
   })
 
   // 刷新用户信息
-  app.updateUser()
+  app.getLatestUser()
 }
 
 export async function getPosterQuery(scene: string): Promise<IPosterQuery> {

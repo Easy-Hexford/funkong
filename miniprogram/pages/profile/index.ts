@@ -1,5 +1,4 @@
-import * as request from '../../services/index'
-import { IClubInfo, IUserInfo } from '../../services/index'
+import { IClubInfo, IGetUserResp, IUserInfo } from '../../services/index'
 import _ from '../../utils/lodash'
 
 const app = getApp()
@@ -13,22 +12,21 @@ Component({
     isAuditing: false,
     User: <IUserInfo>{},
     Club: <IClubInfo>{},
+
+    triggered: false,
+    _freshing: false,
   },
 
   lifetimes: {
     async created() {
 
     },
-
-    async attached() {
-
-    }
   },
 
   pageLifetimes: {
     async show() {
       this.updateTabBar()
-      this.updateUserInfo()
+      this.refresh()
     }
   },
 
@@ -67,13 +65,6 @@ Component({
       })
     },
 
-    updateTabBar() {
-      const tabComp = this.getTabBar()
-      tabComp.setData({
-        selected: 2
-      })
-    },
-
     editUserInfo() {
       wx.navigateTo({
         url: '../user-info/index',
@@ -85,18 +76,45 @@ Component({
       })
     },
 
-    async updateUserInfo() {
-      const info = await request.getUser({
-        UseCache: false
+    updateTabBar() {
+      const tabComp = this.getTabBar()
+      tabComp.setData({
+        selected: 2
       })
-      this.setData({
-        isAuditing: info.Club.AuditStatus === 'Auditing',
-        User: info.User,
-        Club: info.Club
-      })
+    },
 
-      app.globalData.User = info.User
-      app.globalData.Club = info.Club
+    onRefresh() {
+      if (this.data._freshing) return
+      this.data._freshing = true
+      this.forceRefresh()
+        .then(() => {
+          this.data._freshing = false
+          this.setData({
+            triggered: false,
+          })
+        })
+    },
+
+    refresh() {
+      app.getUser()
+        .then((resp: IGetUserResp) => {
+          this.setData({
+            isAuditing: resp.Club.AuditStatus === 'Auditing',
+            User: resp.User,
+            Club: resp.Club
+          })
+        })
+    },
+
+    async forceRefresh() {
+      app.getLatestUser()
+        .then((resp: IGetUserResp) => {
+          this.setData({
+            isAuditing: resp.Club.AuditStatus === 'Auditing',
+            User: resp.User,
+            Club: resp.Club
+          })
+        })
     }
   }
 })

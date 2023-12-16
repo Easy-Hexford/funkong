@@ -16,9 +16,9 @@ Component({
 
     loading: true,
     triggered: false,
+    _freshing: false,
     _offset: 0,
     _page: 20,
-    _freshing: false,
     _loadMore: false,
   },
 

@@ -1,7 +1,7 @@
 import { uploadBehavior } from '../../behaviors/upload'
-import type { IUploadBehavior} from '../../behaviors/upload'
+import type { IUploadBehavior } from '../../behaviors/upload'
 import * as request from '../../services/index'
-import type { IUserInfoNullable } from '../../services/index'
+import type { IGetUserResp, IUserInfo, IUserInfoNullable } from '../../services/index'
 import dayjs from 'dayjs'
 import { MockUser } from '../../utils/mock'
 import { autoBack } from '../../utils/util'
@@ -14,9 +14,9 @@ Component({
 
   options: {
   },
- 
+
   properties: {
-    
+
   },
 
   data: {
@@ -39,7 +39,16 @@ Component({
 
   lifetimes: {
     attached() {
-      this.initData()
+      this.initData().then(User => {
+        const UserCoverTempFile = User.CoverUrls.Items[0]
+        const UserIconTempFile = User.Icon
+
+        this.setData({
+          User,
+          UserCoverTempFile,
+          UserIconTempFile,
+        })
+      })
     }
   },
 
@@ -51,11 +60,11 @@ Component({
     },
   },
 
- 
+
   methods: {
     submit() {
       if (!this.data.submittable) return
-      
+
       const User: IUserInfoNullable = this.data.User
       request.updateUser({
         CoverUrls: User.CoverUrls,
@@ -68,7 +77,9 @@ Component({
           icon: 'success',
           title: '修改成功',
         })
-        autoBack()
+        app.getLatestUser().then(() => {
+          autoBack()
+        })
       }, (e) => {
         wx.showToast({
           icon: 'error',
@@ -84,30 +95,17 @@ Component({
       return false
     },
 
-    initData() {
-      const eventChannel = this.getOpenerEventChannel()
-      if (eventChannel?.on) {
-        eventChannel.on('initData', (data) => {
-          const User = data.User
-          const UserCoverTempFile = User.CoverUrls.Items[0]
-          const UserIconTempFile = User.Icon
-
-          this.setData({
-            User,
-            UserCoverTempFile,
-            UserIconTempFile,
+    initData(): Promise<IUserInfo> {
+      return new Promise(resolve => {
+        const eventChannel = this.getOpenerEventChannel()
+        if (eventChannel?.on) {
+          eventChannel.on('initData', (data) => {
+            resolve(data.User)
           })
-        })
-      } else {
-        const UserCoverTempFile = MockUser.CoverUrls.Items[0]
-        const UserIconTempFile = MockUser.Icon
-
-        this.setData({
-          User: MockUser,
-          UserCoverTempFile,
-          UserIconTempFile,
-        })
-      }
+        } else {
+          resolve(MockUser)
+        }
+      })
     },
 
     showGenderPicker() {

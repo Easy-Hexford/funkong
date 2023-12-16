@@ -1,6 +1,6 @@
 // app.ts
 import * as request from './services/index'
-import { IClubInfo, IInsuranceProduct, IPoint, IUserInfo } from './services/index';
+import { IClubInfo, IGetUserResp, IInsuranceProduct, IPoint, IUserInfo } from './services/index';
 import env from './utils/env'
 import { bindClubManager } from './utils/bind'
 
@@ -24,8 +24,8 @@ App({
 
     const _lResp = await request.login()
     this.globalData.PlatformClubId = _lResp.PlatformClubId
-    const User = await this.getUser()
-    bindClubManager(User, _lResp.PlatformClubId)
+    const resp = await this.getUser()
+    bindClubManager(resp.User, _lResp.PlatformClubId)
   },
 
   listenError() {
@@ -48,20 +48,22 @@ App({
     })
   },
 
-  
-
-  async getUser(): Promise<IUserInfo> {
+  async getUser(): Promise<IGetUserResp> {
     if (this.globalData.User.UserId) {
-      return this.globalData.User
+      return {
+        User: this.globalData.User,
+        Club: this.globalData.Club
+      }
     }
-    return this.updateUser()
+    return this.getLatestUser()
   },
 
-  async updateUser(): Promise<IUserInfo>  {
+  async getLatestUser(): Promise<IGetUserResp>  {
     const resp = await request.getUser({
       UseCache: false
     })
     this.globalData.User = resp.User
-    return resp.User
+    this.globalData.Club = resp.Club
+    return resp
   }
 })
