@@ -109,7 +109,7 @@
 			</view>
 
 			<view class="nickname center" hover-class="none" bind:tap="editUserInfo">
-				<text>{{User.NickName || '尊嘟假嘟'}}</text>
+				<text class="ellipsis" style="display: inline-block; max-width: 220px;">{{User.NickName || '尊嘟假嘟'}}</text>
 				<t-icon
 				 style="margin-left: 4px;"
 				 name="edit"

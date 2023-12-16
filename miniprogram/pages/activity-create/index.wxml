@@ -158,7 +158,7 @@
 				<view class="form-field-wrap">
 					<t-textarea
 					 cursor-spacing="20"
-					 maxlength="300"
+					 maxlength="1000"
 					 autosize
 					 indicator
 					 placeholder="填写活动描述"
