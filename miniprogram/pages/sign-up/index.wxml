@@ -30,7 +30,7 @@
 			<image mode="aspectFill" class="icon--shield" src="../../assets/images/@icon_shield.png" />
 			<text style="margin-left: 4px;">免费保险</text>
 		</view>
-		<view class="insurance-wrap">
+		<view wx:if="{{!freeInsurance}}" class="insurance-wrap">
 			<view class="row-between">
 				<text>保障时间</text>
 				<text class="gray">{{activityTime}}全天</text>
@@ -45,9 +45,7 @@
 			</view>
 			<view class="row-between" style="margin-top: 12px;">
 				<text>意外住院津贴（{{filter.localeMoney(InsuranceProduct.HospitalizationTimeLimit)}}天内）</text>
-				<text class="gray">
-										{{filter.localeMoney(InsuranceProduct.HospitalizationAllowance)}}元/天
-								</text>
+				<text class="gray">{{filter.localeMoney(InsuranceProduct.HospitalizationAllowance)}}元/天</text>
 			</view>
 		</view>
 		<view class="cell">

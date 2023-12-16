@@ -15,6 +15,7 @@ Component({
     InsuranceProduct: <IInsuranceProduct>{},
     PhoneCode: '',
 
+    freeInsurance: false,
     beginTime: '',
     activityTime: '',
     visible: false,
@@ -23,34 +24,36 @@ Component({
 
   lifetimes: {
     attached() {
-      this.initData()
+      this.initData().then(resp => {
+        const User = resp.User
+        const Activity = resp.Activity
+        const InsuranceProduct = Activity.ActivityRule.InsuranceProduct
+        this.setData({
+          User,
+          Activity,
+          InsuranceProduct,
+          freeInsurance: InsuranceProduct.InsuranceType === 'Free'
+        })
+        this.formatDate()
+      })
     }
   },
 
   methods: {
-    initData() {
-      const eventChannel = this.getOpenerEventChannel()
-      if (eventChannel?.on) {
-        eventChannel.on('initData', (data) => {
-          const User = data.User as IUserInfo
-          const Activity = data.Activity as IActivityInfo
-          const InsuranceProduct = Activity.ActivityRule.InsuranceProduct
-          this.setData({
-            User,
-            Activity,
-            InsuranceProduct
+    initData(): Promise<{ User: IUserInfo, Activity: IActivityInfo }> {
+      return new Promise(resolve => {
+        const eventChannel = this.getOpenerEventChannel()
+        if (eventChannel?.on) {
+          eventChannel.on('initData', (data) => {
+            resolve(data)
           })
-          this.formatDate()
-        })
-      } else {
-        const InsuranceProduct = MockActivity.ActivityRule.InsuranceProduct
-        this.setData({
-          User: MockUser,
-          Activity: MockActivity,
-          InsuranceProduct,
-        })
-        this.formatDate()
-      }
+        } else {
+          resolve({
+            User: MockUser,
+            Activity: MockActivity,
+          })
+        }
+      })
     },
 
     formatDate() {
@@ -126,9 +129,25 @@ Component({
     },
 
     signUp() {
+      const Activity = this.data.Activity
+      if (this.data.freeInsurance) {
+        request.createSignUpActivity({
+          ActivityId: Activity.ActivityId
+        }).then(() => {
+          this.showSignUpSuccess()
+        }, () => {
+          wx.showToast({
+            icon: 'error',
+            title: '报名失败'
+          })
+          this.hidePopup()
+        })
+        return
+      }
+
       if (this.checkInssurance()) {
         request.createSignUpActivity({
-          ActivityId: this.data.Activity.ActivityId
+          ActivityId: Activity.ActivityId
         }).then(resp => {
           const Payment = resp.Payment
           wx.requestPayment({
@@ -142,6 +161,10 @@ Component({
             },
             fail: (res) => {
               console.warn('createSignUpActivity fail: ', res)
+              wx.showToast({
+                icon: 'error',
+                title: '报名失败'
+              })
               this.hidePopup()
             }
           })

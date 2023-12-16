@@ -71,7 +71,7 @@
 			</view>
 			<view class="avatar-wrap column-cross-center">
 				<image class="avatar circle" src="{{Activity.Club.ClubIcon}}" />
-				<text class="club-name">{{Activity.Club.ClubName}}</text>
+				<text class="club-name line-clamp-2-ellipsis">{{Activity.Club.ClubName}}{{Activity.Club.ClubName}}</text>
 			</view>
 		</view>
 	</block>
