@@ -2,7 +2,12 @@
 <wxs src="../../utils/filter.wxs" module="filter" />
 <t-navbar left-arrow fixed title="搞起" />
 <scroll-view scroll-y type="list" class="scrollable">
-	<view class="content-wrap">
+  <block wx:if="{{loading}}">
+		<view style="width: 100%; height: 100%;" class="center">
+			<t-loading indicator="{{false}}" text="加载中..." />
+		</view>
+	</block>
+	<view wx:else class="content-wrap">
 		<view class="activity-info row" style="margin-top: 14px;">
 			<image class="cover" mode="aspectFill" src="{{Activity.CoverUrls.Items[0]}}" />
 			<view class="activity-area column-main-center">

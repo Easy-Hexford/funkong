@@ -15,6 +15,7 @@ Component({
     InsuranceProduct: <IInsuranceProduct>{},
     PhoneCode: '',
 
+    loading: true,
     freeInsurance: false,
     beginTime: '',
     activityTime: '',
@@ -29,6 +30,7 @@ Component({
         const Activity = resp.Activity
         const InsuranceProduct = Activity.ActivityRule.InsuranceProduct
         this.setData({
+          // loading: false,
           User,
           Activity,
           InsuranceProduct,

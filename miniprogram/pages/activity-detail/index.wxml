@@ -133,9 +133,11 @@
 				<text style="font-size: 12px; color: rgba(175, 241, 100, 0.70); opacity: 0.7;">参加报名活动群</text>
 			</navigator>
 		</block>
+		<block wx:elif="{{Activity.ActivityRule.MaxSignUpNumber === Activity.SignUpNum}}">
+			<view class="btn">活动已报满</view>
+		</block>
 		<block wx:else>
-			<view wx:if="{{Activity.ActivityRule.MaxSignUpNumber === Activity.SignUpNum}}" class="btn">活动已报满</view>
-			<view wx:else bind:tap="goSignUp" class="btn active">¥{{filter.money(Activity.ActivityRule.Price)}} 走起</view>
+			<view bind:tap="goSignUp" class="btn active">¥{{filter.money(Activity.ActivityRule.Price)}} 走起</view>
 		</block>
 	</view>
 </block>
