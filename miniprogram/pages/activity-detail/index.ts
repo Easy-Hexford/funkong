@@ -37,6 +37,7 @@ Component({
     User: <IUserInfo>{},
 
     loading: true,
+    firstPage: false,
     auditResult: <IActivityAuditStatus>'',
     _reenter: false,
   },
@@ -59,7 +60,10 @@ Component({
 
       const User = await app.getUser()
       await this.refreshActivity()
-      this.setData({ User, loading: false })
+      const pageStack = getCurrentPages()
+      const firstPage = pageStack.length === 1
+
+      this.setData({ User, loading: false, firstPage })
       wx.showShareMenu({
         menus: ['shareAppMessage']
       })
@@ -156,6 +160,16 @@ Component({
           auditResult: status
         })
       })
+    },
+
+    onBack() {
+      wx.navigateBack();
+    },
+    
+    onGoHome() {
+      wx.reLaunch({
+        url: '/pages/home/index',
+      });
     },
   }
 })

@@ -140,5 +140,25 @@
 	</view>
 </block>
 
-<t-navbar left-arrow fixed t-class="navbar" />
+<t-navbar wx:if="{{firstPage}}" fixed t-class="navbar">
+  <view slot="capsule" class="custom-capsule">
+    <t-icon
+      size="20"
+      bind:tap="onBack"
+      aria-role="button"
+      aria-label="返回"
+      name="chevron-left"
+      class="custom-capsule__icon"
+    />
+    <t-icon
+      size="20"
+      bind:tap="onGoHome"
+      aria-role="button"
+      aria-label="首页"
+      name="home"
+      class="custom-capsule__icon"
+    />
+  </view>
+</t-navbar>
 
+<t-navbar wx:else left-arrow fixed t-class="navbar" />
