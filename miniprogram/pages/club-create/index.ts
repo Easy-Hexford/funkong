@@ -2,6 +2,7 @@ import * as request from '../../services/index'
 
 import { uploadBehavior, IUploadBehavior } from '../../behaviors/upload'
 import type { IClubInfo, IClubInfoNullable } from '../../services/index'
+import { autoBack } from '../../utils/util'
 
 const app = getApp()
 const log = wx.getRealtimeLogManager()
@@ -64,6 +65,17 @@ Component({
         Province: Club.Province,
         City: Club.City,
         ClubDesc: Club.ClubDesc
+      }).then(() => {
+        wx.showToast({
+          icon: 'success',
+          title: '已提交审核',
+        })
+        autoBack()
+      }, (e) => {
+        wx.showToast({
+          icon: 'error',
+          title: e.message
+        })
       }).finally(() => {
         this.data._submitting = false
       })
@@ -130,6 +142,10 @@ Component({
         'ClubIconTempFile': '',
         'Club.ClubIcon': ''
       })
+    },
+
+    goBack() {
+      wx.navigateBack()
     }
   }
 })

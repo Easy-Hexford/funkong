@@ -5,7 +5,8 @@
   <view class="bar-wrap center">
     <view class="bar" />
   </view>
-	<view class="title">请添加保险保障人</view>
+  <view class="title">请添加保险保障人</view>
+  <view class="tip--real">请填写真实信息，否则将无法购买保险</view>
 	<view class="content">
 		<view class="form-field-wrap row" style="margin-top: 21px;">
 			<view class="label">

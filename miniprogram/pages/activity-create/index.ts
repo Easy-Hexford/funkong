@@ -5,6 +5,7 @@ import type { IUploadBehavior } from '../../behaviors/upload'
 import dayjs from 'dayjs'
 import { getAddress } from '../../utils/location'
 import { MAP_KEY } from '../../config';
+import { autoBack } from '../../utils/util';
 
 const typeCheck = require('type-check').typeCheck;
 const app = getApp()
@@ -124,13 +125,11 @@ Component({
           icon: 'success',
           title: '已提交审核',
         })
-        setTimeout(() => {
-          wx.navigateBack()
-        }, 1500)
-      }, () => {
+        autoBack()
+      }, (e) => {
         wx.showToast({
           icon: 'error',
-          title: '提交失败',
+          title: e.message
         })
       }).finally(() => {
         this.data._submitting = false
@@ -145,6 +144,7 @@ Component({
         && Activity.BeginTime
         && Activity.EndTime
         && Activity.Location
+        && this.data.illustrations.length > 0
         && typeof Activity.ActivityRule?.Price === 'number'
         && typeof Activity.ActivityRule?.MaxSignUpNumber === 'number'
         && Activity.ActivityTypes?.Items[0]
