@@ -192,5 +192,12 @@ Component({
         url: '/pages/home/index',
       });
     },
+
+    goClub() {
+      const ClubId = this.data.Activity.ClubId
+      wx.navigateTo({
+        url: `../club-profile/index?ClubId=${ClubId}`
+      })
+    }
   }
 })

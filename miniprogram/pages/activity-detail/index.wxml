@@ -69,7 +69,7 @@
 				</view>
 
 			</view>
-			<view class="avatar-wrap column-cross-center">
+			<view class="avatar-wrap column-cross-center" bind:tap="goClub">
 				<image class="avatar circle" src="{{Activity.Club.ClubIcon}}" />
 				<text class="club-name line-clamp-2-ellipsis">{{Activity.Club.ClubName}}{{Activity.Club.ClubName}}</text>
 			</view>
