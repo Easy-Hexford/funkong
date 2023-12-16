@@ -4,7 +4,12 @@ import * as request from '../../services/index'
 
 import dayjs from 'dayjs'
 
-import ActionSheet, { ActionSheetTheme } from 'tdesign-miniprogram/action-sheet/index'
+const TIPS = [
+  '已退出活动',
+  '加入中',
+  '活动已结束',
+  '等待成团加入'
+]
 
 const app = getApp()
 
@@ -24,6 +29,7 @@ Component({
     visible: false,
     distance: 0,
     beginTime: '',
+    signUpText: '',
     ActivitySignUpStatus: <IActivitySignUpStatus>'',
     SignUpInfo: <ISignUpInfo>{},
     Activity: <IActivityInfo>{}
@@ -39,10 +45,49 @@ Component({
       })
       this.formatDate()
       this.calcDistance()
+      const signUpText = this.getSignUpText()
+      this.setData({ signUpText })
     }
   },
 
   methods: {
+    getSignUpText() {
+      const Activity = this.data.Activity
+      const ActivitySignUpStatus = this.data.ActivitySignUpStatus
+      if (ActivitySignUpStatus === 'Refund') {
+        return TIPS[0]
+      }
+
+      const failStatus: Array<IActivitySignUpStatus> = [
+        'ToPay',
+        'PayTimeout',
+        'Paid',
+        'InsuranceCreateFail',
+        'InsuranceCreating',
+      ]
+
+      if (failStatus.indexOf(ActivitySignUpStatus) >= 0) {
+        return TIPS[1]
+      }
+
+      const now = dayjs().unix()
+      const startTime = dayjs(Activity.BeginTime).unix()
+      const endTime = dayjs(Activity.EndTime).unix()
+      
+      if (now >= endTime) {
+        return TIPS[2]
+      }
+
+      if (now < startTime) {
+        if (Activity.SignUpNum === 1) {
+          return TIPS[3 ]
+        }
+
+        return `已加入${Activity.SignUpNum}个队员`
+      }
+      
+    },
+
     onUsertap() {
       this.triggerEvent('userTap', {
         area: 'body',

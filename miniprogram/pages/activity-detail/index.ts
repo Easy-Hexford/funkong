@@ -58,7 +58,7 @@ Component({
         this.data.ActivityId = posterQuery.ActivityId
       }
 
-      const User = await app.getUser()
+      const { User } = await app.getUser()
       await this.refreshActivity()
       const pageStack = getCurrentPages()
       const firstPage = pageStack.length === 1

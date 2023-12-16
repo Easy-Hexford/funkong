@@ -29,6 +29,7 @@ Component({
         const User = resp.User
         const Activity = resp.Activity
         const InsuranceProduct = Activity.ActivityRule.InsuranceProduct
+        console.info('@@ initData: ', resp)
         this.setData({
           loading: false,
           User,

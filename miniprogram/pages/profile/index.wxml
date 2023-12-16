@@ -116,8 +116,10 @@
 				 size="20"
 				 color="#6CCEA2"
 				/>
-			</view>
-			<view class="identity-badge">{{User.Role === 'SuperRole' ? '主理人' : User.Phone ? '' : '游客'}}</view>
+      </view>
+      <block wx:if="{{User.Role === 'SuperRole' || !User.Phone}}">
+        <view class="identity-badge">{{!User.Phone ? '游客' : '主理人'}}</view>
+      </block>
 		</view>
 	</view>
 </scroll-view>

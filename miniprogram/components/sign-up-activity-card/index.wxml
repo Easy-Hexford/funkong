@@ -53,7 +53,7 @@
 			<view class="overlay">
 				<view class="title-wrap row-between">
 					<text class="title">{{Activity.Title}}</text>
-					<text class="status">等待成团加入</text>
+					<text class="status">{{signUpText}}</text>
 				</view>
 			</view>
 		</view>
