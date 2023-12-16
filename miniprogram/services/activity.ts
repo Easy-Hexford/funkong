@@ -1,5 +1,5 @@
 import call from './base';
-import { IClubInfo, ICoverUrls, IDeleteFlag } from './user';
+import { IClubInfo, ICoverUrls, IDeleteFlag, IUserInfo } from './user';
 
 export function createActivity(req: ICreateActivityReq): Promise<ICreateActivityResp> {
   return call({
@@ -115,14 +115,6 @@ export interface ISimpleUserInfo {
   OpenId: string,
   NickName: string,
   Icon: string
-}
-
-export interface ISignUpInfo {
-  SignUpId: string,
-  ActivityId: string,
-  UserId: string,
-  ActivitySignUpStatus: string,
-  User: ISimpleUserInfo
 }
 
 export interface IInsuranceProduct {
@@ -261,11 +253,7 @@ export interface IActivityInfo {
   EndTime: string,
   PicList: IActivityPicList,
   Location: ILocation,
-  ActivityRule: {
-    Price: number,
-    MaxSignUpNumber: number,
-    InsuranceProduct: IInsuranceProduct,
-  },
+  ActivityRule: IActivityRule,
   ActivitySignUpList: Array<ISignUpInfo>,
   SignUpNum: number,
   OwnerUser: ISimpleUserInfo,
@@ -284,12 +272,41 @@ export interface IGetSignUpActicityListReq {
   Limit: number
 }
 
+export interface IActivityRule {
+  MaxSignUpNumber: number,
+  Price: number,
+  InsuranceProduct: IInsuranceProduct
+}
+
+export interface ISignUpInfo {
+  ActivityRule: IActivityRule,
+  User: IUserInfo,
+  InsurancePrice: number,
+  TotalPrice: number,
+  InsuranceFailReason: string
+  InsuranceRetryNum: number
+}
+
+export type IActivitySignUpStatus =
+  | 'ToPay'
+  | 'PayTimeout'
+  | 'Paid'
+  | 'InsuranceCreating'
+  | 'InsuranceCreated'
+  | 'InsuranceCreateFail'
+  | 'Refunding'
+  | 'Refund'
+  | 'RefundError'
+
 export interface ISignUpActicityInfo {
   SignUpId: string,
   ActivityId: string,
   UserId: string,
-  ActivitySignUpStatus: string,
+  ActivitySignUpStatus: IActivitySignUpStatus,
   OrderId: string,
+  SignUpInfo: ISignUpInfo,
+  PaidAmount: number,
+  RefundAmount: number,
   CreateTime: string,
   UpdateTime: string,
   DeleteFlag: IDeleteFlag,

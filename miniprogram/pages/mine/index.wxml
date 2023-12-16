@@ -28,15 +28,14 @@
 			</view>
 		</view>
 		<view class="content" wx:if="{{ActivitySignUpList.length}}">
-			<navigator
+			<view
 			 class="activity-wrap"
 			 wx:for="{{ActivitySignUpList}}"
 			 wx:key="ActivityId"
 			 wx:for-item="SignUpActivity"
-			 url="../activity-detail/index?ActivityId={{SignUpActivity.Activity.ActivityId}}"
 			>
-				<sign-up-activity-card signUpActivity="{{SignUpActivity}}" />
-			</navigator>
+				<sign-up-activity-card bind:userTap="onUserTap" idx="{{index}}" signUpActivity="{{SignUpActivity}}" />
+			</view>
 			<view class="load-more">
 				<view wx:if="{{ActivityList.length < ActivityTotalCount}}">
 					<t-loading

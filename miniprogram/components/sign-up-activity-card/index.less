@@ -2,9 +2,16 @@
 @import '../../style//common.less';
 
 .step-container {
+  position: relative;
   padding-left: 16px;
   padding-bottom: 32px;
   border-left: 2px dashed rgba(0, 0, 0, 0.19);
+
+  .btn--more {
+    position:absolute;
+    top: 0;
+    right: 0;
+  }
 
   .date {
     position: relative;
@@ -12,7 +19,7 @@
     font-size: 17px;
     font-style: normal;
     font-weight: 500;
-    line-height: 140%;
+    line-height: 24px;
   }
 
   .step-dot {
@@ -33,6 +40,18 @@
     font-style: normal;
     font-weight: 400;
     line-height: 140%;
+  }
+
+  .tip--status {
+    margin-top: 8px;
+    color: #4321F5;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 140%;
+
+    &.warn {
+      color: #FA5151;
+    }
   }
 
   .content {

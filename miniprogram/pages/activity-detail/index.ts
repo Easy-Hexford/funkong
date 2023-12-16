@@ -53,12 +53,9 @@ Component({
 
   lifetimes: {
     async attached() {
-      console.info('@@@ scene ', this.data.scene)
       if (this.data.scene) {
         const posterQuery = await getPosterQuery(this.data.scene)
         this.data.ActivityId = posterQuery.ActivityId
-        console.info('@@@ posterQuery ', posterQuery)
-
       }
 
       const User = await app.getUser()

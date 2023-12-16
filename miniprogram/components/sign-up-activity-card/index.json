@@ -1,6 +1,8 @@
 {
   "component": true,
   "usingComponents": {
-    "t-icon": "tdesign-miniprogram/icon/icon"
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-popup": "tdesign-miniprogram/popup/popup",
+    "insurance-form": "../insurance-form/index"
   }
 }

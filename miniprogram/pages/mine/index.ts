@@ -50,6 +50,16 @@ Component({
   },
 
   methods: {
+    onUserTap(e: any) {
+      const { area, idx } = e.detail
+      if (area === 'body') {
+        const SignUpActivity = this.data.ActivitySignUpList[idx]
+        wx.navigateTo({
+          url: `../activity-detail/index?ActivityId=${SignUpActivity.Activity.ActivityId}`
+        })
+      }
+    },
+
     select(e: any) {
       const oldSignUpTag = this.data.signUpTag
       const signUpTag = e.currentTarget.dataset.tag

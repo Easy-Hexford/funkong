@@ -30,7 +30,7 @@ Component({
         const Activity = resp.Activity
         const InsuranceProduct = Activity.ActivityRule.InsuranceProduct
         this.setData({
-          // loading: false,
+          loading: false,
           User,
           Activity,
           InsuranceProduct,
