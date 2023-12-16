@@ -43,7 +43,9 @@ export async function bindClubManager(User: IUserInfo, PlatformClubId: string) {
 
   // 落地页首次打开，扫海报进入，绑定主理人
   const posterQuery = await getPosterQuery(queryScene)
-  if (posterQuery.ClubId) {
+  if (posterQuery.RegisterType === 'Normal') {
+    await bindPlatform(PlatformClubId)
+  } else {
     await bindClub(posterQuery)
   }
 }

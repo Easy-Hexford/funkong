@@ -1,5 +1,5 @@
 import { IClubInfo, IGetUserResp, IUserInfo } from '../../services/index'
-import _ from '../../utils/lodash'
+// import _ from '../../utils/lodash'
 
 const app = getApp()
 
@@ -70,7 +70,7 @@ Component({
         url: '../user-info/index',
         success: (res) => {
           res.eventChannel.emit('initData', {
-            User: _.cloneDeep(this.data.User),
+            User: JSON.parse(JSON.stringify(this.data.User)),
           })
         }
       })

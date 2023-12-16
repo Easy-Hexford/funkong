@@ -138,7 +138,7 @@ Component({
           // 非主理人创建活动海报
           queryObject = {
             ClubId,
-            ActivityId: '',
+            ActivityId,
             RegisterType: 'Normal',
           }
         }

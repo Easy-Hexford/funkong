@@ -26,12 +26,14 @@
 
 			<view class="sub-title" style="margin-top: 30px;">活动</view>
 
-			<navigator url="../activity-create/index?ClubId={{Club.ClubId}}" hover-class="none">
-				<view class="btn--create center" style="margin-top: 12px;">
-					<t-icon name="add" size="24" color="rgba(0, 0, 0, 0.5)" />
-					<text style="margin-left: 8px;">创建活动</text>
-				</view>
-			</navigator>
+      <block wx:if="{{User.UserId && User.UserId === ClubOwnerUser.UserId}}">
+        <navigator url="../activity-create/index?ClubId={{Club.ClubId}}" hover-class="none">
+          <view class="btn--create center" style="margin-top: 12px;">
+            <t-icon name="add" size="24" color="rgba(0, 0, 0, 0.5)" />
+            <text style="margin-left: 8px;">创建活动</text>
+          </view>
+        </navigator>
+      </block>
 
 			<block wx:for="{{ActivityList}}" wx:key="ActivityId" wx:for-item="activity">
 				<navigator class="activity-wrap" url="../activity-detail/index?ActivityId={{activity.ActivityId}}">

@@ -134,30 +134,37 @@
 			</navigator>
 		</block>
 		<block wx:else>
-			<view bind:tap="goSignUp" class="btn active">¥{{filter.money(Activity.ActivityRule.Price)}} 走起</view>
+			<view wx:if="{{Activity.ActivityRule.MaxSignUpNumber === Activity.SignUpNum}}" class="btn">活动已报满</view>
+			<view wx:else bind:tap="goSignUp" class="btn active">¥{{filter.money(Activity.ActivityRule.Price)}} 走起</view>
 		</block>
 	</view>
 </block>
 
 <t-navbar wx:if="{{firstPage}}" fixed t-class="navbar">
-  <view slot="capsule" class="custom-capsule">
-    <t-icon
-      size="20"
-      bind:tap="onBack"
-      aria-role="button"
-      aria-label="返回"
-      name="chevron-left"
-      class="custom-capsule__icon"
-    />
-    <t-icon
-      size="20"
-      bind:tap="onGoHome"
-      aria-role="button"
-      aria-label="首页"
-      name="home"
-      class="custom-capsule__icon"
-    />
-  </view>
+	<view slot="capsule" class="custom-capsule">
+		<t-icon
+		 size="20"
+		 bind:tap="onBack"
+		 aria-role="button"
+		 aria-label="返回"
+		 name="chevron-left"
+		 class="custom-capsule__icon"
+		/>
+		<t-icon
+		 size="20"
+		 bind:tap="onGoHome"
+		 aria-role="button"
+		 aria-label="首页"
+		 name="home"
+		 class="custom-capsule__icon"
+		/>
+	</view>
 </t-navbar>
 
-<t-navbar wx:else left-arrow fixed t-class="navbar" />
+<t-navbar
+ wx:else
+ left-arrow
+ fixed
+ t-class="navbar"
+/>
+

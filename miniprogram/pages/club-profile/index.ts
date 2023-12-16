@@ -1,6 +1,6 @@
 // pages/club-profile/index.ts
 import * as request from '../../services/index'
-import type { IClubInfo, IActivityInfo, ISimpleUserInfo, IUserInfo } from '../../services/index'
+import type { IClubInfo, IActivityInfo, ISimpleUserInfo, IUserInfo, getUser, IGetUserResp } from '../../services/index'
 import { getPosterQuery } from '../../utils/bind'
 // import { MockClub } from '../../utils/mock'
 
@@ -23,7 +23,9 @@ Component({
   },
 
   data: {
+    User: <IUserInfo>{},
     Club: <IClubInfo>{},
+    ClubOwnerUser: <ISimpleUserInfo>{},
     ClubMembers: <Array<ISimpleUserInfo>>[],
     ActivityList: <Array<IActivityInfo>>[],
     ActivityTotalCount: 0,
@@ -45,19 +47,28 @@ Component({
         const posterQuery = await getPosterQuery(this.data.scene)
         this.data.ClubId = posterQuery.ClubId
       }
-
+      this.getUser()
       this.refreshClub()
       this.refreshClubActivityList()
     }
   },
 
   methods: {
+    async getUser() {
+      app.getUser().then((resp: IGetUserResp) => {
+        this.setData({
+          User: resp.User
+        })
+      })
+    },
+    
     async refreshClub() {
       return request.getClub({
         ClubId: this.data.ClubId
       }).then(resp => {
         this.setData({
           Club: resp.Club,
+          ClubOwnerUser: resp.OwnerUser,
           ClubMembers: [resp.OwnerUser]
         })
       })
