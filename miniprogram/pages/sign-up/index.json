@@ -4,6 +4,6 @@
     "t-popup": "tdesign-miniprogram/popup/popup",
     "insurance-form": "../../components/insurance-form/index",
     "register-success": "../../components/register-success/index",
-    "apply-success": "../../components/apply-success/index"
+    "sign-up-success": "../../components/sign-up-success/index"
   }
 }

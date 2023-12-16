@@ -4,7 +4,7 @@ import { IActivityInfo, IInsuranceProduct, IUserInfo } from '../../services/inde
 import { MockActivity, MockUser } from '../../utils/mock'
 import { formatActivityTime } from '../../utils/util'
 
-type IPopupContentType = 'Empty' | 'RegisterSuccess' | 'InsuranceForm' | 'ApplySuccess' | 'PhoneAuthorize'
+type IPopupContentType = 'Empty' | 'RegisterSuccess' | 'InsuranceForm' | 'SignUpSuccess' | 'PhoneAuthorize'
 
 Component({
   properties: {},
@@ -138,7 +138,7 @@ Component({
             signType: Payment.signType,
             paySign: Payment.paySign,
             success: () => {
-              this.showApplySuccess()
+              this.showSignUpSuccess()
             },
             fail: (res) => {
               console.warn('createSignUpActivity fail: ', res)
@@ -172,10 +172,10 @@ Component({
       })
     },
 
-    showApplySuccess() {
+    showSignUpSuccess() {
       this.setData({
         visible: true,
-        popupContent: 'ApplySuccess'
+        popupContent: 'SignUpSuccess'
       })
     },
 
@@ -198,6 +198,10 @@ Component({
           console.info(res)
         }
       })
+    },
+
+    goBack() {
+      wx.navigateBack()
     }
   }
 })

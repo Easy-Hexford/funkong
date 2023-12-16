@@ -16,7 +16,7 @@
 			</view>
 		</view>
 		<view class="footer center">
-			<view class="btn center">
+			<view class="btn center" bind:tap="done">
 				<text>看车票</text>
 			</view>
 		</view>

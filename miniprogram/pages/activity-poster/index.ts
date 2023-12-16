@@ -4,6 +4,7 @@ import * as request from '../../services/index'
 import { IActivityInfo, IUserInfo } from '../../services/index'
 import { IPosterQuery } from '../../utils/bind'
 import { Month } from '../../utils/constant'
+import env from '../../utils/env'
 import { MockActivity } from '../../utils/mock'
 import { compareVersion, objectToQueryString, WeekNames } from '../../utils/util'
 
@@ -136,7 +137,7 @@ Component({
         } else {
           // 非主理人创建活动海报
           queryObject = {
-            ClubId: app.globalData.PlatformClubId,
+            ClubId,
             ActivityId: '',
             RegisterType: 'Normal',
           }
@@ -150,7 +151,7 @@ Component({
             scene: resp.Scene,
             page: 'pages/activity-detail/index',
             check_path: false,
-            env_version: 'develop',
+            env_version: env.envVersion,
             width: 300,
           }).then(resp => {
             const buffer: any = resp.buffer

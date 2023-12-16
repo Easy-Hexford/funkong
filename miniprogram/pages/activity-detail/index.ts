@@ -8,6 +8,10 @@ import { getPosterQuery } from '../../utils/bind'
 const app = getApp()
 
 Component({
+  options: {
+    pureDataPattern: /^_/
+  },
+
   properties: {
     ActivityId: {
       type: String,
@@ -32,11 +36,18 @@ Component({
     OwnerUserId: '',
     User: <IUserInfo>{},
 
-    auditResult: <IActivityAuditStatus>''
+    loading: true,
+    auditResult: <IActivityAuditStatus>'',
+    _reenter: false,
   },
 
   pageLifetimes: {
-    show() { }
+    show() {
+      if (this.data._reenter) {
+        this.refreshActivity()
+      }
+      this.data._reenter = true
+    }
   },
 
   lifetimes: {
@@ -46,10 +57,9 @@ Component({
         this.data.ActivityId = posterQuery.ActivityId
       }
 
-      this.refreshActivity()
       const User = await app.getUser()
-      this.setData({ User })
-
+      await this.refreshActivity()
+      this.setData({ User, loading: false })
       wx.showShareMenu({
         menus: ['shareAppMessage']
       })
@@ -57,8 +67,8 @@ Component({
   },
 
   methods: {
-    refreshActivity() {
-      request.getActivity({
+    async refreshActivity() {
+      return request.getActivity({
         ActivityId: this.data.ActivityId
       }).then(resp => {
         const Activity = resp.Activity
@@ -114,7 +124,7 @@ Component({
       })
     },
 
-    apply() {
+    goSignUp() {
       wx.navigateTo({
         url: '../sign-up/index',
         success: (res) => {
