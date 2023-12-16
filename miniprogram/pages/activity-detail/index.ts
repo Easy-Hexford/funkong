@@ -2,8 +2,9 @@
 import * as request from '../../services/index'
 import type { IActivityAuditStatus, IActivityInfo, ISimpleUserInfo, IUserInfo } from '../../services'
 import { calcDistance, getLocation } from '../../utils/location'
-import { formatActivityTime } from '../../utils/util'
+import { formatActivityTime, WeekNames } from '../../utils/util'
 import { getPosterQuery } from '../../utils/bind'
+import dayjs from 'dayjs'
 
 const app = getApp()
 
@@ -30,7 +31,7 @@ Component({
 
   data: {
     distance: 0,
-    beginTime: '',
+    date: '',
     Activity: <IActivityInfo>{},
     ActivityMembers: <Array<ISimpleUserInfo>>[],
     OwnerUserId: '',
@@ -98,9 +99,29 @@ Component({
     },
 
     formatDate() {
-      this.setData({
-        beginTime: formatActivityTime(this.data.Activity.BeginTime)
-      })
+      const { BeginTime , EndTime } = this.data.Activity
+      const t1 = dayjs(BeginTime)
+      const t2 = dayjs(EndTime)
+
+      if (t1.day() === t2.day()) {
+        const s = t1.format('HH:mm')
+        const e = t2.format('HH:mm')
+        const w = WeekNames[t1.day()]
+        const d = t1.format('MM月DD日')
+        this.setData({
+          date: `${s}-${e} · ${w} · ${d}`
+        })
+      } else {
+        const s = t1.format('HH:mm')
+        const e = t2.format('HH:mm')
+        const sw = WeekNames[t1.day()]
+        const ew = WeekNames[t2.day()]
+        const d = t1.format('MM月DD日')
+        this.setData({
+          date: `${s}${sw} - ${e}${ew} · ${d}`
+        })
+      }
+      
     },
 
     calcDistance() {

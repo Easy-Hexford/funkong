@@ -28,7 +28,7 @@
 					 size="16"
 					 color="rgba(0, 0, 0, 0.55)"
 					/>
-					<text class="ellipsis" space="ensp" bind:tap="openLocation">{{Activity.Location.Name}} {{filter.distance(distance)}}</text>
+					<text class="ellipsis" space="ensp" bind:tap="openLocation">{{Activity.Location.Name}} · {{filter.distance(distance)}} </text>
 				</view>
 
 				<view class="activity-date row" style="margin-top: 8px;">
@@ -38,7 +38,7 @@
 					 size="16"
 					 color="rgba(0, 0, 0, 0.55)"
 					/>
-					<text class="ellipsis" space="ensp">{{beginTime}}</text>
+					<text class="ellipsis" space="ensp">{{date}}</text>
 				</view>
 
 				<view class="sub-title">小队成员</view>

@@ -3,8 +3,8 @@
 	<block wx:for="{{members}}" wx:key="UserId" wx:for-item="User">
 		<view class="item">
 			<view class="column-cross-center">
-				<image class="avatar" src="{{User.Icon}}" />
-				<text class="nickname">{{User.NickName}}</text>
+				<image class="avatar" src="{{User.Icon || '../../assets/images/@avatar_woman.svg'}}" />
+				<text class="nickname">{{User.NickName || '匿名'}}</text>
 				<!-- <view class="identity">主理人</view> -->
 			</view>
 		</view>
