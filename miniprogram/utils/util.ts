@@ -1,5 +1,11 @@
 import dayjs from 'dayjs'
 
+export function autoBack(dalay: number = 1500) {
+  setTimeout(() => {
+    wx.navigateBack({})
+  }, dalay)
+}
+
 export const formatTime = (date: Date) => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1

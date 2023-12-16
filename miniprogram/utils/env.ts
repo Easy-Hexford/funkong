@@ -21,8 +21,12 @@ class _Env {
     return this.accountInfo.miniProgram.envVersion === 'develop'
   }
 
+  get kTrialMode() {
+    return this.accountInfo.miniProgram.envVersion === 'trial'
+  }
+
   get kReleaseMode() {
-    return !this.kDebugMode
+    return this.accountInfo.miniProgram.envVersion === 'release'
   }
 }
 

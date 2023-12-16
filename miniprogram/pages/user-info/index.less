@@ -76,8 +76,11 @@
 }
 
 .navbar {
-  --td-navbar-bg-color: transparent;
-  --td-navbar-color: rgba(255, 255, 255, 0.8);
+  --td-navbar-color:  var(--Glyph-0, rgba(0, 0, 0, 0.90));
+
+  &.active {
+    --td-navbar-color: rgba(255, 255, 255, 0.8);
+  }
 }
 
 .scrollable {

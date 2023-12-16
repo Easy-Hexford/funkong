@@ -1,5 +1,6 @@
 import * as request from '../../services/index'
 import { IClubInfo, IUserInfo } from '../../services/index'
+import _ from '../../utils/lodash'
 
 const app = getApp()
 
@@ -70,6 +71,17 @@ Component({
       const tabComp = this.getTabBar()
       tabComp.setData({
         selected: 2
+      })
+    },
+
+    editUserInfo() {
+      wx.navigateTo({
+        url: '../user-info/index',
+        success: (res) => {
+          res.eventChannel.emit('initData', {
+            User: _.cloneDeep(this.data.User),
+          })
+        }
       })
     },
 

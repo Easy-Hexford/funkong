@@ -20,7 +20,7 @@ Component({
 
     mode: {
       type: String,
-      value: 'audit' // audit
+      value: 'normal' // audit
     }
   },
 

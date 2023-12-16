@@ -1,10 +1,11 @@
 import { uploadBehavior } from '../../behaviors/upload'
 import type { IUploadBehavior} from '../../behaviors/upload'
 import * as request from '../../services/index'
-import type { IUserInfo, IUserInfoNullable } from '../../services/index'
+import type { IUserInfoNullable } from '../../services/index'
 import dayjs from 'dayjs'
+import { MockUser } from '../../utils/mock'
+import { autoBack } from '../../utils/util'
 
-// const _ = require('../../libs/lodash_4.17.10.min')
 const USER_PIC_CATALOG = 'user/'
 const app = getApp()
 
@@ -38,16 +39,7 @@ Component({
 
   lifetimes: {
     attached() {
-      const User: IUserInfo = app.globalData.User
-      const UserCoverTempFile = User.CoverUrls.Items[0]
-      const UserIconTempFile = User.Icon
-
-      this.setData({
-        // User: _.cloneDeep(User),
-        User,
-        UserCoverTempFile,
-        UserIconTempFile,
-      })
+      this.initData()
     }
   },
 
@@ -76,10 +68,11 @@ Component({
           icon: 'success',
           title: '修改成功',
         })
-      }, () => {
+        autoBack()
+      }, (e) => {
         wx.showToast({
           icon: 'error',
-          title: '修改失败',
+          title: e.message
         })
       })
     },
@@ -89,6 +82,32 @@ Component({
       if (User.CoverUrls?.Items[0] || User.Icon || User.NickName || User.Gender || User.BirthdayDate)
         return true
       return false
+    },
+
+    initData() {
+      const eventChannel = this.getOpenerEventChannel()
+      if (eventChannel?.on) {
+        eventChannel.on('initData', (data) => {
+          const User = data.User
+          const UserCoverTempFile = User.CoverUrls.Items[0]
+          const UserIconTempFile = User.Icon
+
+          this.setData({
+            User,
+            UserCoverTempFile,
+            UserIconTempFile,
+          })
+        })
+      } else {
+        const UserCoverTempFile = MockUser.CoverUrls.Items[0]
+        const UserIconTempFile = MockUser.Icon
+
+        this.setData({
+          User: MockUser,
+          UserCoverTempFile,
+          UserIconTempFile,
+        })
+      }
     },
 
     showGenderPicker() {

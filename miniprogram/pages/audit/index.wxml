@@ -1,6 +1,6 @@
 <!--pages/audit/index.wxml-->
 
-<t-navbar title="审核台" class="navbar" />
+<t-navbar left-arrow title="审核台" fixed="{{false}}" class="navbar" />
 
 <scroll-view
  class="scrollable"

@@ -99,7 +99,7 @@
 				/>
 			</view>
 
-			<navigator class="nickname center" url="../user-info/index" hover-class="none">
+			<view class="nickname center" hover-class="none" bind:tap="editUserInfo">
 				<text>{{User.NickName || '尊嘟假嘟'}}</text>
 				<t-icon
 				 style="margin-left: 4px;"
@@ -107,7 +107,7 @@
 				 size="20"
 				 color="#6CCEA2"
 				/>
-			</navigator>
+			</view>
 			<view class="identity-badge">{{User.Role === 'SuperRole' ? '主理人' : User.Phone ? '' : '游客'}}</view>
 		</view>
 	</view>

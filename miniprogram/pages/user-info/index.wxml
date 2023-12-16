@@ -105,5 +105,5 @@
  left-arrow
  fixed
  title="修改个人资料"
- t-class="navbar"
+ t-class="navbar {{UserCoverTempFile ? 'active' : ''}}"
 />
