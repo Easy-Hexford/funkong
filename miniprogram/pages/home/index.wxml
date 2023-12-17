@@ -40,8 +40,17 @@
 			<activity-card activity="{{activity}}" />
     </navigator>
     <view class="load-more">
-      <text wx:if="{{ActivityList.length < ActivityTotalCount}}">加载更多...</text>
-      <text wx:else>没有更多啦</text>
+      <view wx:if="{{ActivityList.length < ActivityTotalCount}}">
+        <t-loading
+         theme="circular"
+         size="17px"
+         text="正在寻找更多活动..."
+         class="tip--loading"
+        />
+      </view>
+      <view wx:else class="center">
+        <text class="tip--nomore">----- 暂无更多活动 -----</text>
+      </view>
     </view>
 	</block>
 	<block wx:else>

@@ -3,6 +3,9 @@ var birthday = function(d) {
 }
 
 var money = function(m) {
+  if (typeof m !== 'number') {
+    return ''
+  }
   return (m / 100).toFixed(2)
 }
 

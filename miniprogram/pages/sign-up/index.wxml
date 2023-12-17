@@ -86,11 +86,11 @@
 	 wx:if="{{!User.Phone && !PhoneCode}}"
 	 open-type="getPhoneNumber"
 	 bind:getphonenumber="getPhoneNumber"
-	 class="btn--manage center"
+	 class="btn center"
 	>
 		<text>支付 ¥{{filter.money(Activity.ActivityRule.Price)}}</text>
 	</button>
-	<view wx:else class="btn--manage center" bind:tap="signUp">
+	<view wx:else class="btn center" bind:tap="signUp">
 		支付 ¥{{filter.money(Activity.ActivityRule.Price)}}
 	</view>
 </view>

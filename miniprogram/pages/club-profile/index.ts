@@ -29,19 +29,20 @@ Component({
     ClubMembers: <Array<ISimpleUserInfo>>[],
     ActivityList: <Array<IActivityInfo>>[],
     ActivityTotalCount: 0,
-    triggered: false,
 
+    loading: true,
+    firstPage: false,
+    _reenter: false,
+
+    triggered: false,
     _offset: 0,
-    _page: 30,
+    _page: 10,
     _freshing: false,
+    _loadMore: false,
+
   },
 
   lifetimes: {
-    created() {
-      // TODO 
-      // 上拉加载更多
-    },
-
     async attached() {
       if (this.data.scene) {
         const posterQuery = await getPosterQuery(this.data.scene)
@@ -50,6 +51,9 @@ Component({
       this.getUser()
       this.refreshClub()
       this.refreshClubActivityList()
+      const pageStack = getCurrentPages()
+      const firstPage = pageStack.length === 1
+      this.setData({ firstPage })
     }
   },
 
@@ -81,6 +85,7 @@ Component({
         Limit: this.data._page,
       }).then(resp => {
         this.setData({
+          loading: false,
           ActivityTotalCount: resp.TotalCount,
           ActivityList: resp.ActivityList,
           _offset: resp.ActivityList.length
@@ -89,16 +94,20 @@ Component({
     },
 
     async loadMore() {
-      const ActivityList = this.data.ActivityList
+      if (this.data._loadMore) return
+      this.data._loadMore = true
       return request.getActicityList({
         ClubId: this.data.ClubId,
         Offset: this.data._offset,
         Limit: this.data._page,
       }).then(resp => {
+        const ActivityList = this.data.ActivityList
         ActivityList.push(...resp.ActivityList)
         this.setData({
           ActivityList,
-          _offset: ActivityList.length
+          ActivityTotalCount: resp.TotalCount,
+          _offset: ActivityList.length,
+          _loadMore: false
         })
       })
     },
@@ -108,11 +117,21 @@ Component({
       this.data._freshing = true
       this.refreshClubActivityList()
         .then(() => {
-          this.data._freshing = false
           this.setData({
             triggered: false,
+            _freshing: false,
           })
         })
+    },
+
+    onBack() {
+      wx.navigateBack();
+    },
+    
+    onGoHome() {
+      wx.reLaunch({
+        url: '/pages/home/index',
+      });
     },
   }
 })

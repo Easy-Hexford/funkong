@@ -5,7 +5,7 @@
 			<view class="column-cross-center">
 				<image class="avatar" src="{{User.Icon || '../../assets/images/@avatar_woman.svg'}}" />
 				<text class="nickname">{{User.NickName || '匿名'}}</text>
-				<!-- <view class="identity">主理人</view> -->
+				<view class="identity" wx:if="{{index === 0}}">主理人</view>
 			</view>
 		</view>
 	</block>

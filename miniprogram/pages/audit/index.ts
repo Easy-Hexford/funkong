@@ -32,7 +32,7 @@ Component({
     loading: true,
     triggered: false,
     _offset: 0,
-    _page: 5,
+    _page: 10,
     _freshing: false,
     _loadMore: false,
   },

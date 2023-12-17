@@ -39,8 +39,8 @@ Component({
 
     loading: true,
     firstPage: false,
-    auditResult: <IActivityAuditStatus>'',
     _reenter: false,
+    auditResult: <IActivityAuditStatus>'',
   },
 
   pageLifetimes: {
@@ -59,12 +59,12 @@ Component({
         this.data.ActivityId = posterQuery.ActivityId
       }
 
-      const { User } = await app.getUser()
       await this.refreshActivity()
       const pageStack = getCurrentPages()
       const firstPage = pageStack.length === 1
-
+      const { User } = await app.getUser()
       this.setData({ User, loading: false, firstPage })
+      
       wx.showShareMenu({
         menus: ['shareAppMessage']
       })
@@ -109,7 +109,7 @@ Component({
         const w = WeekNames[t1.day()]
         const d = t1.format('MM月DD日')
         this.setData({
-          date: `${s}-${e} · ${w} · ${d}`
+          date: `${s}-${e} ${w} ${d}`
         })
       } else {
         const s = t1.format('HH:mm')
@@ -118,7 +118,7 @@ Component({
         const ew = WeekNames[t2.day()]
         const d = t1.format('MM月DD日')
         this.setData({
-          date: `${s}${sw} - ${e}${ew} · ${d}`
+          date: `${s}${sw} - ${e}${ew} ${d}`
         })
       }
       

@@ -32,7 +32,7 @@ Component({
     loading: true,
     triggered: false,
     _offset: 0,
-    _page: 5,
+    _page: 10,
     _freshing: false,
     _loadMore: false,
   },
@@ -91,9 +91,9 @@ Component({
       this.data._freshing = true
       this.refreshActivityList()
         .then(() => {
-          this.data._freshing = false
           this.setData({
             triggered: false,
+            _freshing: false
           })
         })
     },

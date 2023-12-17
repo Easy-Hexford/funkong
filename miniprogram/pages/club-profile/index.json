@@ -4,6 +4,7 @@
   "usingComponents": {
     "t-icon": "tdesign-miniprogram/icon/icon",
     "member-list": "../../components/member-list/index",
-    "activity-card": "../../components/activity-card/index"
+    "activity-card": "../../components/activity-card/index",
+    "t-loading": "tdesign-miniprogram/loading/loading"
   }
 }
