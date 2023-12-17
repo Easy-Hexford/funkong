@@ -25,7 +25,8 @@ Component({
     signUpText: '',
     ActivitySignUpStatus: <IActivitySignUpStatus>'',
     SignUpInfo: <ISignUpInfo>{},
-    Activity: <IActivityInfo>{}
+    Activity: <IActivityInfo>{},
+    avatarList: <Array<string>>[],
   },
 
   lifetimes: {
@@ -38,24 +39,19 @@ Component({
       })
       this.formatDate()
       this.calcDistance()
-      const signUpText = this.getSignUpText()
-      this.setData({ signUpText })
+      this.getSignUpText()
     }
   },
 
   methods: {
     getSignUpText() {
-      const TIPS = [
-        '已退出活动',
-        '加入中',
-        '活动已结束',
-        '等待成团加入'
-      ]
-
       const Activity = this.data.Activity
       const ActivitySignUpStatus = this.data.ActivitySignUpStatus
       if (ActivitySignUpStatus === 'Refund') {
-        return TIPS[0]
+        this.setData({ 
+          signUpText:'已退出活动'
+        })
+        return
       }
 
       const failStatus: Array<IActivitySignUpStatus> = [
@@ -67,7 +63,10 @@ Component({
       ]
 
       if (failStatus.indexOf(ActivitySignUpStatus) >= 0) {
-        return TIPS[1]
+        this.setData({ 
+          signUpText: '加入中'
+        })
+        return
       }
 
       const now = dayjs().unix()
@@ -75,18 +74,30 @@ Component({
       const endTime = dayjs(Activity.EndTime).unix()
       
       if (now >= endTime) {
-        return TIPS[2]
+        this.setData({ 
+          signUpText: '活动已结束'
+        })
+        return
       }
 
       if (now < startTime) {
         if (Activity.SignUpNum === 1) {
-          return TIPS[3 ]
+          this.setData({ 
+            signUpText: '等待成团加入'
+          })
+          return
         }
 
-        return `已加入${Activity.SignUpNum}个队员`
+        this.setData({ 
+          avatarList: Activity.ActivitySignUpList.map(i => i.User.Icon),
+          signUpText: `等${Activity.SignUpNum}个队员`
+        })
+        return
       }
 
-      return ''
+      this.setData({ 
+        signUpText: ''
+      })
     },
 
     onUsertap() {

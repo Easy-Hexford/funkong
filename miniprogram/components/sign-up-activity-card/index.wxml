@@ -52,8 +52,20 @@
 			<image class="cover" mode="aspectFill" src="{{Activity.CoverUrls.Items[0]}}" />
 			<view class="overlay">
 				<view class="title-wrap row-between">
-					<text class="title">{{Activity.Title}}</text>
-					<text class="status">{{signUpText}}</text>
+					<text class="title ellipsis">{{Activity.Title}}</text>
+					<view class="row">
+						<t-avatar-group max="3" class="avatar-group">
+              <view slot="collapse-avatar"></view>
+              <t-avatar
+               size="24px"
+							 wx:for="{{avatarList}}"
+							 wx:for-item="pic"
+							 wx:key="*this"
+							 image="{{pic || '../../assets/images/@avatar_woman.svg'}}"
+							/>
+						</t-avatar-group>
+						<text style="margin-left: 6px;" class="status">{{signUpText}}</text>
+					</view>
 				</view>
 			</view>
 		</view>
