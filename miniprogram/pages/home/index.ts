@@ -1,5 +1,6 @@
 import * as request from '../../services/index'
 import { IActivityInfo } from '../../services/index'
+import { HOME_SHARE_PICS } from '../../config'
 
 Component({
   options: {
@@ -91,9 +92,12 @@ Component({
     },
 
     onShareAppMessage(_: WechatMiniprogram.Page.IShareAppMessageOption): WechatMiniprogram.Page.ICustomShareContent {
+      const count = HOME_SHARE_PICS.length
+      const random = Math.floor(Math.random() * count)
       return {
-        title: 'Fun空',
-        path: `pages/home/index`
+        title: '累了就要Fun空一下！',
+        path: `pages/home/index`,
+        imageUrl: HOME_SHARE_PICS[random],
       }
     },
   }

@@ -31,7 +31,7 @@
 			<view
 			 class="activity-wrap"
 			 wx:for="{{ActivitySignUpList}}"
-			 wx:key="ActivityId"
+			 wx:key="SignUpId"
 			 wx:for-item="SignUpActivity"
 			>
 				<sign-up-activity-card bind:userTap="onUserTap" idx="{{index}}" signUpActivity="{{SignUpActivity}}" />

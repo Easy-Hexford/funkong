@@ -48,12 +48,14 @@ Component({
         const posterQuery = await getPosterQuery(this.data.scene)
         this.data.ClubId = posterQuery.ClubId
       }
-      this.getUser()
-      this.refreshClub()
-      this.refreshClubActivityList()
+     
       const pageStack = getCurrentPages()
       const firstPage = pageStack.length === 1
       this.setData({ firstPage })
+
+      await this.refreshClub()
+      await this.getUser()
+      this.refreshClubActivityList()
 
       wx.showShareMenu({
         menus: ['shareAppMessage']
@@ -63,7 +65,7 @@ Component({
 
   methods: {
     async getUser() {
-      app.getUser().then((resp: IGetUserResp) => {
+      return app.getUser().then((resp: IGetUserResp) => {
         this.setData({
           User: resp.User
         })
@@ -83,10 +85,13 @@ Component({
     },
 
     async refreshClubActivityList() {
+      const { User, ClubOwnerUser } = this.data
+      const isClubOwner = User.UserId === ClubOwnerUser.UserId
       return request.getActicityList({
         ClubId: this.data.ClubId,
         Offset: 0,
         Limit: this.data._page,
+        AuditStatus: isClubOwner ? '' : 'AuditSucc'
       }).then(resp => {
         this.setData({
           loading: false,
@@ -100,10 +105,14 @@ Component({
     async loadMore() {
       if (this.data._loadMore) return
       this.data._loadMore = true
+
+      const { User, ClubOwnerUser } = this.data
+      const isClubOwner = User.UserId === ClubOwnerUser.UserId
       return request.getActicityList({
         ClubId: this.data.ClubId,
         Offset: this.data._offset,
         Limit: this.data._page,
+        AuditStatus: isClubOwner ? '' : 'AuditSucc'
       }).then(resp => {
         const ActivityList = this.data.ActivityList
         ActivityList.push(...resp.ActivityList)

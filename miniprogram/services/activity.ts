@@ -224,7 +224,7 @@ export interface IGetActicityListReq {
   City?: string,
   Offset?: number,
   Limit?: number,
-  AuditStatus?: IActivityAuditStatus
+  AuditStatus?: IActivityAuditStatus | ''
 }
 
 export interface IGetInsuranceProductListResp {
