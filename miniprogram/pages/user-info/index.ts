@@ -77,13 +77,14 @@ Component({
           icon: 'success',
           title: '修改成功',
         })
-        app.getLatestUser().then(() => {
-          autoBack()
-        })
+        app.getLatestUser()
+          .then(() => {
+            autoBack()
+          })
       }, (e) => {
-        wx.showToast({
-          icon: 'error',
-          title: e.message
+        wx.showModal({
+          title: e.message,
+          showCancel: false
         })
       })
     },

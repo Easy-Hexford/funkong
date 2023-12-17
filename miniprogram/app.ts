@@ -14,35 +14,42 @@ App({
     SystemInfo: <WechatMiniprogram.SystemInfo>{},
   },
   async onLaunch() {
+    this.listenError()
     wx.getSystemInfo({
-      success:(res) => {
+      success: (res) => {
         this.globalData.SystemInfo = res
       }
     })
 
-    this.listenError()
+    request.login().then(resp => {
+      this.globalData.PlatformClubId = resp.PlatformClubId
+      this.bindClubManagerIfNeeded()
+    })
+  },
 
-    const _lResp = await request.login()
-    this.globalData.PlatformClubId = _lResp.PlatformClubId
+  async bindClubManagerIfNeeded() {
     const resp = await this.getUser()
-    bindClubManager(resp.User, _lResp.PlatformClubId)
+    const PlatformClubId = this.globalData.PlatformClubId
+    bindClubManager(resp.User, PlatformClubId)
   },
 
   listenError() {
     // @ts-ignore
     wx.onError((e: Error) => {
-      if (env.kDebugMode) {
+      if (env.kDebugMode || env.kTrialMode) {
         wx.showModal({
           title: e.message,
-          content: e.stack
+          content: e.stack,
+          showCancel: false
         })
       }
     })
 
     wx.onUnhandledRejection(e => {
-      if (env.kDebugMode) {
+      if (env.kDebugMode || env.kTrialMode) {
         wx.showModal({
           content: e.reason,
+          showCancel: false
         })
       }
     })
@@ -58,7 +65,7 @@ App({
     return this.getLatestUser()
   },
 
-  async getLatestUser(): Promise<IGetUserResp>  {
+  async getLatestUser(): Promise<IGetUserResp> {
     const resp = await request.getUser({
       UseCache: false
     })

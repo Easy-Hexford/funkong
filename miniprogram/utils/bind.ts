@@ -22,11 +22,11 @@ export interface IRegisterClubInfo {
 }
 
 export async function bindClubManager(User: IUserInfo, PlatformClubId: string) {
-  const enterOption = wx.getEnterOptionsSync()
   if (User.RegisterType) {
     return
   }
 
+  const enterOption = wx.getEnterOptionsSync()
   // 非落地页首次打开，绑定为平台流量
   if (landingPage.indexOf(enterOption.path) < 0) {
     await bindPlatform(PlatformClubId)
@@ -34,7 +34,6 @@ export async function bindClubManager(User: IUserInfo, PlatformClubId: string) {
   }
 
   const queryScene = enterOption.query.scene
-
   // 落地页首次打开，非扫海报进入
   if (!queryScene) {
     await bindPlatform(PlatformClubId)
