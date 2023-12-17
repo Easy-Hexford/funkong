@@ -57,6 +57,10 @@ Component({
       
       this.data._lock = true
       const Club: IClubInfo = this.data.Club as any
+      wx.showToast({
+        icon: 'loading',
+        title: '正在确认'
+      })
       request.createClub({
         ClubType: 'NormalClub',
         ClubName: Club.ClubName,
@@ -68,13 +72,12 @@ Component({
       }).then(() => {
         wx.showToast({
           icon: 'success',
-          title: '已提交审核',
+          title: '已提交',
         })
         autoBack()
       }, (e) => {
         wx.showModal({
-          title: e.message,
-          content: '请重新填写或选择合适的图片',
+          content: e.message,
           showCancel: false
         })
       }).finally(() => {

@@ -30,9 +30,7 @@
 				<view>
 					<t-input
 					 clearable
-					 tips="最大输入32个字符，汉字算两个"
 					 maxcharacter="32"
-					 cursor-spacing="20"
 					 placeholder="填写活动名称"
 					 placeholder-class="placeholder"
 					 borderless="{{true}}"
@@ -82,11 +80,13 @@
           </view>
         </view>
 
+        <view class="sub-title">活动费用</view>
+
         <view class="form-field-wrap">
 					<t-input
 					 value="{{ActivityPrice}}"
 					 cursor-spacing="20"
-					 placeholder="活动价格"
+					 placeholder="填写活动价格"
 					 type="digit"
 					 placeholder-class="placeholder"
 					 borderless="{{true}}"

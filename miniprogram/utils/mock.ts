@@ -32,7 +32,7 @@ export const MockUser: IUserInfo = {
   "Phone": "17665735535",
   "Name": "",
   "IdCardType": "",
-  "IdCardNo": "12",
+  "IdCardNo": "",
   "BirthdayDate": "2012-10-01 00:00:00",
   "CreateTime": "2023-12-04 20:58:53",
   "UpdateTime": "2023-12-05 23:22:52",

@@ -69,6 +69,10 @@ Component({
       this.data._lock = true
 
       const User: IUserInfoNullable = this.data.User
+      wx.showToast({
+        icon: 'loading',
+        title: '正在确认'
+      })
       request.updateUser({
         CoverUrls: User.CoverUrls,
         Icon: User.Icon,
@@ -86,8 +90,7 @@ Component({
           })
       }, (e) => {
         wx.showModal({
-          title: e.message,
-          content: '请重新填写或选择合适的图片',
+          content: e.message,
           showCancel: false
         })
       }).finally(() => {

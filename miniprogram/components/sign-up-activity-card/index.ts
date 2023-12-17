@@ -27,6 +27,8 @@ Component({
     SignUpInfo: <ISignUpInfo>{},
     Activity: <IActivityInfo>{},
     avatarList: <Array<string>>[],
+
+    defaultHeadImg: 'https://7072-prod-1gsl7u0x17e23d06-1322287298.tcb.qcloud.la/static/%40avatar_woman.svg?sign=61a11334011794e27067c51410728b11&t=1702805181'
   },
 
   lifetimes: {
@@ -139,10 +141,10 @@ Component({
           title: '已重新发起投保'
         })
 
-      } catch (error) {
-        wx.showToast({
-          icon: 'none',
-          title: '发起投保失败'
+      } catch (e) {
+        wx.showModal({
+          content: e.message,
+          showCancel: false
         })
       }
     },
@@ -193,10 +195,15 @@ Component({
     createInsurance() {
       request.createInsurance({
         ActivityId: this.data.Activity.ActivityId
-      }).finally(() => {
+      }).then(() => {
         wx.showToast({
           icon: 'none',
           title: '已重新触发提交'
+        })
+      }, (e) => {
+        wx.showModal({
+          content: e.message,
+          showCancel: false
         })
       })
     }

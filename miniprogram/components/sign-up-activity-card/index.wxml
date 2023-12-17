@@ -14,15 +14,15 @@
 				<t-icon name="time" size="16" color="#4321F5" />
 				<text style="margin-left: 2px;">购买保险中</text>
 			</view>
-			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 1}}" class="row" bind:tap="createInsurance">
+			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 1}}" class="row" catch:tap="createInsurance">
 				<t-icon name="error-circle" size="16" color="#FA5151" />
 				<text style="margin-left: 2px;">保险购买失败，轻触重新购买。</text>
-			</view>
-			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 2}}" class="row" bind:tap="showInsuranceForm">
+      </view>
+			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 2 }}" class="row" catch:tap="showInsuranceForm">
 				<t-icon name="error-circle" size="16" color="#FA5151" />
 				<text style="margin-left: 2px;">保险购买失败，请修改被保人信息。</text>
 			</view>
-			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 3}}" class="row" bind:tap="contactCustomerService">
+			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 3}}" class="row" catch:tap="contactCustomerService">
 				<t-icon name="error-circle" size="16" color="#FA5151" />
 				<text style="margin-left: 2px;">未购买保险，请联系客服。</text>
 			</view>
@@ -61,7 +61,7 @@
 							 wx:for="{{avatarList}}"
 							 wx:for-item="pic"
 							 wx:key="*this"
-							 image="{{pic || '../../assets/images/@avatar_woman.svg'}}"
+							 image="{{pic || defaultHeadImg}}"
 							/>
 						</t-avatar-group>
 						<text style="margin-left: 6px;" class="status">{{signUpText}}</text>

@@ -4,10 +4,8 @@ import { uploadBehavior } from '../../behaviors/upload'
 import type { IUploadBehavior } from '../../behaviors/upload'
 import dayjs from 'dayjs'
 import { getAddress } from '../../utils/location'
-import { MAP_KEY } from '../../config';
 import { autoBack } from '../../utils/util';
 
-const typeCheck = require('type-check').typeCheck;
 const app = getApp()
 const ACTIVITY_PIC_CATALOG = 'activity/'
 
@@ -27,7 +25,7 @@ Component({
   options: {
     pureDataPattern: /^_/
   },
-  
+
   properties: {
     ClubId: {
       type: String,
@@ -39,6 +37,7 @@ Component({
     Activity: <IActivityInfo>{},
 
     // 活动价格
+    isFreeInsurance: false,
     ActivityPrice: '',
     errPrice: '',
 
@@ -105,6 +104,10 @@ Component({
       this.data._lock = true
       const Activity = this.data.Activity
       const illustrations: Array<Illustration> = this.data.illustrations
+      wx.showToast({
+        icon: 'loading',
+        title: '正在确认'
+      })
       request.createActivity({
         ClubId: this.data.ClubId,
         Title: Activity.Title,
@@ -123,13 +126,12 @@ Component({
       }).then(() => {
         wx.showToast({
           icon: 'success',
-          title: '已提交审核',
+          title: '已提交',
         })
         autoBack()
       }, (e) => {
         wx.showModal({
-          title: e.message,
-          content: '请重新填写或选择合适的图片',
+          content: e.message,
           showCancel: false
         })
       }).finally(() => {
@@ -269,7 +271,9 @@ Component({
       const InsuranceProductList = this.data.InsuranceProductList
       const { index, activityType } = e.detail
       const insurancePrice = (InsuranceProductList[index].NormalPrice / 100).toFixed(2)
+      const isFreeInsurance = InsuranceProductList[index].InsuranceType === 'Free'
       this.setData({
+        isFreeInsurance,
         typePickerVisible: false,
         ActivityType: activityType,
         InsurancePrice: insurancePrice,
@@ -285,10 +289,13 @@ Component({
     },
 
     checkActivityPrice(price: number) {
+      if (this.data.isFreeInsurance) return true
       const InsurancePrice = +this.data.InsurancePrice
-      if (price < InsurancePrice) {
+      const ActivityType = this.data.ActivityType
+      const minActivityPrice = 2 * InsurancePrice
+      if (price < minActivityPrice) {
         this.setData({
-          errPrice: '活动价格不能低于保险费用'
+          errPrice: `${ActivityType}活动保险费用为¥${InsurancePrice.toFixed(2)}，活动费用不可低于${minActivityPrice.toFixed(2)}元。`
         })
         return false
       }
