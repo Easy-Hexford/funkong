@@ -3,6 +3,7 @@ import { IActivityInfo, IActivitySignUpStatus, ISignUpActicityInfo, ISignUpInfo 
 import * as request from '../../services/index'
 
 import dayjs from 'dayjs'
+import { DEFAULT_AVATAR_WOMAN } from '../../config'
 
 const app = getApp()
 
@@ -28,7 +29,8 @@ Component({
     Activity: <IActivityInfo>{},
     avatarList: <Array<string>>[],
 
-    defaultHeadImg: 'https://7072-prod-1gsl7u0x17e23d06-1322287298.tcb.qcloud.la/static/%40avatar_woman.svg?sign=61a11334011794e27067c51410728b11&t=1702805181'
+    _lock: false,
+    defaultHeadImg: DEFAULT_AVATAR_WOMAN
   },
 
   lifetimes: {
@@ -115,6 +117,12 @@ Component({
       })
     },
 
+    hidePopup() {
+      this.setData({
+        visible: false,
+      })
+    },
+
     onVisibleChange(e: any) {
       this.setData({
         visible: e.detail.visible,
@@ -126,8 +134,17 @@ Component({
         return
       }
 
+      if (this.data._lock) return
+      this.data._lock = true
+
       const insuranceData = e.detail.User
       try {
+        wx.showToast({
+          icon: 'loading',
+          title: '正在确认',
+          duration: 10000
+        })
+
         await request.updateUser({
           ...insuranceData
         })
@@ -136,12 +153,16 @@ Component({
           ActivityId: this.data.Activity.ActivityId
         })
 
+        this.hidePopup()
+        this.data._lock = false
         wx.showToast({
           icon: 'none',
           title: '已重新发起投保'
         })
-
       } catch (e) {
+        wx.hideToast()
+        this.hidePopup()
+        this.data._lock = false
         wx.showModal({
           content: e.message,
           showCancel: false

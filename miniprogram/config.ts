@@ -11,6 +11,11 @@ export const CLOUD_ENV_ID = 'release-5g0ny7l2324d3b5b'
 // 腾讯地图 key
 export const MAP_KEY = 'CECBZ-2XK6W-JNUR4-3V3TZ-ZP7ME-KBFNX'
 
+
+export const DEFAULT_AVATAR_WOMAN = 'https://7072-prod-1gsl7u0x17e23d06-1322287298.tcb.qcloud.la/static/avatar_woman.png?sign=abdfbd81215ddb66e26af1ac7eede778&t=1702828874'
+
+export const DEFAULT_AVATAR_MAN = 'https://7072-prod-1gsl7u0x17e23d06-1322287298.tcb.qcloud.la/static/avatar_man.png?sign=23ddcba2047482fbf6ffde6d497852c4&t=1702828889'
+
 export const HOME_SHARE_PICS = [
   'https://7072-prod-1gsl7u0x17e23d06-1322287298.tcb.qcloud.la/static/home_share_pic_1.png?sign=4d7b7b0f96b3080d88429000570389d7&t=1702825632',
   'https://7072-prod-1gsl7u0x17e23d06-1322287298.tcb.qcloud.la/static/home_share_pic_2.png?sign=9bc6c79ebece637dc04b5addf97f3606&t=1702825673',

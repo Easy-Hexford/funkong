@@ -130,6 +130,7 @@ Component({
         ...insuranceData
       }).then(() => {
         this.data._lock = false
+        wx.hideToast()
         this.hidePopup()
         this.signUp()
 
