@@ -63,7 +63,7 @@ Component({
     illustrations: [],
 
     submittable: false,
-    _submitting: false,
+    _lock: false,
   },
 
   observers: {
@@ -87,7 +87,7 @@ Component({
 
   methods: {
     submit() {
-      if (this.data._submitting) {
+      if (this.data._lock) {
         return
       }
 
@@ -102,7 +102,7 @@ Component({
 
       if (!this.data.submittable) return
 
-      this.data._submitting = true
+      this.data._lock = true
       const Activity = this.data.Activity
       const illustrations: Array<Illustration> = this.data.illustrations
       request.createActivity({
@@ -127,12 +127,13 @@ Component({
         })
         autoBack()
       }, (e) => {
-        wx.showToast({
-          icon: 'error',
-          title: e.message
+        wx.showModal({
+          title: e.message,
+          content: '请重新填写或选择合适的图片',
+          showCancel: false
         })
       }).finally(() => {
-        this.data._submitting = false
+        this.data._lock = false
       })
     },
 

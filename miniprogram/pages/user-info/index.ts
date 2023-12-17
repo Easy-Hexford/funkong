@@ -35,6 +35,7 @@ Component({
     start: '1949-10-01 00:00:00',
     end: dayjs().valueOf(),
     submittable: false,
+    _lock: false
   },
 
   lifetimes: {
@@ -64,6 +65,8 @@ Component({
   methods: {
     submit() {
       if (!this.data.submittable) return
+      if (this.data._lock) return
+      this.data._lock = true
 
       const User: IUserInfoNullable = this.data.User
       request.updateUser({
@@ -84,8 +87,11 @@ Component({
       }, (e) => {
         wx.showModal({
           title: e.message,
+          content: '请重新填写或选择合适的图片',
           showCancel: false
         })
+      }).finally(() => {
+        this.data._lock = false
       })
     },
 
