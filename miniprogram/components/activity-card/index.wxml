@@ -35,8 +35,9 @@
 				<view wx:if="{{activity.AuditStatus === 'AuditSucc'}}" class="btn--enter">已通过</view>
 			</view>
 			<view wx:else class="footer row-between">
-				<text >{{signUpText}}</text>
-				<view class="btn--enter {{canSignUp ? 'active' : ''}}">冲啊</view>
+        <text >{{signUpText}}</text>
+        <text wx:if="{{activity.AuditStatus === 'Auditing'}}" class="tip--auditing">审核中</text>
+				<view wx:else class="btn--enter {{canSignUp ? 'active' : ''}}">冲啊</view>
 			</view>
 
 		</view>

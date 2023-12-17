@@ -203,8 +203,17 @@ export interface IGetActivityReq {
   ActivityId: string
 }
 
+export interface ISelfActivitySignup {
+  SignUpId: string,
+  ActivityId: string,
+  UserId: string,
+  ActivitySignUpStatus: IActivitySignUpStatus,
+  User: ISimpleUserInfo
+}
+
 export interface IGetActivityResp {
-  Activity: IActivityInfo
+  Activity: IActivityInfo,
+  SelfActivitySignUp?: ISelfActivitySignup
 }
 
 export type IActivityAuditStatus = 'AuditFail' | 'AuditSucc' | 'Auditing'
@@ -261,14 +270,7 @@ export interface IActivityInfo {
   CreateTime: string,
   UpdateTime: string,
   DeleteFlag: IDeleteFlag,
-  AuditStatus: IActivityAuditStatus,
-  SelfActivitySignUp?: {
-    SignUpId: string,
-    ActivityId: string,
-    UserId: string,
-    ActivitySignUpStatus: IActivitySignUpStatus,
-    User: ISimpleUserInfo
-  }
+  AuditStatus: IActivityAuditStatus
 }
 
 export type IActivitySignUpTag = 'All' | 'Begin' | 'End'

@@ -54,6 +54,10 @@ Component({
       const pageStack = getCurrentPages()
       const firstPage = pageStack.length === 1
       this.setData({ firstPage })
+
+      wx.showShareMenu({
+        menus: ['shareAppMessage']
+      })
     }
   },
 
@@ -132,6 +136,14 @@ Component({
       wx.reLaunch({
         url: '/pages/home/index',
       });
+    },
+
+    onShareAppMessage(_: WechatMiniprogram.Page.IShareAppMessageOption): WechatMiniprogram.Page.ICustomShareContent {
+      const Club = this.data.Club
+      return {
+        title: `${Club.ClubName}邀请你参加活动`,
+        path: `pages/club-profile/index?ClubId=${Club.ClubId}`
+      }
     },
   }
 })

@@ -5,7 +5,7 @@ import { IActivityInfo, IUserInfo } from '../../services/index'
 import { IPosterQuery } from '../../utils/bind'
 import { Month } from '../../utils/constant'
 import env from '../../utils/env'
-import { MockActivity } from '../../utils/mock'
+import { MockActivity, MockUser } from '../../utils/mock'
 import { compareVersion, objectToQueryString, WeekNames } from '../../utils/util'
 
 const app = getApp()
@@ -35,34 +35,40 @@ Component({
         return
       }
 
-      this.initData()
+      this.initData().then((resp) => {
+        this.setData({
+          User: resp.User,
+          Activity: resp.Activity
+        })
+        this.formatDate()
+        this.getWxaCode()
+          .then((qrcode: string) => {
+            this.setData({
+              qrcode
+            })
+          })
+      })
     }
   },
 
   methods: {
-    initData() {
-      const eventChannel = this.getOpenerEventChannel()
-      if (eventChannel?.on) {
-        eventChannel.on('initData', (data) => {
-          this.setData({
-            User: data.User,
-            Activity: data.Activity
-          })
-          this.formatDate()
-
-          this.getWxaCode()
-            .then((qrcode: string) => {
-              this.setData({
-                qrcode
-              })
+    initData(): Promise<{ User: IUserInfo, Activity: IActivityInfo }> {
+      return new Promise(resolve => {
+        const eventChannel = this.getOpenerEventChannel()
+        if (eventChannel?.on) {
+          eventChannel.on('initData', (data) => {
+            resolve({
+              User: data.User,
+              Activity: data.Activity
             })
-        })
-      } else {
-        this.setData({
-          Activity: MockActivity
-        })
-        this.formatDate()
-      }
+          })
+        } else {
+          resolve({
+            User: MockUser,
+            Activity: MockActivity
+          })
+        }
+      })
     },
 
     formatDate() {

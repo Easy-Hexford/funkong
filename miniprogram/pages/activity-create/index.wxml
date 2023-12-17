@@ -72,13 +72,13 @@
 					</view>
         </view>
 
-        <view class="tips--insure">
+        <!-- <view class="tips--insure">
 					<view>购买保险费用(将从活动费用中扣除)</view>
 					<view class="insure-price">
             <text wx:if="{{ActivityType}}">{{InsurancePrice}}元</text>
             <text wx:else>普通活动保险2.00元，极限类运动5.00元</text>
           </view>
-        </view>
+        </view> -->
 
         <view class="sub-title">活动费用</view>
 

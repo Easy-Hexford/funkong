@@ -25,6 +25,10 @@ Component({
   lifetimes: {
     attached() {
       this.refreshActivityList()
+
+      wx.showShareMenu({
+        menus: ['shareAppMessage']
+      })
     }
   },
 
@@ -84,6 +88,13 @@ Component({
       tabComp.setData({
         selected: 0
       })
+    },
+
+    onShareAppMessage(_: WechatMiniprogram.Page.IShareAppMessageOption): WechatMiniprogram.Page.ICustomShareContent {
+      return {
+        title: 'Fun空',
+        path: `pages/home/index`
+      }
     },
   }
 })

@@ -58,20 +58,20 @@
 		</view>
 		<view class="intro-title">退换规则</view>
 		<view class="intro-content">
-			<text>距活动开始8小时前，随时可退\n</text>
-      <text>距活动不足8小时，仅退款一半\n</text>
-      <text>距活动不足4小时，无法退款</text>
+			<view>距活动开始8小时前，随时可退</view>
+      <view>距活动不足8小时，仅退款一半</view>
+      <view>距活动不足4小时，无法退款</view>
 		</view>
 		<view class="intro-title">无条件退换规则</view>
 		<view class="intro-content">
-			<text>因天气恶劣导致活动无法正常举行\n</text>
-      <text>因不可抗力导致活动无法举办\n</text>
-      <text>疫情原因导致活动无法举办\n</text>
+			<view>因天气恶劣导致活动无法正常举行</view>
+      <view>因不可抗力导致活动无法举办</view>
+      <view>疫情原因导致活动无法举办</view>
 		</view>
 		<view class="intro-title">运动意外保障服务声明</view>
 		<view class="intro-content">
-      <text>运动意外保障投保年龄范围为1岁(含) -70岁(含)不符合年龄范围会导致投保失败。\n</text> 
-      <text>运动意外保障服务需要填写身份信息才会生效，因身份信息填写错误或未领取保障服务，需在线下与俱乐部确认保险服务是否生效，未确认则视为自动放弃该项服务。</text>
+      <view>运动意外保障投保年龄范围为1岁(含) -70岁(含)不符合年龄范围会导致投保失败。</view> 
+      <view>运动意外保障服务需要填写身份信息才会生效，因身份信息填写错误或未领取保障服务，需在线下与俱乐部确认保险服务是否生效，未确认则视为自动放弃该项服务。</view>
 		</view>
 		<view class="intro-title">免责声明</view>
 		<view class="intro-content">

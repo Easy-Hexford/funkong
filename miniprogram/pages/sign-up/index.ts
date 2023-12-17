@@ -197,7 +197,7 @@ Component({
           fail: () => {
             wx.showToast({
               icon: 'error',
-              title: '报名失败'
+              title: '支付失败'
             })
             this.setData({
               payFail: true

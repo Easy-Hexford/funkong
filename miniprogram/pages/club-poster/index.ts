@@ -29,30 +29,37 @@ Component({
         return
       }
 
-      this.initData()
-      this.getWxaCode()
-        .then((qrcode: string) => {
-          this.setData({
-            qrcode
-          })
+      this.initData().then((resp) => {
+        this.setData({
+          Club: resp.Club
         })
+
+        this.getWxaCode()
+          .then((qrcode: string) => {
+            this.setData({
+              qrcode
+            })
+          })
+      })
     }
   },
 
   methods: {
-    initData() {
-      const eventChannel = this.getOpenerEventChannel()
-      if (eventChannel?.on) {
-        eventChannel.on('initData', (data) => {
-          this.setData({
-            Club: data.Club
+    initData(): Promise<{ Club: IClubInfo }> {
+      return new Promise(resovle => {
+        const eventChannel = this.getOpenerEventChannel()
+        if (eventChannel?.on) {
+          eventChannel.on('initData', (data) => {
+            resovle({
+              Club: data.Club
+            })
           })
-        })
-      } else if (env.kDebugMode) {
-        this.setData({
-          Club: MockClub
-        })
-      }
+        } else if (env.kDebugMode) {
+          resovle({
+            Club: MockClub
+          })
+        }
+      })
     },
 
     share() {

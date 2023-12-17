@@ -1,6 +1,6 @@
 // pages/activity-detail/index.ts
 import * as request from '../../services/index'
-import type { IActivityAuditStatus, IActivityInfo, IGetUserResp, ISimpleUserInfo, IUserInfo } from '../../services'
+import type { IActivityAuditStatus, IActivityInfo, IGetUserResp, ISelfActivitySignup, ISimpleUserInfo, IUserInfo } from '../../services'
 import { calcDistance, getLocation } from '../../utils/location'
 import { WeekNames } from '../../utils/util'
 import { getPosterQuery } from '../../utils/bind'
@@ -34,6 +34,7 @@ Component({
     distance: 0,
     date: '',
     Activity: <IActivityInfo>{},
+    SelfActivitySignUp: <ISelfActivitySignup | null>null,
     ActivityMembers: <Array<ISimpleUserInfo>>[],
     OwnerUserId: '',
     User: <IUserInfo>{},
@@ -69,10 +70,6 @@ Component({
       const pageStack = getCurrentPages()
       const firstPage = pageStack.length === 1
       this.setData({ loading: false, firstPage })
-
-      wx.showShareMenu({
-        menus: ['shareAppMessage']
-      })
     }
   },
 
@@ -95,12 +92,20 @@ Component({
 
         this.setData({
           Activity,
+          SelfActivitySignUp: resp.SelfActivitySignUp,
           OwnerUserId: Activity.UserId,
           ActivityMembers: [OwnerUser, ...OtherMembers],
         })
+        
         this.formatDate()
         this.calcDistance()
         this.getSignUpText()
+
+        if (Activity.AuditStatus === 'AuditSucc') {
+          wx.showShareMenu({
+            menus: ['shareAppMessage']
+          })
+        }
       })
     },
 
@@ -121,6 +126,7 @@ Component({
 
     getSignUpText() {
       const Activity = this.data.Activity
+      const SelfActivitySignUp = this.data.SelfActivitySignUp
       const now = dayjs().unix()
       const startTime = dayjs(Activity.BeginTime).unix()
       const endTime = dayjs(Activity.EndTime).unix()
@@ -134,7 +140,7 @@ Component({
         })
       }
 
-      if (!Activity.SelfActivitySignUp) {
+      if (!SelfActivitySignUp) {
         // 活动时间和人数上是否可报名
         if (now > endTime) {
           this.setData({
@@ -158,7 +164,8 @@ Component({
       }
 
       // 已经报名过
-      const ActivitySignUpStatus = Activity.SelfActivitySignUp.ActivitySignUpStatus
+      const ActivitySignUpStatus = SelfActivitySignUp.ActivitySignUpStatus
+      console.info('@@@ ActivitySignUpStatus')
       switch (ActivitySignUpStatus) {
         case 'ToPay': {
           this.setData({
