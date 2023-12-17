@@ -22,7 +22,7 @@ Component({
     }, {
       index: 1,
       name: '等待中',
-      tag: 'Begin',
+      tag: 'NoBegin',
     }, {
       index: 2,
       name: '已结束',

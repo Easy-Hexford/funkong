@@ -71,7 +71,7 @@
 			</view>
 			<view class="avatar-wrap column-cross-center" bind:tap="viewClub">
 				<image class="avatar circle" src="{{Activity.Club.ClubIcon}}" />
-				<text class="club-name line-clamp-2-ellipsis">{{Activity.Club.ClubName}}{{Activity.Club.ClubName}}</text>
+				<text class="club-name line-clamp-2-ellipsis">{{Activity.Club.ClubName}}</text>
 			</view>
 		</view>
 	</block>
@@ -129,7 +129,7 @@
 			<view class="btn active" bind:tap="developingTip">管理</view>
 		</block>
 		<!-- 用户已报名 -->
-		<block wx:elif="{{hasSignedUp}}">
+		<block wx:elif="{{1}}">
 			<navigator
 			 url="../customer-service/index"
 			 hover-class="none"
