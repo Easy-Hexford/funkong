@@ -4,13 +4,6 @@ import * as request from '../../services/index'
 
 import dayjs from 'dayjs'
 
-const TIPS = [
-  '已退出活动',
-  '加入中',
-  '活动已结束',
-  '等待成团加入'
-]
-
 const app = getApp()
 
 Component({
@@ -52,6 +45,13 @@ Component({
 
   methods: {
     getSignUpText() {
+      const TIPS = [
+        '已退出活动',
+        '加入中',
+        '活动已结束',
+        '等待成团加入'
+      ]
+
       const Activity = this.data.Activity
       const ActivitySignUpStatus = this.data.ActivitySignUpStatus
       if (ActivitySignUpStatus === 'Refund') {
@@ -85,7 +85,8 @@ Component({
 
         return `已加入${Activity.SignUpNum}个队员`
       }
-      
+
+      return ''
     },
 
     onUsertap() {
@@ -177,5 +178,16 @@ Component({
             })
         })
     },
+
+    createInsurance() {
+      request.createInsurance({
+        ActivityId: this.data.Activity.ActivityId
+      }).finally(() => {
+        wx.showToast({
+          icon: 'none',
+          title: '已重新触发提交'
+        })
+      })
+    }
   }
 })

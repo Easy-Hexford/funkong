@@ -69,7 +69,7 @@
 				</view>
 
 			</view>
-			<view class="avatar-wrap column-cross-center" bind:tap="goClub">
+			<view class="avatar-wrap column-cross-center" bind:tap="viewClub">
 				<image class="avatar circle" src="{{Activity.Club.ClubIcon}}" />
 				<text class="club-name line-clamp-2-ellipsis">{{Activity.Club.ClubName}}{{Activity.Club.ClubName}}</text>
 			</view>
@@ -78,6 +78,7 @@
 </scroll-view>
 
 <block wx:if="{{!loading}}">
+  <!-- 审核人员看到的 -->
 	<view wx:if="{{mode === 'audit'}}" class="tool-bar center">
 		<view
 		 class="btn row"
@@ -106,6 +107,7 @@
 		</view>
 	</view>
 
+  <!-- 用户看到的 -->
 	<view wx:else class="tool-bar row-between">
 		<view class="row">
 			<button open-type="share" class="btn--share" bind:tap="share">
@@ -118,11 +120,13 @@
 				<image class="icon" src="../../assets/images/@icon_qrcode.svg" />
 				<text style="margin-top: 2px;">保存二维码</text>
 			</view>
-		</view>
+    </view>
+    <!-- 主理人看到的 -->
 		<block wx:if="{{User.UserId == OwnerUserId}}">
-			<view class="btn active">管理</view>
-		</block>
-		<block wx:elif="{{Activity.SelfActivitySignUp}}">
+			<view class="btn active" bind:tap="developingTip">管理</view>
+    </block>
+    <!-- 用户已报名 -->
+		<block wx:elif="{{hasSignedUp}}">
 			<navigator
 			 url="../customer-service/index"
 			 hover-class="none"
@@ -132,12 +136,9 @@
 				<text>联系客服</text>
 				<text style="font-size: 12px; color: rgba(175, 241, 100, 0.70); opacity: 0.7;">参加报名活动群</text>
 			</navigator>
-		</block>
-		<block wx:elif="{{Activity.ActivityRule.MaxSignUpNumber === Activity.SignUpNum}}">
-			<view class="btn">活动已报满</view>
-		</block>
+    </block>
 		<block wx:else>
-			<view bind:tap="goSignUp" class="btn active">¥{{filter.money(Activity.ActivityRule.Price)}} 走起</view>
+			<view bind:tap="goSignUp" class="btn {{canSignUp ? 'active' : ''}}">{{signUpText}}</view>
 		</block>
 	</view>
 </block>

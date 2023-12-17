@@ -1,10 +1,12 @@
 import dayjs from 'dayjs'
 import * as request from '../../services/index'
-import { IActivityInfo, IInsuranceProduct, IUserInfo } from '../../services/index'
+import { IActivityInfo, IGetUserResp, IInsuranceProduct, IUserInfo } from '../../services/index'
 import { MockActivity, MockUser } from '../../utils/mock'
 import { formatActivityTime } from '../../utils/util'
 
 type IPopupContentType = 'Empty' | 'RegisterSuccess' | 'InsuranceForm' | 'SignUpSuccess' | 'PhoneAuthorize'
+
+const app = getApp()
 
 Component({
   properties: {},
@@ -21,6 +23,10 @@ Component({
     activityTime: '',
     visible: false,
     popupContent: <IPopupContentType>'',
+    signUpSuccessTip: '',
+    payFail: false,
+
+    _lock: false,
   },
 
   lifetimes: {
@@ -29,7 +35,6 @@ Component({
         const User = resp.User
         const Activity = resp.Activity
         const InsuranceProduct = Activity.ActivityRule.InsuranceProduct
-        console.info('@@ initData: ', resp)
         this.setData({
           loading: false,
           User,
@@ -60,10 +65,13 @@ Component({
     },
 
     formatDate() {
+      const LocationName = this.data.Activity.Location.Name
       const BeginTime = this.data.Activity.BeginTime
+      const diffDay = dayjs(BeginTime).diff(dayjs(), 'day')
       this.setData({
         beginTime: formatActivityTime(BeginTime),
-        activityTime: dayjs(BeginTime).format('MM月DD日')
+        activityTime: dayjs(BeginTime).format('MM月DD日'),
+        signUpSuccessTip: diffDay > 0 ? `${diffDay}天后${LocationName}见` : ''
       })
     },
 
@@ -73,19 +81,19 @@ Component({
         this.getPhoneNumberFail()
         return
       }
-
-      this.setData({
-        visible: true,
-        popupContent: 'RegisterSuccess'
-      })
-
       request.updateUser({
         PhoneCode: code
       }).then(() => {
+        this.showRegisterSuccess()
+        this.refreshUserInfo()
         this.setData({
           PhoneCode: code
         })
-        this.refreshUserInfo()
+      }, (e) => {
+        wx.showToast({
+          icon: 'error',
+          title: e.message
+        })
       })
     },
 
@@ -109,69 +117,114 @@ Component({
     },
 
     onInsuranceFormSumit(e: any) {
+      if (this.data._lock) return
+      this.data._lock = true
+
+      wx.showToast({
+        icon: 'loading',
+        title: '正在确认',
+        duration: 10000
+      })
       const insuranceData = e.detail.User
-      const User = this.data.User
-      Object.assign(User, insuranceData)
-      this.setData({ User })
       request.updateUser({
         ...insuranceData
       }).then(() => {
+        this.data._lock = false
+        this.hidePopup()
         this.signUp()
+
+        // 本地先同步
+        const User = this.data.User
+        Object.assign(User, insuranceData)
+        this.setData({ User })
+        this.refreshUserInfo()
+      }, (e) => {
+        wx.showToast({
+          icon: 'error',
+          title: e.message
+        })
+      }).finally(() => {
+        this.data._lock = false
       })
     },
 
-    refreshUserInfo() {
-      request.getUser({
-        UseCache: false
-      })
-        .then(resp => {
+    refreshUserInfo(): Promise<void> {
+      return app.getLatestUser()
+        .then((resp: IGetUserResp) => {
           this.setData({
             User: resp.User
           })
         })
     },
 
-    signUp() {
+    signUpFreeInsuranceActivity() {
+      if (this.data._lock) return
+      this.data._lock = true
+
       const Activity = this.data.Activity
-      if (this.data.freeInsurance) {
-        request.createSignUpActivity({
-          ActivityId: Activity.ActivityId
-        }).then(() => {
-          this.showSignUpSuccess()
-        }, () => {
-          wx.showToast({
-            icon: 'error',
-            title: '报名失败'
-          })
-          this.hidePopup()
+      return request.createSignUpActivity({
+        ActivityId: Activity.ActivityId
+      }).then(() => {
+        this.showSignUpSuccess()
+      }, (e) => {
+        wx.showToast({
+          icon: 'error',
+          title: e.message
         })
-        return
+      }).finally(() => {
+        this.data._lock = false
+      })
+    },
+
+    signUpNormalActivity() {
+      if (this.data._lock) return
+      this.data._lock = true
+
+      const Activity = this.data.Activity
+      return request.createSignUpActivity({
+        ActivityId: Activity.ActivityId
+      }).then(resp => {
+        const Payment = resp.Payment
+        wx.requestPayment({
+          timeStamp: Payment.timeStamp,
+          nonceStr: Payment.nonceStr,
+          package: Payment.package,
+          signType: Payment.signType,
+          paySign: Payment.paySign,
+          success: () => {
+            this.showSignUpSuccess()
+          },
+          fail: () => {
+            wx.showToast({
+              icon: 'error',
+              title: '报名失败'
+            })
+            this.setData({
+              payFail: true
+            })
+          },
+        })
+      }, (e) => {
+        wx.showToast({
+          icon: 'error',
+          title: e.message
+        })
+      }).finally(() => {
+        this.data._lock = false
+      })
+    },
+
+    async signUp() {
+      if (this.data.payFail) {
+        await request.deleteSignUpActivity({
+          ActivityId: this.data.Activity.ActivityId
+        })
       }
 
-      if (this.checkInssurance()) {
-        request.createSignUpActivity({
-          ActivityId: Activity.ActivityId
-        }).then(resp => {
-          const Payment = resp.Payment
-          wx.requestPayment({
-            timeStamp: Payment.timeStamp,
-            nonceStr: Payment.nonceStr,
-            package: Payment.package,
-            signType: Payment.signType,
-            paySign: Payment.paySign,
-            success: () => {
-              this.showSignUpSuccess()
-            },
-            fail: (res) => {
-              console.warn('createSignUpActivity fail: ', res)
-              wx.showToast({
-                icon: 'error',
-                title: '报名失败'
-              })
-              this.hidePopup()
-            }
-          })
-        })
+      if (this.data.freeInsurance) {
+        this.signUpFreeInsuranceActivity()
+      } else if (this.checkInssurance()) {
+        this.signUpNormalActivity()
       }
     },
 
@@ -182,6 +235,13 @@ Component({
         return false
       }
       return true
+    },
+
+    showRegisterSuccess() {
+      this.setData({
+        visible: true,
+        popupContent: 'RegisterSuccess'
+      })
     },
 
     showPhoneAuthorize() {

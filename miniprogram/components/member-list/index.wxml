@@ -4,7 +4,7 @@
 		<view class="item">
 			<view class="column-cross-center">
 				<image class="avatar" src="{{User.Icon || '../../assets/images/@avatar_woman.svg'}}" />
-				<text class="nickname">{{User.NickName || '匿名'}}</text>
+				<text class="nickname">{{User.NickName || '用户'}}</text>
 				<view class="identity" wx:if="{{index === 0}}">主理人</view>
 			</view>
 		</view>

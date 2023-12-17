@@ -12,7 +12,7 @@
 				<text>已上车</text>
 			</view>
 			<view class="tip-2 line-clamp-2-ellipsis">
-				<text>3天后体育西广场见</text>
+				<text>{{content}}</text>
 			</view>
 		</view>
 		<view class="footer center">

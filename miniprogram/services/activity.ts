@@ -119,7 +119,7 @@ export interface ISimpleUserInfo {
 
 export interface IInsuranceProduct {
   ActivityType: string,
-  InsuranceType: string,
+  InsuranceType: 'Free' | string,
   InsuranceProductId: string,
   NormalPrice: number,
   BeginAge: number,
@@ -262,6 +262,13 @@ export interface IActivityInfo {
   UpdateTime: string,
   DeleteFlag: IDeleteFlag,
   AuditStatus: IActivityAuditStatus,
+  SelfActivitySignUp?: {
+    SignUpId: string,
+    ActivityId: string,
+    UserId: string,
+    ActivitySignUpStatus: IActivitySignUpStatus,
+    User: ISimpleUserInfo
+  }
 }
 
 export type IActivitySignUpTag = 'All' | 'Begin' | 'End'

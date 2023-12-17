@@ -1,10 +1,11 @@
 // pages/activity-detail/index.ts
 import * as request from '../../services/index'
-import type { IActivityAuditStatus, IActivityInfo, ISimpleUserInfo, IUserInfo } from '../../services'
+import type { IActivityAuditStatus, IActivityInfo, IGetUserResp, ISimpleUserInfo, IUserInfo } from '../../services'
 import { calcDistance, getLocation } from '../../utils/location'
-import { formatActivityTime, WeekNames } from '../../utils/util'
+import { WeekNames } from '../../utils/util'
 import { getPosterQuery } from '../../utils/bind'
 import dayjs from 'dayjs'
+import { ActivitySignUpBlockTime } from '../../utils/constant'
 
 const app = getApp()
 
@@ -37,6 +38,10 @@ Component({
     OwnerUserId: '',
     User: <IUserInfo>{},
 
+    hasSignedUp: false,
+    canSignUp: false,
+    signUpText: '',
+
     loading: true,
     firstPage: false,
     _reenter: false,
@@ -59,12 +64,12 @@ Component({
         this.data.ActivityId = posterQuery.ActivityId
       }
 
+      this.getUser()
       await this.refreshActivity()
       const pageStack = getCurrentPages()
       const firstPage = pageStack.length === 1
-      const { User } = await app.getUser()
-      this.setData({ User, loading: false, firstPage })
-      
+      this.setData({ loading: false, firstPage })
+
       wx.showShareMenu({
         menus: ['shareAppMessage']
       })
@@ -72,6 +77,14 @@ Component({
   },
 
   methods: {
+    async getUser() {
+      app.getUser().then((resp: IGetUserResp) => {
+        this.setData({
+          User: resp.User
+        })
+      })
+    },
+
     async refreshActivity() {
       return request.getActivity({
         ActivityId: this.data.ActivityId
@@ -87,19 +100,105 @@ Component({
         })
         this.formatDate()
         this.calcDistance()
+        this.getSignUpText()
       })
     },
 
-    onShareAppMessage(_: WechatMiniprogram.Page.IShareAppMessageOption): WechatMiniprogram.Page.ICustomShareContent {
+    goSignUp() {
+      if (!this.data.canSignUp) {
+        return
+      }
+      wx.navigateTo({
+        url: '../sign-up/index',
+        success: (res) => {
+          res.eventChannel.emit('initData', {
+            User: this.data.User,
+            Activity: this.data.Activity
+          })
+        }
+      })
+    },
+
+    getSignUpText() {
       const Activity = this.data.Activity
-      return {
-        title: Activity.Title,
-        path: `pages/activity-detail/index?ActivityId=${Activity.ActivityId}`
+      const now = dayjs().unix()
+      const startTime = dayjs(Activity.BeginTime).unix()
+      const endTime = dayjs(Activity.EndTime).unix()
+
+      const signUp = () => {
+        const Price = Activity.ActivityRule.Price
+        const formatPrice = (Price / 100).toFixed(2)
+        this.setData({
+          canSignUp: true,
+          signUpText: `¥${formatPrice} 走起`
+        })
+      }
+
+      if (!Activity.SelfActivitySignUp) {
+        // 活动时间和人数上是否可报名
+        if (now > endTime) {
+          this.setData({
+            canSignUp: false,
+            signUpText: '活动已结束'
+          })
+        } else if (startTime - now < ActivitySignUpBlockTime) {
+          this.setData({
+            canSignUp: false,
+            signUpText: '报名截止'
+          })
+        } else if (Activity.SignUpNum === Activity.ActivityRule.MaxSignUpNumber) {
+          this.setData({
+            canSignUp: false,
+            signUpText: '已满员'
+          })
+        } else {
+          signUp()
+        }
+        return
+      }
+
+      // 已经报名过
+      const ActivitySignUpStatus = Activity.SelfActivitySignUp.ActivitySignUpStatus
+      switch (ActivitySignUpStatus) {
+        case 'ToPay': {
+          this.setData({
+            canSignUp: false,
+            signUpText: `订单未完成`
+          })
+          break
+        }
+        case 'Refund':
+        case 'PayTimeout': {
+          signUp()
+          break
+        }
+        case 'InsuranceCreated': {
+          this.setData({
+            hasSignedUp: true,
+          })
+          break
+        }
+        case 'InsuranceCreating':
+        case 'InsuranceCreateFail': {
+          this.setData({
+            canSignUp: false,
+            signUpText: '购买保险中'
+          })
+          break
+        }
+        case 'Refunding':
+        case 'RefundError': {
+          this.setData({
+            canSignUp: false,
+            signUpText: '退款中'
+          })
+          break
+        }
       }
     },
 
     formatDate() {
-      const { BeginTime , EndTime } = this.data.Activity
+      const { BeginTime, EndTime } = this.data.Activity
       const t1 = dayjs(BeginTime)
       const t2 = dayjs(EndTime)
 
@@ -121,7 +220,7 @@ Component({
           date: `${s}${sw} - ${e}${ew} ${d}`
         })
       }
-      
+
     },
 
     calcDistance() {
@@ -149,15 +248,10 @@ Component({
       })
     },
 
-    goSignUp() {
+    viewClub() {
+      const ClubId = this.data.Activity.ClubId
       wx.navigateTo({
-        url: '../sign-up/index',
-        success: (res) => {
-          res.eventChannel.emit('initData', {
-            User: this.data.User,
-            Activity: this.data.Activity
-          })
-        }
+        url: `../club-profile/index?ClubId=${ClubId}`
       })
     },
 
@@ -186,17 +280,25 @@ Component({
     onBack() {
       wx.navigateBack();
     },
-    
+
     onGoHome() {
       wx.reLaunch({
         url: '/pages/home/index',
       });
     },
 
-    goClub() {
-      const ClubId = this.data.Activity.ClubId
-      wx.navigateTo({
-        url: `../club-profile/index?ClubId=${ClubId}`
+    onShareAppMessage(_: WechatMiniprogram.Page.IShareAppMessageOption): WechatMiniprogram.Page.ICustomShareContent {
+      const Activity = this.data.Activity
+      return {
+        title: Activity.Title,
+        path: `pages/activity-detail/index?ActivityId=${Activity.ActivityId}`
+      }
+    },
+
+    developingTip() {
+      wx.showToast({
+        icon: 'none',
+        title: '新功能即将上线'
       })
     }
   }

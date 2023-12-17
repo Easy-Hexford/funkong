@@ -6,7 +6,7 @@
 			<text>{{beginTime}}</text>
 		</view>
 		<view class="tip--status">
-			<view wx:if="{{ActivitySignUpStatus === 'ToPay'}}" class="row">
+			<view wx:if="{{ActivitySignUpStatus === 'ToPay' || ActivitySignUpStatus === 'PayTimeout'}}" class="row">
 				<t-icon name="time" size="16" color="#4321F5" />
 				<text style="margin-left: 2px;">待付款</text>
 			</view>
@@ -14,7 +14,7 @@
 				<t-icon name="time" size="16" color="#4321F5" />
 				<text style="margin-left: 2px;">购买保险中</text>
 			</view>
-			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 1}}" class="row">
+			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 1}}" class="row" bind:tap="createInsurance">
 				<t-icon name="error-circle" size="16" color="#FA5151" />
 				<text style="margin-left: 2px;">保险购买失败，轻触重新购买。</text>
 			</view>
@@ -70,5 +70,6 @@
  placement="bottom"
  t-class="custom-popup"
 >
-  <insurance-form bind:submit="onInsuranceFormSumit" />
+	<insurance-form bind:submit="onInsuranceFormSumit" />
 </t-popup>
+

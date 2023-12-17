@@ -1,7 +1,9 @@
 // components/apply-success/index.ts
 Component({
   properties: {
-
+    content: {
+      type: String,
+    }
   },
 
   data: {
