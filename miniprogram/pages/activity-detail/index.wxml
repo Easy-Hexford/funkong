@@ -16,7 +16,7 @@
 			<view class="content-wrap active">
 				<view class="title">
 					<text>{{Activity.Title}}</text>
-					<block wx:if="{{SelfActivitySignUp}}">
+					<block wx:if="{{hasSignedUp}}">
 						<text class="tag--sign-up">已上车</text>
 					</block>
 				</view>
@@ -160,7 +160,7 @@
 				<text style="font-size: 12px; color: rgba(175, 241, 100, 0.70); opacity: 0.7;">参加报名活动群</text>
 			</navigator>
 		</block>
-    <view wx:if="{{canSignUp}}" bind:tap="goSignUp" class="btn active">{{signUpText}}</view>
+    <view wx:elif="{{canSignUp}}" bind:tap="goSignUp" class="btn active">{{signUpText}}</view>
     <view wx:elif="{{tipWraning}}" class="tip--warn">{{signUpText}}</view>
     <view wx:else class="tip">{{signUpText}}</view>
 	</view>
