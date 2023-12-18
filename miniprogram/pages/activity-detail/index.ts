@@ -42,6 +42,8 @@ Component({
     hasSignedUp: false,
     canSignUp: false,
     signUpText: '',
+    isActivityEnd: false,
+    tipWraning: false,
 
     loading: true,
     firstPage: false,
@@ -99,6 +101,7 @@ Component({
         
         this.formatDate()
         this.calcDistance()
+        this.checkActivityEnd()
         this.getSignUpText()
 
         if (Activity.AuditStatus === 'AuditSucc') {
@@ -124,6 +127,13 @@ Component({
       })
     },
 
+    checkActivityEnd() {
+      const EndTime = this.data.Activity.EndTime
+      this.setData({
+        isActivityEnd: dayjs().unix() > dayjs(EndTime).unix()
+      })
+    },
+
     getSignUpText() {
       const Activity = this.data.Activity
       const SelfActivitySignUp = this.data.SelfActivitySignUp
@@ -135,25 +145,30 @@ Component({
         const Price = Activity.ActivityRule.Price
         const formatPrice = (Price / 100).toFixed(2)
         this.setData({
+          hasSignedUp: false,
           canSignUp: true,
           signUpText: `¥${formatPrice} 走起`
         })
       }
+      this.setData({tipWraning: false})
 
       if (!SelfActivitySignUp) {
         // 活动时间和人数上是否可报名
         if (now > endTime) {
           this.setData({
+            hasSignedUp: false,
             canSignUp: false,
             signUpText: '活动已结束'
           })
         } else if (startTime - now < ActivitySignUpBlockTime) {
           this.setData({
+            hasSignedUp: false,
             canSignUp: false,
             signUpText: '报名截止'
           })
         } else if (Activity.SignUpNum === Activity.ActivityRule.MaxSignUpNumber) {
           this.setData({
+            hasSignedUp: false,
             canSignUp: false,
             signUpText: '已满员'
           })
@@ -168,35 +183,49 @@ Component({
       switch (ActivitySignUpStatus) {
         case 'ToPay': {
           this.setData({
+            hasSignedUp: false,
             canSignUp: false,
-            signUpText: `订单未完成`
+            signUpText: `支付确认中`
           })
           break
         }
-        case 'Refund':
         case 'PayTimeout': {
           signUp()
           break
         }
+        case 'InsuranceCreating':
         case 'InsuranceCreated': {
           this.setData({
             hasSignedUp: true,
           })
           break
         }
-        case 'InsuranceCreating':
         case 'InsuranceCreateFail': {
           this.setData({
+            hasSignedUp: false,
             canSignUp: false,
-            signUpText: '购买保险中'
+            signUpText: '保险未生效，请联系客服'
           })
           break
         }
-        case 'Refunding':
-        case 'RefundError': {
+        case 'Refund': {
+          signUp()
+          break
+        }
+        case 'Refunding': {
           this.setData({
+            hasSignedUp: false,
             canSignUp: false,
             signUpText: '退款中'
+          })
+          break
+        }
+        case 'RefundError': {
+          this.setData({
+            hasSignedUp: false,
+            canSignUp: false,
+            signUpText: '无法退款，请联系客服',
+            tipWraning: true
           })
           break
         }
