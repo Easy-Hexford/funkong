@@ -21,8 +21,10 @@ export interface IRegisterClubInfo {
   }
 }
 
+const ValidRegisterTypes = ['ActivityInvite', 'ClubInvite', 'Normal']
+
 export async function bindClubManager(User: IUserInfo, PlatformClubId: string) {
-  if (User.RegisterType) {
+  if (ValidRegisterTypes.indexOf(User.RegisterType) >= 0) {
     return
   }
 

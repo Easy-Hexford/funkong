@@ -3,6 +3,7 @@ import * as request from './services/index'
 import { IClubInfo, IGetUserResp, IInsuranceProduct, IPoint, IUserInfo } from './services/index';
 import env from './utils/env'
 import { bindClubManager } from './utils/bind'
+import {forceUpdate} from './utils/update_manager'
 
 App({
   globalData: {
@@ -14,6 +15,8 @@ App({
     SystemInfo: <WechatMiniprogram.SystemInfo>{},
   },
   async onLaunch() {
+    forceUpdate()
+    
     this.listenError()
     wx.getSystemInfo({
       success: (res) => {

@@ -54,7 +54,9 @@
 						<text wx:else class="placeholder">填写活动结束时间</text>
 						<t-icon name="menu" size="24" color="rgba(0, 0, 0, 0.3)" />
 					</view>
-				</view>
+        </view>
+        
+        <view class="err" wx:if="{{errTime}}"><text>{{errTime}}</text></view>
 
 				<view class="form-field-wrap" bind:tap="chooseLocation">
 					<view class="input-field row-between">
@@ -101,7 +103,6 @@
         
         <view class="err" wx:if="{{errPrice}}"><text>{{errPrice}}</text></view>
         
-
 				<view class="sub-title">活动配图</view>
 
 				<view class="grid">

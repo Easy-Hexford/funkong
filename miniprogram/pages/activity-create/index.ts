@@ -50,6 +50,7 @@ Component({
     start: 0,
     end: 0,
     steps: { minute: 30 },
+    errTime: '',
 
     // 活动&保险类别
     typePickerVisible: false,
@@ -96,6 +97,10 @@ Component({
 
       const activityPrice = +this.data.ActivityPrice
       if (!this.checkActivityPrice(activityPrice)) {
+        return
+      }
+
+      if (!this.checkActivityTime()) {
         return
       }
 
@@ -195,7 +200,9 @@ Component({
     onConfirmDate(e: any) {
       const { value } = e.detail;
       const dateType = this.data.dateType
-      const updates: any = {}
+      const updates: any = { 
+        errTime: ''
+      }
       updates[`Activity.${dateType}Time`] = dayjs(value).format('YYYY-MM-DD HH:mm:ss')
       updates[`${dateType}Time`] = dayjs(value).format('MM月DD日 HH:mm')
       this.setData(updates)
@@ -286,6 +293,19 @@ Component({
       this.setData({
         'Activity.Title': value
       })
+    },
+
+    checkActivityTime() {
+      const { BeginTime, EndTime } = this.data.Activity
+      const t1 = dayjs(BeginTime)
+      const t2 = dayjs(EndTime)
+      if (t2.diff(t1, 'h') >= 48) {
+        this.setData({
+          errTime: '结束时间至多比开始时间晚48小时'
+        })
+        return false
+      } 
+      return true
     },
 
     checkActivityPrice(price: number) {
