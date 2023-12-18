@@ -8,7 +8,7 @@
 		<view class="tip--status">
 			<view wx:if="{{ActivitySignUpStatus === 'ToPay' || ActivitySignUpStatus === 'PayTimeout'}}" class="row">
 				<t-icon name="time" size="16" color="#4321F5" />
-				<text style="margin-left: 2px;">待付款</text>
+				<text style="margin-left: 2px;">支付确认中</text>
 			</view>
 			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreating'}}" class="row">
 				<t-icon name="time" size="16" color="#4321F5" />
@@ -16,15 +16,15 @@
 			</view>
 			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 1}}" class="row" catch:tap="createInsurance">
 				<t-icon name="error-circle" size="16" color="#FA5151" />
-				<text style="margin-left: 2px;">保险购买失败，轻触重新购买。</text>
+				<text style="margin-left: 2px; color: #FA5151;">保险购买失败，轻触重新购买。</text>
       </view>
 			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 2 }}" class="row" catch:tap="showInsuranceForm">
 				<t-icon name="error-circle" size="16" color="#FA5151" />
-				<text style="margin-left: 2px;">保险购买失败，请修改被保人信息。</text>
+				<text style="margin-left: 2px; color: #FA5151;">保险购买失败，请修改被保人信息。</text>
 			</view>
 			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 3}}" class="row" catch:tap="contactCustomerService">
 				<t-icon name="error-circle" size="16" color="#FA5151" />
-				<text style="margin-left: 2px;">未购买保险，请联系客服。</text>
+				<text style="margin-left: 2px; color: #FA5151;">未购买保险，请联系客服。</text>
 			</view>
 			<view wx:if="{{ActivitySignUpStatus === 'Refunding'}}" class="row">
 				<t-icon name="time" size="16" color="#4321F5" />
@@ -36,7 +36,7 @@
 			</view>
 			<view wx:if="{{ActivitySignUpStatus === 'RefundError'}}" class="row" bind:tap="contactCustomerService">
 				<t-icon name="error-circle" size="16" color="#FA5151" />
-				<text style="margin-left: 2px;">退款失败，请联系客服。</text>
+				<text style="margin-left: 2px; color: #FA5151;">无法退款</text>
 			</view>
 		</view>
 		<view class="addr row">
