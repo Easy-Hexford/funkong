@@ -115,6 +115,14 @@ Component({
             Club: resp.Club
           })
         })
+    },
+
+    copyUserId() {
+      console.info('@@@@ copyUserId')
+      const UserId = this.data.User.UserId
+      wx.setClipboardData({
+        data: UserId
+      })
     }
   }
 })

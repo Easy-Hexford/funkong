@@ -105,65 +105,68 @@
 			/>
 			<text>通过</text>
 		</view>
-  </view>
-  
-  <!-- 主理人看到的 -->
-  <view wx:if="{{User.UserId == OwnerUserId}}" class="tool-bar row-between">
-    <!-- 左侧区域 -->
-    <view wx:if="{{Activity.AuditStatus === 'Auditing'}}" class="tip">
-			<text>活动审核中</text>
-    </view>
-    <view wx:if="{{Activity.AuditStatus === 'AuditFail'}}" class="tip--warn">
-			<text>活动审核失败</text>
-    </view>
-    <view wx:if="{{Activity.AuditStatus === 'AuditSucc'}}" class="row">
-			<button open-type="share" class="btn--share" bind:tap="share">
-				<view class="column-cross-center">
-					<image class="icon" src="../../assets/images/@icon_share.svg" />
-					<text style="margin-top: 2px;">邀请好友</text>
-				</view>
-			</button>
-			<view class="column-cross-center" style="margin-left: 14px;" bind:tap="sharePoster">
-				<image class="icon" src="../../assets/images/@icon_qrcode.svg" />
-				<text style="margin-top: 2px;">保存二维码</text>
-			</view>
-		</view>
-    
-    <!-- 右侧区域 -->
-    <view wx:if="{{isActivityEnd}}" class="tip">活动已结束</view>
-    <view wx:else class="btn active" bind:tap="developingTip">管理</view>
-  </view>
-
-	<!-- 用户看到的 -->
-	<view wx:else class="tool-bar row-between">
-		<view class="row">
-			<button open-type="share" class="btn--share" bind:tap="share">
-				<view class="column-cross-center">
-					<image class="icon" src="../../assets/images/@icon_share.svg" />
-					<text style="margin-top: 2px;">邀请好友</text>
-				</view>
-			</button>
-			<view class="column-cross-center" style="margin-left: 14px;" bind:tap="sharePoster">
-				<image class="icon" src="../../assets/images/@icon_qrcode.svg" />
-				<text style="margin-top: 2px;">保存二维码</text>
-			</view>
-		</view>
-		<!-- 用户已报名 -->
-		<block wx:if="{{hasSignedUp}}">
-			<navigator
-			 url="../customer-service/index"
-			 hover-class="none"
-			 class="btn active column-cross-center"
-			 style="padding: 4px 24px;"
-			>
-				<text>联系客服</text>
-				<text style="font-size: 12px; color: rgba(175, 241, 100, 0.70); opacity: 0.7;">参加报名活动群</text>
-			</navigator>
-		</block>
-    <view wx:elif="{{canSignUp}}" bind:tap="goSignUp" class="btn active">{{signUpText}}</view>
-    <view wx:elif="{{tipWraning}}" class="tip--warn">{{signUpText}}</view>
-    <view wx:else class="tip">{{signUpText}}</view>
 	</view>
+
+	<block wx:else>
+
+		<!-- 主理人看到的 -->
+		<view wx:if="{{User.UserId == OwnerUserId}}" class="tool-bar row-between">
+			<!-- 左侧区域 -->
+			<view wx:if="{{Activity.AuditStatus === 'Auditing'}}" class="tip">
+				<text>活动审核中</text>
+			</view>
+			<view wx:if="{{Activity.AuditStatus === 'AuditFail'}}" class="tip--warn">
+				<text>活动审核失败</text>
+			</view>
+			<view wx:if="{{Activity.AuditStatus === 'AuditSucc'}}" class="row">
+				<button open-type="share" class="btn--share" bind:tap="share">
+					<view class="column-cross-center">
+						<image class="icon" src="../../assets/images/@icon_share.svg" />
+						<text style="margin-top: 2px;">邀请好友</text>
+					</view>
+				</button>
+				<view class="column-cross-center" style="margin-left: 14px;" bind:tap="sharePoster">
+					<image class="icon" src="../../assets/images/@icon_qrcode.svg" />
+					<text style="margin-top: 2px;">保存二维码</text>
+				</view>
+			</view>
+
+			<!-- 右侧区域 -->
+			<view wx:if="{{isActivityEnd}}" class="tip">活动已结束</view>
+			<view wx:else class="btn active" bind:tap="developingTip">管理</view>
+		</view>
+
+		<!-- 用户看到的 -->
+		<view wx:else class="tool-bar row-between">
+			<view class="row">
+				<button open-type="share" class="btn--share" bind:tap="share">
+					<view class="column-cross-center">
+						<image class="icon" src="../../assets/images/@icon_share.svg" />
+						<text style="margin-top: 2px;">邀请好友</text>
+					</view>
+				</button>
+				<view class="column-cross-center" style="margin-left: 14px;" bind:tap="sharePoster">
+					<image class="icon" src="../../assets/images/@icon_qrcode.svg" />
+					<text style="margin-top: 2px;">保存二维码</text>
+				</view>
+			</view>
+			<!-- 用户已报名 -->
+			<block wx:if="{{hasSignedUp}}">
+				<navigator
+				 url="../customer-service/index"
+				 hover-class="none"
+				 class="btn active column-cross-center"
+				 style="padding: 4px 24px;"
+				>
+					<text>联系客服</text>
+					<text style="font-size: 12px; color: rgba(175, 241, 100, 0.70); opacity: 0.7;">参加报名活动群</text>
+				</navigator>
+			</block>
+			<view wx:elif="{{canSignUp}}" bind:tap="goSignUp" class="btn active">{{signUpText}}</view>
+			<view wx:elif="{{tipWraning}}" class="tip--warn">{{signUpText}}</view>
+			<view wx:else class="tip">{{signUpText}}</view>
+		</view>
+	</block>
 </block>
 
 <t-navbar wx:if="{{firstPage}}" fixed t-class="navbar">

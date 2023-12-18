@@ -98,13 +98,15 @@
 				 wx:if="{{User.Icon}}"
 				 alt="头像"
 				 image="{{User.Icon}}"
-				 size="96px"
+         size="96px"
+         bind:longpress="copyUserId" 
 				/>
 				<image
 				 wx:else
 				 class="avatar"
 				 mode="aspectFill"
-				 src="../../assets/images/@avatar_woman.svg"
+         src="../../assets/images/@avatar_woman.svg"
+         bind:longpress="copyUserId" 
 				/>
 			</view>
 
