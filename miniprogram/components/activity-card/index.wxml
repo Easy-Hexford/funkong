@@ -31,12 +31,13 @@
 			</view>
 			<view wx:if="{{mode === 'audit'}}" class="footer row-between">
 				<view wx:if="{{activity.AuditStatus === 'Auditing'}}" class="btn--enter active">待审核</view>
-				<view wx:if="{{activity.AuditStatus === 'AuditFail'}}" class="btn--enter">未通过</view>
-				<view wx:if="{{activity.AuditStatus === 'AuditSucc'}}" class="btn--enter">已通过</view>
+				<view wx:elif="{{activity.AuditStatus === 'AuditFail'}}" class="btn--enter">未通过</view>
+				<view wx:else class="btn--enter">已通过</view>
 			</view>
 			<view wx:else class="footer row-between">
-        <text >{{signUpText}}</text>
-        <text wx:if="{{activity.AuditStatus === 'Auditing'}}" class="tip--auditing">审核中</text>
+				<text >{{signUpText}}</text>
+				<text wx:if="{{activity.AuditStatus === 'Auditing'}}" class="tip--auditing">审核中</text>
+				<text wx:elif="{{activity.AuditStatus === 'AuditFail'}}" class="tip--auditFail">审核失败</text>
 				<view wx:else class="btn--enter {{canSignUp ? 'active' : ''}}">冲啊</view>
 			</view>
 

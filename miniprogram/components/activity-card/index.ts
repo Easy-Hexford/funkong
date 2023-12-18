@@ -27,15 +27,23 @@ Component({
     signUpText: '',
   },
 
-  lifetimes: {
-    attached() {
-      this.formatDate()
-      this.calcDistance()
-      this.getSignUpText()
+  observers: {
+    activity: function (_val) {
+      this.refresh()
     }
   },
 
+  lifetimes: {
+    attached() { }
+  },
+
   methods: {
+    refresh() {
+      this.formatDate()
+      this.calcDistance()
+      this.getSignUpText()
+    },
+
     getSignUpText() {
       const Activity = this.data.activity as IActivityInfo
       const diff = dayjs(Activity.BeginTime).unix() - dayjs().unix()

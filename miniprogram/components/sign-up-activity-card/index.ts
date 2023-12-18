@@ -33,8 +33,18 @@ Component({
     defaultHeadImg: DEFAULT_AVATAR_WOMAN
   },
 
+  observers: {
+    signUpActivity: function (_val) {
+      this.refresh()
+    }
+  },
+
   lifetimes: {
-    attached() {
+    attached() {}
+  },
+
+  methods: {
+    refresh() {
       const SignUpActivity = this.data.signUpActivity as ISignUpActicityInfo
       this.setData({
         Activity: SignUpActivity.Activity,
@@ -44,10 +54,8 @@ Component({
       this.formatDate()
       this.calcDistance()
       this.getSignUpText()
-    }
-  },
+    },
 
-  methods: {
     getSignUpText() {
       const Activity = this.data.Activity
       const ActivitySignUpStatus = this.data.ActivitySignUpStatus

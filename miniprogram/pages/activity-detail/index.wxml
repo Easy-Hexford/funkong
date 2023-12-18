@@ -111,6 +111,9 @@
 	<view wx:else class="tool-bar row-between">
 		<view wx:if="{{Activity.AuditStatus === 'Auditing'}}" class="tip--auditing">
 			<text>活动审核中</text>
+    </view>
+    <view wx:elif="{{Activity.AuditStatus === 'AuditFail'}}" class="tip--auditFail">
+			<text>活动审核失败</text>
 		</view>
 		<view wx:else class="row">
 			<button open-type="share" class="btn--share" bind:tap="share">
@@ -129,7 +132,7 @@
 			<view class="btn active" bind:tap="developingTip">管理</view>
 		</block>
 		<!-- 用户已报名 -->
-		<block wx:elif="{{1}}">
+		<block wx:elif="{{hasSignedUp}}">
 			<navigator
 			 url="../customer-service/index"
 			 hover-class="none"

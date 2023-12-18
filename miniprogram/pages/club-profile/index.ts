@@ -103,6 +103,7 @@ Component({
     },
 
     async loadMore() {
+      if (this.data._offset >= this.data.ActivityTotalCount) return
       if (this.data._loadMore) return
       this.data._loadMore = true
 

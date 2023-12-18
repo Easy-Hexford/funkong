@@ -57,7 +57,7 @@
 					<image style="width: 56px; height: 82px;" mode="aspectFill" src="../../assets/images/@chartlet_woman_music_2.png" />
 					<view class="tip-1" style="margin-top: 26px;">
 						<text wx:if="{{signUpTag === 'All'}}">暂未报名任何活动</text>
-						<text wx:if="{{signUpTag === 'Begin'}}">暂无等待中的活动</text>
+						<text wx:if="{{signUpTag === 'NoBegin'}}">暂无等待中的活动</text>
 						<text wx:if="{{signUpTag === 'End'}}">暂无已结束的活动</text>
 					</view>
 				</view>

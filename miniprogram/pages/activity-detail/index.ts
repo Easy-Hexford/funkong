@@ -165,7 +165,6 @@ Component({
 
       // 已经报名过
       const ActivitySignUpStatus = SelfActivitySignUp.ActivitySignUpStatus
-      console.info('@@@ ActivitySignUpStatus')
       switch (ActivitySignUpStatus) {
         case 'ToPay': {
           this.setData({
