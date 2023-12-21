@@ -46,7 +46,12 @@ Component({
     async attached() {
       if (this.data.scene) {
         const posterQuery = await getPosterQuery(this.data.scene)
-        this.data.ClubId = posterQuery.ClubId
+        this.data.ClubId = posterQuery.ClubId!
+      }
+
+      if (!this.data.ClubId) {
+        console.error('ClubId prop not found')
+        return
       }
      
       const pageStack = getCurrentPages()
@@ -150,9 +155,10 @@ Component({
 
     onShareAppMessage(_: WechatMiniprogram.Page.IShareAppMessageOption): WechatMiniprogram.Page.ICustomShareContent {
       const Club = this.data.Club
+      const UserClub: IClubInfo = app.globalData.Club
       return {
         title: `${Club.ClubName}邀请你参加活动`,
-        path: `pages/club-profile/index?ClubId=${Club.ClubId}`
+        path: `pages/club-profile/index?ClubId=${Club.ClubId}&RegisterClubId=${UserClub.ClubId}`
       }
     },
   }

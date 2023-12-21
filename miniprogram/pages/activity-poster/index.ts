@@ -21,7 +21,6 @@ Component({
     qrcode: '',
     date: '',
     time: '',
-    Club: <IClubInfo>{},
     Activity: <IActivityInfo>{},
     _poster: '',
   },
@@ -37,7 +36,6 @@ Component({
 
       this.initData().then((resp) => {
         this.setData({
-          Club: resp.Club,
           Activity: resp.Activity
         })
         this.formatDate()
@@ -52,19 +50,17 @@ Component({
   },
 
   methods: {
-    initData(): Promise<{ Club: IClubInfo, Activity: IActivityInfo }> {
+    initData(): Promise<{ Activity: IActivityInfo }> {
       return new Promise(resolve => {
         const eventChannel = this.getOpenerEventChannel()
         if (eventChannel?.on) {
           eventChannel.on('initData', (data) => {
             resolve({
-              Club: data.Club,
               Activity: data.Activity
             })
           })
         } else if (env.kDebugMode) {
           resolve({
-            Club: MockClub,
             Activity: MockActivity
           })
         }
@@ -127,23 +123,14 @@ Component({
     },
 
     getWxaCode(): Promise<string> {
-      const { Club, Activity } = this.data
+      const { Activity } = this.data
       const ActivityId = Activity.ActivityId
       const filePath = `${wx.env.USER_DATA_PATH}/${ActivityId}_activity_qrcode.png`
       return new Promise((resolve, reject) => {
-        let queryObject: IPosterQuery
-        if (Club.ClubId) {
-          queryObject = {
-            ClubId: Club.ClubId,
-            ActivityId,
-            RegisterType: 'ActivityInvite',
-          }
-        } else {
-          queryObject = {
-            ClubId: 'xxx',
-            ActivityId,
-            RegisterType: 'Normal',
-          }
+        const Club: IClubInfo = app.globalData.Club
+        let queryObject: IPosterQuery = {
+          ActivityId,
+          RegisterClubId: Club.ClubId,
         }
 
         request.setSceneValue({

@@ -2,11 +2,10 @@
 import * as request from '../../services/index'
 import type { IActivityAuditStatus, IActivityInfo, IClubInfo, IGetUserResp, ISelfActivitySignup, ISimpleUserInfo, IUserInfo } from '../../services'
 import { calcDistance, getLocation } from '../../utils/location'
-import { objectToQueryString, WeekNames } from '../../utils/util'
-import { getPosterQuery, getPosterQueryDirectly, IPosterQuery } from '../../utils/bind'
+import { WeekNames } from '../../utils/util'
+import { getPosterQuery } from '../../utils/bind'
 import dayjs from 'dayjs'
 import { ActivitySignUpBlockTime } from '../../utils/constant'
-import env from '../../utils/env'
 
 const app = getApp()
 
@@ -18,11 +17,6 @@ Component({
   properties: {
     scene: {
       type: String,
-    },
-
-    // 是否需要后台进行参数转化
-    transform: {
-      type: Boolean
     },
 
     ActivityId: {
@@ -70,8 +64,8 @@ Component({
   lifetimes: {
     async attached() {
       if (this.data.scene) {
-        const posterQuery = await getPosterQuery(this.data.scene, this.data.transform)
-        this.data.ActivityId = posterQuery.ActivityId
+        const posterQuery = await getPosterQuery(this.data.scene)
+        this.data.ActivityId = posterQuery.ActivityId!
       }
 
       if (!this.data.ActivityId) {
@@ -336,27 +330,13 @@ Component({
     },
 
     onShareAppMessage(_: WechatMiniprogram.Page.IShareAppMessageOption): WechatMiniprogram.Page.ICustomShareContent {
-      const { Club, Activity } = this.data
+      const { Activity } = this.data
       const ActivityId = Activity.ActivityId
-      let queryObject: IPosterQuery
-      if (Club.ClubId) {
-        queryObject = {
-          ClubId: Club.ClubId,
-          ActivityId,
-          RegisterType: 'ActivityInvite',
-        }
-      } else {
-        queryObject = {
-          ClubId: 'xxx',
-          ActivityId,
-          RegisterType: 'Normal',
-        }
-      }
+      const Club: IClubInfo = app.globalData.Club
 
-      const scene = encodeURIComponent(objectToQueryString(queryObject))
       return {
         title: Activity.Title,
-        path: `pages/activity-detail/index?scene=${scene}&transform=0`
+        path: `pages/activity-detail/index?ActivityId=${ActivityId}&RegisterClubId=${Club.ClubId}`
       }
     },
 

@@ -8,20 +8,19 @@ const ACTIVITY_DETAIL_PAGE_PATH = 'pages/activity-detail/index'
 const landingPage = [CLUB_PROFILE_PAGE_PATH, ACTIVITY_DETAIL_PAGE_PATH]
 
 export interface IPosterQuery {
-  ClubId: string,
-  ActivityId: string,
-  RegisterType: IRegisterType
+  ClubId?: string,
+  ActivityId?: string,
+  RegisterClubId: string,
 }
 
 export interface IRegisterClubInfo {
-  RegisterType: string,
+  RegisterType: IRegisterType,
   RegisterInfo: {
     ClubId: string,
-    ActivityId: string
   }
 }
 
-const ValidRegisterTypes = ['ActivityInvite', 'ClubInvite', 'Normal']
+const ValidRegisterTypes = ['ClubInvite', 'Normal']
 
 export async function bindClubManager(User: IUserInfo, PlatformClubId: string) {
   if (ValidRegisterTypes.indexOf(User.RegisterType) >= 0) {
@@ -29,36 +28,33 @@ export async function bindClubManager(User: IUserInfo, PlatformClubId: string) {
   }
 
   const enterOption = wx.getEnterOptionsSync()
-  // 非落地页首次打开，绑定为平台流量
-  if (landingPage.indexOf(enterOption.path) < 0) {
-    await bindPlatform(PlatformClubId)
+
+  const RegisterClubId = enterOption.query.RegisterClubId
+
+  // 通过转发进入
+  if (RegisterClubId) {
+    await bindClub(RegisterClubId, PlatformClubId)
     return
   }
 
+  // 通过海报进入
   const scene = enterOption.query.scene
-  const transform = !!enterOption.query.transform
-
-  // 落地页首次打开，非分享卡片或海报进入
-  if (!scene) {
-    await bindPlatform(PlatformClubId)
+  const isPosterPage = landingPage.indexOf(enterOption.path) >= 0
+  if (isPosterPage && scene) {
+    const posterQuery = await getPosterQuery(scene)
+    await bindClub(posterQuery.RegisterClubId, PlatformClubId)
     return
   }
 
-  // 落地页首次打开，扫海报进入，绑定俱乐部
-  const posterQuery = await getPosterQuery(scene, transform)
-  if (posterQuery.RegisterType === 'Normal') {
-    await bindPlatform(PlatformClubId)
-  } else {
-    await bindClub(posterQuery)
-  }
+  bindPlatform(PlatformClubId)
 }
 
-async function bindClub(posterQuery: IPosterQuery) {
+async function bindClub(RegisterClubId: string, PlatformClubId: string) {
+  const RegisterType: IRegisterType = RegisterClubId ? 'ClubInvite' : 'Normal'
   await request.updateUser({
-    RegisterType: posterQuery.RegisterType,
+    RegisterType,
     RegisterInfo: {
-      ClubId: posterQuery.ClubId,
-      ActivityId: posterQuery.ActivityId
+      ClubId: RegisterClubId ?? PlatformClubId
     }
   })
 
@@ -73,8 +69,7 @@ async function bindPlatform(PlatformClubId: string) {
   await request.updateUser({
     RegisterType: 'Normal',
     RegisterInfo: {
-      ClubId: PlatformClubId,
-      ActivityId: ''
+      ClubId: PlatformClubId
     }
   })
 
@@ -82,16 +77,12 @@ async function bindPlatform(PlatformClubId: string) {
   app.getLatestUser()
 }
 
-export async function getPosterQuery(scene: string, transform: boolean): Promise<IPosterQuery> {
+export async function getPosterQuery(scene: string): Promise<IPosterQuery> {
   const decodeScene = decodeURIComponent(scene)
   let posterQuery: IPosterQuery
-  if (transform) {
-    const resp = await request.getSceneValue({
-      Scene: decodeScene
-    })
-    posterQuery = queryStringToObject(resp.Value) as IPosterQuery
-  } else {
-    posterQuery = queryStringToObject(decodeScene) as IPosterQuery
-  }
+  const resp = await request.getSceneValue({
+    Scene: decodeScene
+  })
+  posterQuery = queryStringToObject(resp.Value) as IPosterQuery
   return posterQuery
 }

@@ -108,11 +108,12 @@ Component({
     getWxaCode(): Promise<string> {
       const ClubId = this.data.Club.ClubId
       const filePath = wx.env.USER_DATA_PATH + `/${ClubId}_club_qrcode.png`
+      
       return new Promise((resolve, reject) => {
+        const UserClub: IClubInfo = app.globalData.Club
         const queryObject = {
-          ClubId,
-          ActivityId: '',
-          RegisterType: 'ClubInvite',
+          ClubId: this.data.Club.ClubId,
+          RegisterClubId: UserClub.ClubId,
         }
         request.setSceneValue({
           Value: objectToQueryString(queryObject),

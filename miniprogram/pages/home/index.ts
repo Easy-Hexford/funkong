@@ -1,6 +1,8 @@
 import * as request from '../../services/index'
-import { IActivityInfo } from '../../services/index'
+import { IActivityInfo, IClubInfo } from '../../services/index'
 import { HOME_SHARE_PICS } from '../../config'
+
+const app = getApp()
 
 Component({
   options: {
@@ -26,7 +28,6 @@ Component({
   lifetimes: {
     attached() {
       this.refreshActivityList()
-
       wx.showShareMenu({
         menus: ['shareAppMessage']
       })
@@ -95,9 +96,11 @@ Component({
     onShareAppMessage(_: WechatMiniprogram.Page.IShareAppMessageOption): WechatMiniprogram.Page.ICustomShareContent {
       const count = HOME_SHARE_PICS.length
       const random = Math.floor(Math.random() * count)
+      const Club: IClubInfo = app.globalData.Club
+
       return {
         title: '累了就要Fun空一下！',
-        path: `pages/home/index`,
+        path: `pages/home/index?RegisterClubId=${Club.ClubId}`,
         imageUrl: HOME_SHARE_PICS[random],
       }
     },

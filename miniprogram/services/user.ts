@@ -46,7 +46,7 @@ export function sendVerifyCode(req: ISendVerifyCodeReq) {
   })
 }
 
-export type IRegisterType = 'ActivityInvite' | 'ClubInvite' | 'Normal' | ''
+export type IRegisterType = 'ClubInvite' | 'Normal' | ''
 
 export type IRole = 'NormalRole' | 'SuperRole'
 
