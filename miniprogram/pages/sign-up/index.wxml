@@ -61,9 +61,9 @@
 		</view>
 		<view class="intro-title">退换规则</view>
 		<view class="intro-content">
-			<view>距活动开始8小时前，随时可退</view>
-			<view>距活动不足8小时，仅退款一半</view>
-			<view>距活动不足4小时，无法退款</view>
+			<view>距活动开始前24小时，随时可退</view>
+			<view>距活动开始不足24小时，进退款一半</view>
+			<view>距活动开始前4小时，无法退款</view>
 		</view>
 		<view class="intro-title">无条件退换规则</view>
 		<view class="intro-content">

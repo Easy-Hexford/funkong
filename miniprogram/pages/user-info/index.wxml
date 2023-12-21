@@ -3,7 +3,7 @@
 <scroll-view scroll-y type="list" class="scrollable">
 	<view class="banner">
 		<block wx:if="{{UserCoverTempFile}}">
-			<image class="cover" mode="aspectFill" src="{{UserCoverTempFile}}" />
+			<image class="cover" mode="aspectFill" src="{{UserCoverTempFile}}" bind:tap="chooseCover" />
 		</block>
 		<block wx:else>
 			<view style="transform: translateY(-47px);" class="column-cross-center" bind:tap="chooseCover">

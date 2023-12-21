@@ -5,6 +5,6 @@ export function random(min: number = 0, max: number = 10000) {
 }
 
 export function genPicName(path: string) {
-  const UserId = app.globalData.UserId
+  const UserId = app.globalData.User.UserId
   return `${path}${UserId}-${Date.now()}-${random()}.png`
 }

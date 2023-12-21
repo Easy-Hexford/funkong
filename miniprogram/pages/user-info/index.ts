@@ -22,7 +22,7 @@ Component({
   data: {
     UserCoverTempFile: '',
     UserIconTempFile: '',
-    User: {},
+    User: <IUserInfo>{},
 
     genders: [
       { label: '男', value: 'Man' },
@@ -178,16 +178,27 @@ Component({
 
     async onChooseAvatar(e: any) {
       const tempFile = e.detail.avatarUrl;
+      if (!tempFile) {
+        wx.showToast({
+          icon: 'error',
+          title: '选取头像失败'
+        })
+      }
       this.setData({
         'UserIconTempFile': tempFile
       });
-
+      
       (this as unknown as IUploadBehavior).pureUploadImage({
         catalog: USER_PIC_CATALOG,
         tempFile,
       }).then(resp => {
         (this as any).setData({
           'User.Icon': resp.tempFileURL
+        })
+      }, () => {
+        wx.showToast({
+          icon: 'error',
+          title: '上传头像失败'
         })
       });
     },
