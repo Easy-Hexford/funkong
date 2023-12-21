@@ -1,11 +1,12 @@
 // pages/activity-detail/index.ts
 import * as request from '../../services/index'
-import type { IActivityAuditStatus, IActivityInfo, IGetUserResp, ISelfActivitySignup, ISimpleUserInfo, IUserInfo } from '../../services'
+import type { IActivityAuditStatus, IActivityInfo, IClubInfo, IGetUserResp, ISelfActivitySignup, ISimpleUserInfo, IUserInfo } from '../../services'
 import { calcDistance, getLocation } from '../../utils/location'
-import { WeekNames } from '../../utils/util'
-import { getPosterQuery } from '../../utils/bind'
+import { objectToQueryString, WeekNames } from '../../utils/util'
+import { getPosterQuery, getPosterQueryDirectly, IPosterQuery } from '../../utils/bind'
 import dayjs from 'dayjs'
 import { ActivitySignUpBlockTime } from '../../utils/constant'
+import env from '../../utils/env'
 
 const app = getApp()
 
@@ -15,13 +16,18 @@ Component({
   },
 
   properties: {
+    scene: {
+      type: String,
+    },
+
+    // 是否需要后台进行参数转化
+    transform: {
+      type: Boolean
+    },
+
     ActivityId: {
       type: String,
       value: ''
-    },
-
-    scene: {
-      type: String,
     },
 
     mode: {
@@ -38,6 +44,7 @@ Component({
     ActivityMembers: <Array<ISimpleUserInfo>>[],
     OwnerUserId: '',
     User: <IUserInfo>{},
+    Club: <IClubInfo>{},
 
     hasSignedUp: false,
     canSignUp: false,
@@ -63,8 +70,13 @@ Component({
   lifetimes: {
     async attached() {
       if (this.data.scene) {
-        const posterQuery = await getPosterQuery(this.data.scene)
+        const posterQuery = await getPosterQuery(this.data.scene, this.data.transform)
         this.data.ActivityId = posterQuery.ActivityId
+      }
+
+      if (!this.data.ActivityId) {
+        console.error('ActivityId prop not found')
+        return
       }
 
       this.getUser()
@@ -79,7 +91,8 @@ Component({
     async getUser() {
       app.getUser().then((resp: IGetUserResp) => {
         this.setData({
-          User: resp.User
+          User: resp.User,
+          Club: resp.Club,
         })
       })
     },
@@ -98,7 +111,7 @@ Component({
           OwnerUserId: Activity.UserId,
           ActivityMembers: [OwnerUser, ...OtherMembers],
         })
-        
+
         this.formatDate()
         this.calcDistance()
         this.checkActivityEnd()
@@ -150,7 +163,7 @@ Component({
           signUpText: `¥${formatPrice} 走起`
         })
       }
-      this.setData({tipWraning: false})
+      this.setData({ tipWraning: false })
 
       if (!SelfActivitySignUp) {
         // 活动时间和人数上是否可报名
@@ -276,7 +289,7 @@ Component({
         url: '../activity-poster/index',
         success: (res) => {
           res.eventChannel.emit('initData', {
-            User: this.data.User,
+            Club: this.data.Club,
             Activity: this.data.Activity,
           })
         }
@@ -323,10 +336,27 @@ Component({
     },
 
     onShareAppMessage(_: WechatMiniprogram.Page.IShareAppMessageOption): WechatMiniprogram.Page.ICustomShareContent {
-      const Activity = this.data.Activity
+      const { Club, Activity } = this.data
+      const ActivityId = Activity.ActivityId
+      let queryObject: IPosterQuery
+      if (Club.ClubId) {
+        queryObject = {
+          ClubId: Club.ClubId,
+          ActivityId,
+          RegisterType: 'ActivityInvite',
+        }
+      } else {
+        queryObject = {
+          ClubId: 'xxx',
+          ActivityId,
+          RegisterType: 'Normal',
+        }
+      }
+
+      const scene = encodeURIComponent(objectToQueryString(queryObject))
       return {
         title: Activity.Title,
-        path: `pages/activity-detail/index?ActivityId=${Activity.ActivityId}`
+        path: `pages/activity-detail/index?scene=${scene}&transform=0`
       }
     },
 

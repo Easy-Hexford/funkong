@@ -35,15 +35,17 @@ export async function bindClubManager(User: IUserInfo, PlatformClubId: string) {
     return
   }
 
-  const queryScene = enterOption.query.scene
-  // 落地页首次打开，非扫海报进入
-  if (!queryScene) {
+  const scene = enterOption.query.scene
+  const transform = !!enterOption.query.transform
+
+  // 落地页首次打开，非分享卡片或海报进入
+  if (!scene) {
     await bindPlatform(PlatformClubId)
     return
   }
 
-  // 落地页首次打开，扫海报进入，绑定主理人
-  const posterQuery = await getPosterQuery(queryScene)
+  // 落地页首次打开，扫海报进入，绑定俱乐部
+  const posterQuery = await getPosterQuery(scene, transform)
   if (posterQuery.RegisterType === 'Normal') {
     await bindPlatform(PlatformClubId)
   } else {
@@ -60,10 +62,8 @@ async function bindClub(posterQuery: IPosterQuery) {
     }
   })
 
-  wx.showToast({
-    icon: 'success',
-    title: '已加入'
-  })
+  // 烟花特效
+
 
   // 刷新用户信息
   app.getLatestUser()
@@ -82,11 +82,16 @@ async function bindPlatform(PlatformClubId: string) {
   app.getLatestUser()
 }
 
-export async function getPosterQuery(scene: string): Promise<IPosterQuery> {
+export async function getPosterQuery(scene: string, transform: boolean): Promise<IPosterQuery> {
   const decodeScene = decodeURIComponent(scene)
-  const resp = await request.getSceneValue({
-    Scene: decodeScene
-  })
-  const posterQuery = queryStringToObject(resp.Value) as IPosterQuery
+  let posterQuery: IPosterQuery
+  if (transform) {
+    const resp = await request.getSceneValue({
+      Scene: decodeScene
+    })
+    posterQuery = queryStringToObject(resp.Value) as IPosterQuery
+  } else {
+    posterQuery = queryStringToObject(decodeScene) as IPosterQuery
+  }
   return posterQuery
 }

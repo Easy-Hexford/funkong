@@ -5,6 +5,7 @@ import type { IGetUserResp, IUserInfo, IUserInfoNullable } from '../../services/
 import dayjs from 'dayjs'
 import { MockUser } from '../../utils/mock'
 import { autoBack } from '../../utils/util'
+import env from '../../utils/env'
 
 const USER_PIC_CATALOG = 'user/'
 const app = getApp()
@@ -112,7 +113,7 @@ Component({
           eventChannel.on('initData', (data) => {
             resolve(data.User)
           })
-        } else {
+        } else if (env.kDebugMode) {
           resolve(MockUser)
         }
       })

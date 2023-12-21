@@ -9,7 +9,7 @@
  class="scrollable"
 >
 	<view class="banner">
-		<block wx:if="{{User.CoverUrls.Items[0]}}">
+		<block wx:if="{{User.CoverUrls && User.CoverUrls.Items[0]}}">
 			<image class="cover" mode="aspectFill" src="{{User.CoverUrls.Items[0]}}" />
 		</block>
 		<block wx:else>
@@ -21,61 +21,59 @@
 
 	<view class="sheet">
 		<view class="content-wrap active">
-			<block wx:if="{{User.Role === 'SuperRole'}}">
-				<view wx:if="{{isAuditing || Club.AuditStatus === 'AuditSucc'}}">
-					<view class="field-title">俱乐部</view>
-					<view class="form-field-wrap">
-						<view class="input-field" style="padding-top: 0; padding-bottom: 0;">
-							<view
-							 style="padding: 17px 0;"
-							 class="row-between"
-							 hover-class="none"
-							 bind:tap="viewClub"
-							>
-								<view class="row">
-									<image class="icon--club circle" mode="aspectFill" src="{{Club.ClubIcon}}" />
-									<text>{{Club.ClubName}}</text>
-								</view>
-								<view class="row">
-									<text wx:if="{{isAuditing}}" class="tip-auditing">审核中</text>
-									<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
-								</view>
+			<view wx:if="{{isAuditing || Club.AuditStatus === 'AuditSucc'}}">
+				<view class="field-title">俱乐部</view>
+				<view class="form-field-wrap">
+					<view class="input-field" style="padding-top: 0; padding-bottom: 0;">
+						<view
+						 style="padding: 17px 0;"
+						 class="row-between"
+						 hover-class="none"
+						 bind:tap="viewClub"
+						>
+							<view class="row">
+								<image class="icon--club circle" mode="aspectFill" src="{{Club.ClubIcon}}" />
+								<text>{{Club.ClubName}}</text>
 							</view>
-
-							<t-divider t-class="custom-divider" />
-
-							<view
-							 style="padding: 17px 0;"
-							 class="row-between"
-							 hover-class="none"
-							 bind:tap="createActivity"
-							>
-								<text class="{{isAuditing ? 'disabled' : ''}}">创建活动</text>
-								<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
-							</view>
-
-							<t-divider t-class="custom-divider" />
-
-							<view
-							 style="padding: 17px 0;"
-							 class="row-between"
-							 hover-class="none"
-							 bind:tap="invite"
-							>
-								<text class="{{isAuditing ? 'disabled' : ''}}">邀请粉丝</text>
+							<view class="row">
+								<text wx:if="{{isAuditing}}" class="tip-auditing">审核中</text>
 								<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
 							</view>
 						</view>
+
+						<t-divider t-class="custom-divider" />
+
+						<view
+						 style="padding: 17px 0;"
+						 class="row-between"
+						 hover-class="none"
+						 bind:tap="createActivity"
+						>
+							<text class="{{isAuditing ? 'disabled' : ''}}">创建活动</text>
+							<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+						</view>
+
+						<t-divider t-class="custom-divider" />
+
+						<view
+						 style="padding: 17px 0;"
+						 class="row-between"
+						 hover-class="none"
+						 bind:tap="invite"
+						>
+							<text class="{{isAuditing ? 'disabled' : ''}}">邀请粉丝</text>
+							<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+						</view>
 					</view>
 				</view>
+			</view>
 
-				<view wx:else class="form-field-wrap">
-					<navigator class="input-field row-between" url="../club-create/index" hover-class="none">
-						<text>创建俱乐部</text>
-						<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
-					</navigator>
-				</view>
-			</block>
+			<view wx:else class="form-field-wrap">
+				<navigator class="input-field row-between" url="../club-create/index" hover-class="none">
+					<text>创建俱乐部</text>
+					<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+				</navigator>
+			</view>
 
 			<view class="form-field-wrap" wx:if="{{User.AuditRole === 'NormalAuditRole'}}">
 				<navigator class="input-field row-between" url="../audit/index" hover-class="none">
@@ -98,15 +96,15 @@
 				 wx:if="{{User.Icon}}"
 				 alt="头像"
 				 image="{{User.Icon}}"
-         size="96px"
-         bind:longpress="copyUserId" 
+				 size="96px"
+				 bind:longpress="copyUserId"
 				/>
 				<image
 				 wx:else
 				 class="avatar"
 				 mode="aspectFill"
-         src="../../assets/images/@avatar_woman.svg"
-         bind:longpress="copyUserId" 
+				 src="../../assets/images/@avatar_woman.svg"
+				 bind:longpress="copyUserId"
 				/>
 			</view>
 
@@ -118,10 +116,10 @@
 				 size="20"
 				 color="#6CCEA2"
 				/>
-      </view>
-      <block wx:if="{{!User.Phone}}">
-        <view class="identity-badge">游客</view>
-      </block>
+			</view>
+			<block wx:if="{{!User.Phone}}">
+				<view class="identity-badge">游客</view>
+			</block>
 		</view>
 	</view>
 </scroll-view>

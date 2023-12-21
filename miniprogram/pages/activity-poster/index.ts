@@ -1,11 +1,11 @@
 // pages/activity-poster/index.ts
 import dayjs from 'dayjs'
 import * as request from '../../services/index'
-import { IActivityInfo, IUserInfo } from '../../services/index'
+import { IActivityInfo, IClubInfo, IUserInfo } from '../../services/index'
 import { IPosterQuery } from '../../utils/bind'
 import { Month } from '../../utils/constant'
 import env from '../../utils/env'
-import { MockActivity, MockUser } from '../../utils/mock'
+import { MockActivity, MockClub, MockUser } from '../../utils/mock'
 import { compareVersion, objectToQueryString, WeekNames } from '../../utils/util'
 
 const app = getApp()
@@ -21,7 +21,7 @@ Component({
     qrcode: '',
     date: '',
     time: '',
-    User: <IUserInfo>{},
+    Club: <IClubInfo>{},
     Activity: <IActivityInfo>{},
     _poster: '',
   },
@@ -37,7 +37,7 @@ Component({
 
       this.initData().then((resp) => {
         this.setData({
-          User: resp.User,
+          Club: resp.Club,
           Activity: resp.Activity
         })
         this.formatDate()
@@ -52,19 +52,19 @@ Component({
   },
 
   methods: {
-    initData(): Promise<{ User: IUserInfo, Activity: IActivityInfo }> {
+    initData(): Promise<{ Club: IClubInfo, Activity: IActivityInfo }> {
       return new Promise(resolve => {
         const eventChannel = this.getOpenerEventChannel()
         if (eventChannel?.on) {
           eventChannel.on('initData', (data) => {
             resolve({
-              User: data.User,
+              Club: data.Club,
               Activity: data.Activity
             })
           })
-        } else {
+        } else if (env.kDebugMode) {
           resolve({
-            User: MockUser,
+            Club: MockClub,
             Activity: MockActivity
           })
         }
@@ -127,23 +127,20 @@ Component({
     },
 
     getWxaCode(): Promise<string> {
-      const { User, Activity } = this.data
-      const ClubId = Activity.ClubId
+      const { Club, Activity } = this.data
       const ActivityId = Activity.ActivityId
       const filePath = `${wx.env.USER_DATA_PATH}/${ActivityId}_activity_qrcode.png`
       return new Promise((resolve, reject) => {
         let queryObject: IPosterQuery
-        // 主理人创建活动海报
-        if (User.UserId === Activity.UserId) {
+        if (Club.ClubId) {
           queryObject = {
-            ClubId,
+            ClubId: Club.ClubId,
             ActivityId,
             RegisterType: 'ActivityInvite',
           }
         } else {
-          // 非主理人创建活动海报
           queryObject = {
-            ClubId,
+            ClubId: 'xxx',
             ActivityId,
             RegisterType: 'Normal',
           }

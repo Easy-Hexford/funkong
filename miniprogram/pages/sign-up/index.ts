@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import * as request from '../../services/index'
 import { IActivityInfo, IGetUserResp, IInsuranceProduct, IUserInfo } from '../../services/index'
+import env from '../../utils/env'
 import { MockActivity, MockUser } from '../../utils/mock'
 import { formatActivityTime } from '../../utils/util'
 
@@ -55,7 +56,7 @@ Component({
           eventChannel.on('initData', (data) => {
             resolve(data)
           })
-        } else {
+        } else if (env.kDebugMode) {
           resolve({
             User: MockUser,
             Activity: MockActivity,
