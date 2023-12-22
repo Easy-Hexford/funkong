@@ -103,3 +103,4 @@
  t-class="navbar"
 />
 
+<firework wx:if="{{showFireWork}}"></firework>
