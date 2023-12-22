@@ -70,7 +70,7 @@ Component({
       if (this.data.scene) {
         const posterQuery = await getPosterQuery(this.data.scene)
         this.data.ActivityId = posterQuery.ActivityId!
-        this.data.RegisterClubId = posterQuery.RegisterClubId
+        this.data.RegisterClubId = posterQuery.RegisterClubId ?? ''
       }
 
       if (!this.data.ActivityId) {
@@ -78,24 +78,30 @@ Component({
         return
       }
 
+      console.info(`${this.route} RegisterClubId:`, this.data.RegisterClubId)
+
       await this.refreshActivity()
       await this.getUser()
 
       const pageStack = getCurrentPages()
       const firstPage = pageStack.length === 1
       this.setData({ loading: false, firstPage })
-      
+
+      // 用到 User 信息
       this.displayFireWorkIfNeeded()
     }
   },
 
   methods: {
     displayFireWorkIfNeeded() {
-      const User = this.data.User
-      if (!User.RegisterType && this.data.RegisterClubId) {
-        this.setData({
-          showFireWork: true
-        })
+      const User: IUserInfo = app.globalData.User
+      if (this.data.RegisterClubId) {
+        if (app.globalData.DidRegisterClub || !User.RegisterType) {
+          this.setData({
+            showFireWork: true
+          })
+          app.globalData.DidRegisterClub = false
+        }
       }
     },
 

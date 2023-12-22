@@ -3,7 +3,7 @@ import * as request from './services/index'
 import { IClubInfo, IGetUserResp, IInsuranceProduct, IPoint, IUserInfo } from './services/index';
 import env from './utils/env'
 import { bindClubManager } from './utils/bind'
-import {forceUpdate} from './utils/update_manager'
+import { forceUpdate } from './utils/update_manager'
 
 App({
   globalData: {
@@ -13,10 +13,11 @@ App({
     Club: <IClubInfo>{},
     InsuranceProductList: <Array<IInsuranceProduct>>[],
     SystemInfo: <WechatMiniprogram.SystemInfo>{},
+    DidRegisterClub: false
   },
   async onLaunch() {
     forceUpdate()
-    
+
     this.listenError()
     wx.getSystemInfo({
       success: (res) => {
@@ -26,14 +27,10 @@ App({
 
     request.login().then(resp => {
       this.globalData.PlatformClubId = resp.PlatformClubId
-      this.bindClubManagerIfNeeded()
+      this.getUser().then(resp => {
+        bindClubManager(resp.User)
+      })
     })
-  },
-
-  async bindClubManagerIfNeeded() {
-    const resp = await this.getUser()
-    const PlatformClubId = this.globalData.PlatformClubId
-    bindClubManager(resp.User, PlatformClubId)
   },
 
   listenError() {

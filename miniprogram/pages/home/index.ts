@@ -1,5 +1,5 @@
 import * as request from '../../services/index'
-import { IActivityInfo, IClubInfo, IGetUserResp } from '../../services/index'
+import { IActivityInfo, IClubInfo, IGetUserResp, IUserInfo } from '../../services/index'
 import { HOME_SHARE_PICS } from '../../config'
 
 const app = getApp()
@@ -14,12 +14,10 @@ Component({
       type: String,
     }
   },
-  
+
   data: {
     ActivityList: <Array<IActivityInfo>>[],
     ActivityTotalCount: 0,
-
-    showFireWork: false,
 
     loading: true,
     triggered: false,
@@ -27,12 +25,19 @@ Component({
     _offset: 0,
     _page: 10,
     _loadMore: false,
+
+    showFireWork: false,
   },
 
   lifetimes: {
-    attached() {
+    async attached() {
       this.refreshActivityList()
+
+      await this.getUser()
       this.displayFireWorkIfNeeded()
+    },
+
+    ready() {
       wx.showShareMenu({
         menus: ['shareAppMessage']
       })
@@ -40,23 +45,28 @@ Component({
   },
 
   pageLifetimes: {
-    async show() { 
+    async show() {
       this.updateTabBar()
     }
   },
- 
+
   methods: {
-    async displayFireWorkIfNeeded() {
-      app.getUser().then((resp: IGetUserResp) => {
-        const User = resp.User
-        if (!User.RegisterType && this.data.RegisterClubId) {
+    displayFireWorkIfNeeded() {
+      const User: IUserInfo = app.globalData.User
+      if (this.data.RegisterClubId) {
+        if (app.globalData.DidRegisterClub || !User.RegisterType) {
           this.setData({
             showFireWork: true
           })
+          app.globalData.DidRegisterClub = false
         }
-      })
+      }
     },
-    
+
+    async getUser() {
+      return app.getUser()
+    },
+
     async refreshActivityList() {
       request.getPulicActivityList({
         Offset: 0,

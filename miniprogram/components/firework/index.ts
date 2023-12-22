@@ -6,7 +6,7 @@ Component({
   },
 
   data: {
-    show: false
+    show: true
   },
 
   lifetimes: {

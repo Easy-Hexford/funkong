@@ -2,7 +2,6 @@ import type { IRegisterType, IUserInfo } from '../services/index'
 import * as request from '../services/index'
 import { queryStringToObject } from './util'
 
-const app = getApp()
 const CLUB_PROFILE_PAGE_PATH = 'pages/club-profile/index'
 const ACTIVITY_DETAIL_PAGE_PATH = 'pages/activity-detail/index'
 const landingPage = [CLUB_PROFILE_PAGE_PATH, ACTIVITY_DETAIL_PAGE_PATH]
@@ -22,18 +21,21 @@ export interface IRegisterClubInfo {
 
 const ValidRegisterTypes = ['ClubInvite', 'Normal']
 
-export async function bindClubManager(User: IUserInfo, PlatformClubId: string) {
+export async function bindClubManager(User: IUserInfo) {
+  const app = getApp()
+
+  // 已注册
   if (ValidRegisterTypes.indexOf(User.RegisterType) >= 0) {
     return
   }
 
+  const PlatformClubId = app.globalData.PlatformClubId
   const enterOption = wx.getEnterOptionsSync()
-
   const RegisterClubId = enterOption.query.RegisterClubId
 
   // 通过转发进入
   if (RegisterClubId) {
-    await bindClub(RegisterClubId, PlatformClubId)
+    await bindClub(RegisterClubId)
     return
   }
 
@@ -42,36 +44,46 @@ export async function bindClubManager(User: IUserInfo, PlatformClubId: string) {
   const isPosterPage = landingPage.indexOf(enterOption.path) >= 0
   if (isPosterPage && scene) {
     const posterQuery = await getPosterQuery(scene)
-    await bindClub(posterQuery.RegisterClubId, PlatformClubId)
-    return
+    if (posterQuery.RegisterClubId) {
+      await bindClub(posterQuery.RegisterClubId)
+      return
+    }
   }
 
   bindPlatform(PlatformClubId)
 }
 
-export async function bindClub(RegisterClubId: string, PlatformClubId: string) {
-  const RegisterType: IRegisterType = RegisterClubId ? 'ClubInvite' : 'Normal'
+export async function bindClub(RegisterClubId: string) {
+  const app = getApp()
+
+  // 需要放烟花特效
+  app.globalData.DidRegisterClub = true
+
+  // 更新用户信息
   await request.updateUser({
-    RegisterType,
+    RegisterType: 'ClubInvite',
     RegisterInfo: {
-      ClubId: RegisterClubId ?? PlatformClubId
+      ClubId: RegisterClubId
     }
   })
 
-  // 烟花特效
+  console.info('bind Club ', RegisterClubId)
 
-
-  // 刷新用户信息
-  app.getLatestUser()
+  // 同步最新用户信息
+  await app.getLatestUser()
 }
 
 export async function bindPlatform(PlatformClubId: string) {
+  const app = getApp()
+
   await request.updateUser({
     RegisterType: 'Normal',
     RegisterInfo: {
       ClubId: PlatformClubId
     }
   })
+
+  console.info('bind PlatformClubId')
 
   // 刷新用户信息
   app.getLatestUser()

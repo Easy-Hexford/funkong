@@ -52,7 +52,7 @@ Component({
       if (this.data.scene) {
         const posterQuery = await getPosterQuery(this.data.scene)
         this.data.ClubId = posterQuery.ClubId!
-        this.data.RegisterClubId = posterQuery.RegisterClubId
+        this.data.RegisterClubId = posterQuery.RegisterClubId ?? ''
       }
 
       if (!this.data.ClubId) {
@@ -67,9 +67,12 @@ Component({
       await this.refreshClub()
       await this.getUser()
 
+      // 用到 User 信息
       this.displayFireWorkIfNeeded()
       this.refreshClubActivityList()
+    },
 
+    ready() {
       wx.showShareMenu({
         menus: ['shareAppMessage']
       })
@@ -78,11 +81,14 @@ Component({
 
   methods: {
     displayFireWorkIfNeeded() {
-      const User = this.data.User
-      if (!User.RegisterType && this.data.RegisterClubId) {
-        this.setData({
-          showFireWork: true
-        })
+      const User: IUserInfo = app.globalData.User
+      if (this.data.RegisterClubId) {
+        if (app.globalData.DidRegisterClub || !User.RegisterType) {
+          this.setData({
+            showFireWork: true
+          })
+          app.globalData.DidRegisterClub = false
+        }
       }
     },
 
