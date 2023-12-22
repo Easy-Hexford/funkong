@@ -3,6 +3,7 @@
   "disableScroll": true,
   "usingComponents": {
     "t-loading": "tdesign-miniprogram/loading/loading",
-    "activity-card": "../../components/activity-card/index"
+    "activity-card": "../../components/activity-card/index",
+    "firework": "../../components/firework/index"
   }
 }

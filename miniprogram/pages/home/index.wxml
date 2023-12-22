@@ -66,3 +66,4 @@
 	</block>
 </scroll-view>
 
+<firework wx:if="{{showFireWork}}"></firework>

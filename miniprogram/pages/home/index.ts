@@ -17,6 +17,8 @@ Component({
     ActivityList: <Array<IActivityInfo>>[],
     ActivityTotalCount: 0,
 
+    showFireWork: false,
+
     loading: true,
     triggered: false,
     _freshing: false,
