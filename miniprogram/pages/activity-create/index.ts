@@ -310,7 +310,19 @@ Component({
 
     checkActivityPrice(price: number) {
       if (this.data.isFreeInsurance) return true
-      const InsurancePrice = +this.data.InsurancePrice
+      const { BeginTime, EndTime } = this.data.Activity
+      if (!BeginTime || !EndTime) {
+        this.setData({
+          errPrice: '需要先设置活动时间'
+        })
+        return false
+      }
+
+      const t1 = dayjs(BeginTime)
+      const t2 = dayjs(EndTime)
+      const days = Math.ceil(t2.diff(t1, 'd', true))
+      
+      const InsurancePrice = +this.data.InsurancePrice * days
       const ActivityType = this.data.ActivityType
       const minActivityPrice = 2 * InsurancePrice
       if (price < minActivityPrice) {
