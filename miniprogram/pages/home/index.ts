@@ -1,5 +1,5 @@
 import * as request from '../../services/index'
-import { IActivityInfo, IClubInfo } from '../../services/index'
+import { IActivityInfo, IClubInfo, IGetUserResp } from '../../services/index'
 import { HOME_SHARE_PICS } from '../../config'
 
 const app = getApp()
@@ -10,7 +10,9 @@ Component({
   },
 
   properties: {
-
+    RegisterClubId: {
+      type: String,
+    }
   },
   
   data: {
@@ -30,6 +32,7 @@ Component({
   lifetimes: {
     attached() {
       this.refreshActivityList()
+      this.displayFireWorkIfNeeded()
       wx.showShareMenu({
         menus: ['shareAppMessage']
       })
@@ -43,6 +46,17 @@ Component({
   },
  
   methods: {
+    async displayFireWorkIfNeeded() {
+      app.getUser().then((resp: IGetUserResp) => {
+        const User = resp.User
+        if (!User.RegisterType && this.data.RegisterClubId) {
+          this.setData({
+            showFireWork: true
+          })
+        }
+      })
+    },
+    
     async refreshActivityList() {
       request.getPulicActivityList({
         Offset: 0,
@@ -99,10 +113,11 @@ Component({
       const count = HOME_SHARE_PICS.length
       const random = Math.floor(Math.random() * count)
       const Club: IClubInfo = app.globalData.Club
+      const RegisterClubId = Club.ClubId ?? ''
 
       return {
         title: '累了就要Fun空一下！',
-        path: `pages/home/index?RegisterClubId=${Club.ClubId}`,
+        path: `pages/home/index?RegisterClubId=${RegisterClubId}`,
         imageUrl: HOME_SHARE_PICS[random],
       }
     },

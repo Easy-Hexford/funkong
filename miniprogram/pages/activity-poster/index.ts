@@ -128,9 +128,11 @@ Component({
       const filePath = `${wx.env.USER_DATA_PATH}/${ActivityId}_activity_qrcode.png`
       return new Promise((resolve, reject) => {
         const Club: IClubInfo = app.globalData.Club
+        const RegisterClubId = Club.ClubId ?? ''
+
         let queryObject: IPosterQuery = {
           ActivityId,
-          RegisterClubId: Club.ClubId,
+          RegisterClubId,
         }
 
         request.setSceneValue({

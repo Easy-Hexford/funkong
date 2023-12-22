@@ -24,6 +24,10 @@ Component({
       value: ''
     },
 
+    RegisterClubId: {
+      type: String,
+    },
+
     mode: {
       type: String,
       value: 'normal' // audit
@@ -66,6 +70,7 @@ Component({
       if (this.data.scene) {
         const posterQuery = await getPosterQuery(this.data.scene)
         this.data.ActivityId = posterQuery.ActivityId!
+        this.data.RegisterClubId = posterQuery.RegisterClubId
       }
 
       if (!this.data.ActivityId) {
@@ -73,15 +78,27 @@ Component({
         return
       }
 
-      this.getUser()
       await this.refreshActivity()
+      await this.getUser()
+
       const pageStack = getCurrentPages()
       const firstPage = pageStack.length === 1
       this.setData({ loading: false, firstPage })
+      
+      this.displayFireWorkIfNeeded()
     }
   },
 
   methods: {
+    displayFireWorkIfNeeded() {
+      const User = this.data.User
+      if (!User.RegisterType && this.data.RegisterClubId) {
+        this.setData({
+          showFireWork: true
+        })
+      }
+    },
+
     async getUser() {
       app.getUser().then((resp: IGetUserResp) => {
         this.setData({
@@ -333,10 +350,11 @@ Component({
       const { Activity } = this.data
       const ActivityId = Activity.ActivityId
       const Club: IClubInfo = app.globalData.Club
+      const RegisterClubId = Club.ClubId ?? ''
 
       return {
         title: Activity.Title,
-        path: `pages/activity-detail/index?ActivityId=${ActivityId}&RegisterClubId=${Club.ClubId}`
+        path: `pages/activity-detail/index?ActivityId=${ActivityId}&RegisterClubId=${RegisterClubId}`
       }
     },
 

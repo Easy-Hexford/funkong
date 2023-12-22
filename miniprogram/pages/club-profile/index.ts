@@ -12,14 +12,17 @@ Component({
   },
 
   properties: {
+    scene: {
+      type: String,
+    },
+
     ClubId: {
       type: String,
     },
 
-    scene: {
+    RegisterClubId: {
       type: String,
-    }
-
+    },
   },
 
   data: {
@@ -40,6 +43,8 @@ Component({
     _freshing: false,
     _loadMore: false,
 
+    showFireWork: false
+
   },
 
   lifetimes: {
@@ -47,19 +52,22 @@ Component({
       if (this.data.scene) {
         const posterQuery = await getPosterQuery(this.data.scene)
         this.data.ClubId = posterQuery.ClubId!
+        this.data.RegisterClubId = posterQuery.RegisterClubId
       }
 
       if (!this.data.ClubId) {
         console.error('ClubId prop not found')
         return
       }
-     
+
       const pageStack = getCurrentPages()
       const firstPage = pageStack.length === 1
       this.setData({ firstPage })
 
       await this.refreshClub()
       await this.getUser()
+
+      this.displayFireWorkIfNeeded()
       this.refreshClubActivityList()
 
       wx.showShareMenu({
@@ -69,14 +77,21 @@ Component({
   },
 
   methods: {
+    displayFireWorkIfNeeded() {
+      const User = this.data.User
+      if (!User.RegisterType && this.data.RegisterClubId) {
+        this.setData({
+          showFireWork: true
+        })
+      }
+    },
+
     async getUser() {
       return app.getUser().then((resp: IGetUserResp) => {
-        this.setData({
-          User: resp.User
-        })
+        this.setData({ User: resp.User })
       })
     },
-    
+
     async refreshClub() {
       return request.getClub({
         ClubId: this.data.ClubId
@@ -146,7 +161,7 @@ Component({
     onBack() {
       wx.navigateBack();
     },
-    
+
     onGoHome() {
       wx.reLaunch({
         url: '/pages/home/index',
@@ -156,9 +171,10 @@ Component({
     onShareAppMessage(_: WechatMiniprogram.Page.IShareAppMessageOption): WechatMiniprogram.Page.ICustomShareContent {
       const Club = this.data.Club
       const UserClub: IClubInfo = app.globalData.Club
+      const RegisterClubId = UserClub.ClubId ?? ''
       return {
         title: `${Club.ClubName}邀请你参加活动`,
-        path: `pages/club-profile/index?ClubId=${Club.ClubId}&RegisterClubId=${UserClub.ClubId}`
+        path: `pages/club-profile/index?ClubId=${Club.ClubId}&RegisterClubId=${RegisterClubId}`
       }
     },
   }

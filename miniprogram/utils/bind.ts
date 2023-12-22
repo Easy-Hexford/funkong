@@ -49,7 +49,7 @@ export async function bindClubManager(User: IUserInfo, PlatformClubId: string) {
   bindPlatform(PlatformClubId)
 }
 
-async function bindClub(RegisterClubId: string, PlatformClubId: string) {
+export async function bindClub(RegisterClubId: string, PlatformClubId: string) {
   const RegisterType: IRegisterType = RegisterClubId ? 'ClubInvite' : 'Normal'
   await request.updateUser({
     RegisterType,
@@ -65,7 +65,7 @@ async function bindClub(RegisterClubId: string, PlatformClubId: string) {
   app.getLatestUser()
 }
 
-async function bindPlatform(PlatformClubId: string) {
+export async function bindPlatform(PlatformClubId: string) {
   await request.updateUser({
     RegisterType: 'Normal',
     RegisterInfo: {

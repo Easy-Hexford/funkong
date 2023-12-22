@@ -111,9 +111,11 @@ Component({
       
       return new Promise((resolve, reject) => {
         const UserClub: IClubInfo = app.globalData.Club
+        const RegisterClubId = UserClub.ClubId ?? ''
+
         const queryObject = {
+          RegisterClubId,
           ClubId: this.data.Club.ClubId,
-          RegisterClubId: UserClub.ClubId,
         }
         request.setSceneValue({
           Value: objectToQueryString(queryObject),
