@@ -63,11 +63,18 @@ Component({
     },
 
     share() {
-      this.takeSnapshot().then((filePath: string) => {
-        wx.showShareImageMenu({
-          path: filePath
+      if (this.data.qrcode) {
+        this.takeSnapshot().then(filePath => {
+          wx.showShareImageMenu({
+            path: filePath
+          })
         })
-      })
+      } else {
+        wx.showToast({
+          icon: 'none',
+          title: '海报生成中...'
+        })
+      }
     },
 
     onQrcodeLoad() {
