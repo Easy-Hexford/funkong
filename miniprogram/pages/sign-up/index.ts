@@ -159,25 +159,6 @@ Component({
         })
     },
 
-    signUpFreeInsuranceActivity() {
-      if (this.data._lock) return
-      this.data._lock = true
-
-      const Activity = this.data.Activity
-      return request.createSignUpActivity({
-        ActivityId: Activity.ActivityId
-      }).then(() => {
-        this.showSignUpSuccess()
-      }, (e) => {
-        wx.showToast({
-          icon: 'error',
-          title: e.message
-        })
-      }).finally(() => {
-        this.data._lock = false
-      })
-    },
-
     signUpNormalActivity() {
       if (this.data._lock) return
       this.data._lock = true
@@ -187,25 +168,29 @@ Component({
         ActivityId: Activity.ActivityId
       }).then(resp => {
         const Payment = resp.Payment
-        wx.requestPayment({
-          timeStamp: Payment.timeStamp,
-          nonceStr: Payment.nonceStr,
-          package: Payment.package,
-          signType: Payment.signType,
-          paySign: Payment.paySign,
-          success: () => {
-            this.showSignUpSuccess()
-          },
-          fail: () => {
-            wx.showToast({
-              icon: 'error',
-              title: '支付失败'
-            })
-            this.setData({
-              payFail: true
-            })
-          },
-        })
+        if (Payment) {
+          wx.requestPayment({
+            timeStamp: Payment.timeStamp,
+            nonceStr: Payment.nonceStr,
+            package: Payment.package,
+            signType: Payment.signType,
+            paySign: Payment.paySign,
+            success: () => {
+              this.showSignUpSuccess()
+            },
+            fail: () => {
+              wx.showToast({
+                icon: 'error',
+                title: '支付失败'
+              })
+              this.setData({
+                payFail: true
+              })
+            },
+          })
+        } else {
+          this.showSignUpSuccess()
+        }
       }, (e) => {
         wx.showToast({
           icon: 'error',
@@ -223,9 +208,7 @@ Component({
         })
       }
 
-      if (this.data.freeInsurance) {
-        this.signUpFreeInsuranceActivity()
-      } else if (this.checkInssurance()) {
+      if (this.checkInssurance()) {
         this.signUpNormalActivity()
       }
     },
