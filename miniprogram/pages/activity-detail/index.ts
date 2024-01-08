@@ -395,8 +395,7 @@ Component({
       if (Activity.SignUpNum > 0) {
         wx.showToast({
           icon: 'none',
-          // title: '已有用户报名，无法修改活动信息',
-          title: '暂不支持修改活动',
+          title: '已有用户报名，无法修改活动信息',
         })
       } else {
         wx.navigateTo({

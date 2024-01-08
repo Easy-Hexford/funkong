@@ -85,11 +85,11 @@ Component({
       this.initializeDateTimePicker()
       this.initializeInsuranceProductList()
 
-      this.initData().then((resp) => {
-        this.setData({
-          Activity: resp.Activity
-        })
-      })
+      // this.initData().then((resp) => {
+      //   this.setData({
+      //     Activity: resp.Activity
+      //   })
+      // })
     }
   },
 
