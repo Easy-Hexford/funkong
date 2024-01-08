@@ -17,6 +17,14 @@ export function updateActivity(req: IUpdateActivityReq) {
   })
 }
 
+export function cancelActivity(req: ICancelActivityReq) {
+  return call({
+    url: '/activity/delete',
+    method: 'POST',
+    data: req
+  })
+}
+
 export function createInsurance(req: ICreateInsuranceReq): Promise<void> {
   return call({
     url: '/activity/create_insurance',
@@ -175,6 +183,11 @@ export interface IUpdateActivityReq {
     Price: number,
     InsuranceProduct?: IInsuranceProduct,
   }
+}
+
+export interface ICancelActivityReq {
+  ActivityId: string,
+  AuditStatus: 'PlatformCancel' | 'SelfCancel'
 }
 
 export interface ICreateActivityResp {

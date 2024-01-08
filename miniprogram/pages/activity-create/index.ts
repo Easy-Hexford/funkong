@@ -5,6 +5,8 @@ import type { IUploadBehavior } from '../../behaviors/upload'
 import dayjs from 'dayjs'
 import { getAddress } from '../../utils/location'
 import { autoBack } from '../../utils/util';
+import { MockActivity } from '../../utils/mock'
+import env from '../../utils/env';
 
 const app = getApp()
 const ACTIVITY_PIC_CATALOG = 'activity/'
@@ -82,10 +84,33 @@ Component({
     attached() {
       this.initializeDateTimePicker()
       this.initializeInsuranceProductList()
+
+      this.initData().then((resp) => {
+        this.setData({
+          Activity: resp.Activity
+        })
+      })
     }
   },
 
   methods: {
+    initData(): Promise<{ Activity: IActivityInfo }> {
+      return new Promise(resolve => {
+        const eventChannel = this.getOpenerEventChannel()
+        if (eventChannel?.on) {
+          eventChannel.on('initData', (data) => {
+            resolve({
+              Activity: data.Activity
+            })
+          })
+        } else if (env.kDebugMode) {
+          resolve({
+            Activity: MockActivity
+          })
+        }
+      })
+    },
+
     submit() {
       if (this.data._lock) {
         return

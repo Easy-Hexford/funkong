@@ -6,6 +6,7 @@ import { WeekNames } from '../../utils/util'
 import { getPosterQuery } from '../../utils/bind'
 import dayjs from 'dayjs'
 import { ActivitySignUpBlockTime } from '../../utils/constant'
+import ActionSheet, { ActionSheetTheme } from 'tdesign-miniprogram/action-sheet/index';
 
 const app = getApp()
 
@@ -78,7 +79,7 @@ Component({
         return
       }
 
-      console.info(`${this.route} RegisterClubId:`, this.data.RegisterClubId)
+      console.info(`${this.route} ActivityId: ${this.data.ActivityId} RegisterClubId: ${this.data.RegisterClubId}`)
 
       await this.refreshActivity()
       await this.getUser()
@@ -364,11 +365,79 @@ Component({
       }
     },
 
-    developingTip() {
-      wx.showToast({
-        icon: 'none',
-        title: '新功能即将上线'
+    handleManageSelected(e: any) {
+      const { index } = e.detail
+      if (index === 0) {
+        this.modityActivity()
+      } else if (index === 1) {
+        this.cacelActivity()
+      }
+    },
+
+    manage() {
+      ActionSheet.show({
+        theme: ActionSheetTheme.List,
+        selector: '#t-manage-action-sheet',
+        context: this,
+        items: [
+          {
+            label: '修改活动',
+          },
+          {
+            label: '取消活动',
+          },
+        ],
       })
-    }
+    },
+
+    modityActivity() {
+      const Activity = this.data.Activity
+      if (Activity.SignUpNum > 0) {
+        wx.showToast({
+          icon: 'none',
+          // title: '已有用户报名，无法修改活动信息',
+          title: '暂不支持修改活动',
+        })
+      } else {
+        wx.navigateTo({
+          url: '../activity-create/index',
+          success: (res) => {
+            res.eventChannel.emit('initData', {
+              Activity: JSON.parse(JSON.stringify(this.data.Activity)),
+            })
+          }
+        })
+      }
+    },
+
+    handleCancelConfirmSelected(e: any) {
+      const Activity = this.data.Activity
+      const { index } = e.detail
+      // 主理人取消活动
+      if (index === 0) {
+        request.cancelActivity({
+          ActivityId: Activity.ActivityId,
+          AuditStatus: 'SelfCancel'
+        })
+      }
+    },
+
+    cacelActivity() {
+      ActionSheet.show({
+        theme: ActionSheetTheme.List,
+        selector: '#t-cancel-confirm-action-sheet',
+        context: this,
+        description: '活动取消后，所有已上车的用户将会自动退出，活动费用也会自动退还。',
+        items: [
+          {
+            label: '取消活动',
+            color: '#FA5151'
+          },
+          {
+            label: '稍后再说',
+          },
+        ],
+      })
+    },
   }
 })

@@ -5,7 +5,7 @@ import { IActivityInfo, IClubInfo, IUserInfo } from '../../services/index'
 import { IPosterQuery } from '../../utils/bind'
 import { Month } from '../../utils/constant'
 import env from '../../utils/env'
-import { MockActivity, MockClub, MockUser } from '../../utils/mock'
+import { MockActivity } from '../../utils/mock'
 import { compareVersion, objectToQueryString, WeekNames } from '../../utils/util'
 
 const app = getApp()
