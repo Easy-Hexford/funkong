@@ -411,14 +411,18 @@ Component({
     },
 
     handleCancelConfirmSelected(e: any) {
-      const Activity = this.data.Activity
       const { index } = e.detail
       // 主理人取消活动
       if (index === 0) {
-        request.cancelActivity({
-          ActivityId: Activity.ActivityId,
-          AuditStatus: 'SelfCancel'
+        wx.showToast({
+          icon: 'none',
+          title: '该功能即将上线'
         })
+        // const Activity = this.data.Activity
+        // request.cancelActivity({
+        //   ActivityId: Activity.ActivityId,
+        //   AuditStatus: 'SelfCancel'
+        // })
       }
     },
 

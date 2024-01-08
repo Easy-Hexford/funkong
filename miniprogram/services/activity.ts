@@ -187,7 +187,7 @@ export interface IUpdateActivityReq {
 
 export interface ICancelActivityReq {
   ActivityId: string,
-  AuditStatus: 'PlatformCancel' | 'SelfCancel'
+  AuditStatus: IActivityAuditStatus
 }
 
 export interface ICreateActivityResp {
@@ -229,7 +229,7 @@ export interface IGetActivityResp {
   SelfActivitySignUp?: ISelfActivitySignup
 }
 
-export type IActivityAuditStatus = 'AuditFail' | 'AuditSucc' | 'Auditing'
+export type IActivityAuditStatus = 'AuditFail' | 'AuditSucc' | 'Auditing' | 'PlatformCancel' | 'SelfCancel'
 
 export interface IGetActicityListReq {
   ClubId?: string,
