@@ -1,17 +1,14 @@
 <wxs src="../../utils/filter.wxs" module="filter" />
-
 <scroll-view scroll-y type="list" class="scrollable">
 	<block wx:if="{{loading}}">
 		<view style="width: 100%; height: 100%;" class="center">
 			<t-loading indicator="{{false}}" text="加载中..." />
 		</view>
 	</block>
-
 	<block wx:else>
 		<view class="banner" bind:tap="chooseCover">
 			<image class="cover" mode="aspectFill" src="{{Activity.CoverUrls.Items[0]}}" />
 		</view>
-
 		<view class="sheet">
 			<view class="content-wrap active">
 				<view class="title">
@@ -20,7 +17,6 @@
 						<text class="tag--sign-up">已上车</text>
 					</block>
 				</view>
-
 				<view class="activity-addr row">
 					<t-icon
 					 style="margin-right: 4px;"
@@ -28,9 +24,8 @@
 					 size="16"
 					 color="rgba(0, 0, 0, 0.55)"
 					/>
-					<text class="ellipsis" space="ensp" bind:tap="openLocation">{{Activity.Location.Name}} {{filter.distance(distance)}} </text>
+					<text class="ellipsis" space="ensp" bind:tap="openLocation">{{Activity.Location.Name}} {{filter.distance(distance)}}</text>
 				</view>
-
 				<view class="activity-date row" style="margin-top: 8px;">
 					<t-icon
 					 style="margin-right: 4px;"
@@ -40,17 +35,14 @@
 					/>
 					<text class="ellipsis" space="ensp">{{date}}</text>
 				</view>
-
 				<view class="sub-title">小队成员</view>
 				<view wx:if="{{ActivityMembers.length}}" style="margin-left: 24px;">
 					<member-list members="{{ActivityMembers}}" />
 				</view>
-
 				<view class="sub-title">活动描述</view>
 				<view class="activity-content">
 					<text>{{Activity.Content}}</text>
 				</view>
-
 				<view class="sub-title">活动配图</view>
 				<view>
 					<block wx:for="{{Activity.PicList.Items}}" wx:for-item="url" wx:key="*this">
@@ -67,7 +59,6 @@
 						</t-image>
 					</block>
 				</view>
-
 			</view>
 			<view class="avatar-wrap column-cross-center" bind:tap="viewClub">
 				<image class="avatar circle" src="{{Activity.Club.ClubIcon}}" />
@@ -76,7 +67,6 @@
 		</view>
 	</block>
 </scroll-view>
-
 <block wx:if="{{!loading}}">
 	<!-- 审核人员看到的 -->
 	<view wx:if="{{mode === 'audit'}}" class="tool-bar center">
@@ -106,9 +96,7 @@
 			<text>通过</text>
 		</view>
 	</view>
-
 	<block wx:else>
-
 		<!-- 主理人看到的 -->
 		<view wx:if="{{User.UserId == OwnerUserId}}" class="tool-bar row-between">
 			<!-- 左侧区域 -->
@@ -130,46 +118,127 @@
 					<text style="margin-top: 2px;">保存二维码</text>
 				</view>
 			</view>
-
-      <!-- 右侧区域 isActivityEnd-->
-			<view wx:if="{{Activity.AuditStatus === 'SelfCancel' || Activity.AuditStatus === 'PlatformCancel'}}" class="tip-disabled">活动已取消</view>
+			<!-- 右侧区域 isActivityEnd -->
+			<view wx:if="{{Activity.AuditStatus === 'SelfCancel' || Activity.AuditStatus === 'PlatformCancel'}}" class="tip-disabled">
+				活动已取消
+			</view>
 			<view wx:elif="{{isActivityEnd}}" class="tip-disabled">活动已结束</view>
-      <view wx:else class="btn active" bind:tap="manage">管理</view>
+			<view wx:else class="btn active" bind:tap="manage">管理</view>
 		</view>
-
 		<!-- 用户看到的 -->
-		<view wx:else class="tool-bar row-between">
-			<view class="row">
-				<button open-type="share" class="btn--share" bind:tap="share">
-					<view class="column-cross-center">
-						<image class="icon" src="../../assets/images/@icon_share.svg" />
-						<text style="margin-top: 2px;">邀请好友</text>
+		<view wx:else class="tool-bar">
+			<view
+			 wx:if="{{signUpStatus === EnumSignUpStatus.PayTimeout}}"
+			 class="center"
+			 style="font-size: 15px; margin-bottom: 24px;"
+			 bind:tap="createInsurance"
+			>
+				<t-icon name="error-circle" size="16" color="#FA5151" />
+				<text style="margin-left: 2px; color: #FA5151;">支付超时，请重新支付</text>
+			</view>
+
+			<view wx:if="{{signUpStatus === EnumSignUpStatus.InsuranceCreating}}" class="center" style="font-size: 15px; margin-bottom: 24px;">
+				<t-icon name="time" size="16" color="#4321F5" />
+				<text style="margin-left: 2px;">购买保险中</text>
+			</view>
+
+			<view
+			 wx:if="{{signUpStatus === EnumSignUpStatus.InsuranceRetryNum1}}"
+			 class="center"
+			 style="font-size: 15px; margin-bottom: 24px;"
+			 bind:tap="createInsurance"
+			>
+				<t-icon name="error-circle" size="16" color="#FA5151" />
+				<text style="margin-left: 2px; color: #FA5151;">保险未生效，请重新领取保险</text>
+			</view>
+
+			<view
+			 wx:if="{{signUpStatus === EnumSignUpStatus.InsuranceRetryNum2 || signUpStatus === EnumSignUpStatus.InsuranceCreateFail}}"
+			 class="center"
+			 style="font-size: 15px; margin-bottom: 24px;"
+			 bind:tap="createInsurance"
+			>
+				<t-icon name="error-circle" size="16" color="#4321F5" />
+				<text style="margin-left: 2px;">保险未生效，请参加活动时找主理人领取</text>
+			</view>
+
+			<view wx:if="{{signUpStatus === EnumSignUpStatus.Refunding}}" class="center" style="font-size: 15px; margin-bottom: 24px;">
+				<t-icon name="time" size="16" color="#4321F5" />
+				<text style="margin-left: 2px;">退款中</text>
+			</view>
+
+			<view
+			 wx:if="{{signUpStatus === EnumSignUpStatus.RefundError}}"
+			 class="center"
+			 style="font-size: 15px; margin-bottom: 24px;"
+			 bind:tap="createInsurance"
+			>
+				<t-icon name="error-circle" size="16" color="#4321F5" />
+				<text style="margin-left: 2px;">退款失败</text>
+			</view>
+
+			<view class="row-between">
+				<view class="row">
+					<button open-type="share" class="btn--share" bind:tap="share">
+						<view class="column-cross-center">
+							<image class="icon" src="../../assets/images/@icon_share.svg" />
+							<text style="margin-top: 2px;">邀请好友</text>
+						</view>
+					</button>
+					<view class="column-cross-center" style="margin-left: 14px;" bind:tap="sharePoster">
+						<image class="icon" src="../../assets/images/@icon_qrcode.svg" />
+						<text style="margin-top: 2px;">保存二维码</text>
 					</view>
-				</button>
-				<view class="column-cross-center" style="margin-left: 14px;" bind:tap="sharePoster">
-					<image class="icon" src="../../assets/images/@icon_qrcode.svg" />
-					<text style="margin-top: 2px;">保存二维码</text>
+				</view>
+
+				<!-- 用户已报名 -->
+				<view class="row">
+					<block wx:if="{{signUpStatus === EnumSignUpStatus.Empty || signUpStatus === EnumSignUpStatus.PayTimeout}}">
+						<view bind:tap="goSignUp" class="btn active center" style="font-size: 18px; font-weight: 600;">
+							<text>¥{{filter.money(Activity.ActivityRule.Price)}} 走起</text>
+						</view>
+					</block>
+
+					<view wx:elif="{{signUpStatus === EnumSignUpStatus.ToPay}}" class="tip">支付确认中</view>
+
+					<block wx:elif="{{signUpStatus === EnumSignUpStatus.Paid || signUpStatus === EnumSignUpStatus.InsuranceCreating || signUpStatus === EnumSignUpStatus.InsuranceCreated || signUpStatus === EnumSignUpStatus.InsuranceRetryNum2 || signUpStatus === EnumSignUpStatus.InsuranceCreateFail }}">
+						<navigator url="../customer-service/index" hover-class="none" class="btn active column center">
+							<text>联系客服</text>
+							<text style="font-size: 12px; color: rgba(175, 241, 100, 0.70); opacity: 0.7;">参加报名活动群</text>
+						</navigator>
+						<view class="dot-wrap center">
+							<image class="icon--dot" mode="aspectFill" src="../../assets/images/@icon_dot.png" />
+						</view>
+					</block>
+
+					<block wx:elif="{{signUpStatus === EnumSignUpStatus.InsuranceRetryNum1}}">
+						<view class="btn active center">
+							<text>领取保险</text>
+						</view>
+						<view class="dot-wrap center">
+							<image class="icon--dot" mode="aspectFill" src="../../assets/images/@icon_dot.png" />
+						</view>
+					</block>
+
+					<block wx:elif="{{signUpStatus === EnumSignUpStatus.Refunding || signUpStatus === EnumSignUpStatus.RefundError}}">
+						<navigator url="../customer-service/index" hover-class="none" class="btn active center">
+							<text>联系客服</text>
+						</navigator>
+					</block>
+
+					<view wx:elif="{{signUpStatus === EnumSignUpStatus.Refund}}" class="tip--disabled">已退出活动</view>
+
+					<view wx:elif="{{signUpStatus === EnumSignUpStatus.End}}" class="tip">活动已结束</view>
+
+					<view wx:elif="{{signUpStatus === EnumSignUpStatus.Deadline}}" class="tip">报名截止</view>
+
+					<view wx:elif="{{signUpStatus === EnumSignUpStatus.Full}}" class="tip">已满员</view>
+
 				</view>
 			</view>
-			<!-- 用户已报名 -->
-			<block wx:if="{{hasSignedUp}}">
-				<navigator
-				 url="../customer-service/index"
-				 hover-class="none"
-				 class="btn active column-cross-center"
-				 style="padding: 4px 24px;"
-				>
-					<text>联系客服</text>
-					<text style="font-size: 12px; color: rgba(175, 241, 100, 0.70); opacity: 0.7;">参加报名活动群</text>
-				</navigator>
-			</block>
-			<view wx:elif="{{canSignUp}}" bind:tap="goSignUp" class="btn active">{{signUpText}}</view>
-			<view wx:elif="{{tipWraning}}" class="tip--warn">{{signUpText}}</view>
-			<view wx:else class="tip">{{signUpText}}</view>
 		</view>
 	</block>
 </block>
-
 <t-navbar wx:if="{{firstPage}}" fixed t-class="navbar">
 	<view slot="capsule" class="custom-capsule">
 		<t-icon
@@ -190,17 +259,13 @@
 		/>
 	</view>
 </t-navbar>
-
 <t-navbar
  wx:else
  left-arrow
  fixed
  t-class="navbar"
 />
-
 <firework wx:if="{{showFireWork}}" />
-
 <t-action-sheet id="t-manage-action-sheet" bind:selected="handleManageSelected" />
-
 <t-action-sheet id="t-cancel-confirm-action-sheet" bind:selected="handleCancelConfirmSelected" show-cancel="{{false}}" />
 

@@ -10,6 +10,24 @@ import ActionSheet, { ActionSheetTheme } from 'tdesign-miniprogram/action-sheet/
 
 const app = getApp()
 
+const EnumSignUpStatus = {
+  Empty: 0,                    // 空
+  ToPay: 1,                    // 支付确认中
+  PayTimeout: 2,               // 支付超时
+  Paid: 3,                     // 已付款
+  InsuranceCreating: 4,        // 创建保险中
+  InsuranceCreated: 5,         // 保险购买成功
+  InsuranceCreateFail: 6,      // 保险购买失败
+  InsuranceRetryNum1: 7,       // 需重新填写保单
+  InsuranceRetryNum2: 8,       // 需联系客服
+  Refunding: 9,                // 退款中
+  Refund: 10,                  // 退款成功
+  RefundError: 11,             // 退款失败
+  End: 12,                     // 活动已结束
+  Deadline: 13,                // 活动报名截止
+  Full: 14,                    // 活动已满员
+}
+
 Component({
   options: {
     pureDataPattern: /^_/
@@ -45,11 +63,9 @@ Component({
     User: <IUserInfo>{},
     Club: <IClubInfo>{},
 
-    hasSignedUp: false,
-    canSignUp: false,
-    signUpText: '',
     isActivityEnd: false,
-    tipWraning: false,
+    EnumSignUpStatus,
+    signUpStatus: EnumSignUpStatus.Empty,
 
     loading: true,
     firstPage: false,
@@ -122,18 +138,19 @@ Component({
         const Activity = resp.Activity
         const OwnerUser = Activity.OwnerUser
         const OtherMembers = resp.Activity.ActivitySignUpList.map(i => i.User)
+        const signUpStatus = this.getSignUpStatus()
 
         this.setData({
           Activity,
           SelfActivitySignUp: resp.SelfActivitySignUp,
           OwnerUserId: Activity.UserId,
           ActivityMembers: [OwnerUser, ...OtherMembers],
+          // signUpStatus,
         })
 
         this.formatDate()
         this.calcDistance()
         this.checkActivityEnd()
-        this.getSignUpText()
 
         if (Activity.AuditStatus === 'AuditSucc') {
           wx.showShareMenu({
@@ -144,9 +161,6 @@ Component({
     },
 
     goSignUp() {
-      if (!this.data.canSignUp) {
-        return
-      }
       wx.navigateTo({
         url: '../sign-up/index',
         success: (res) => {
@@ -165,100 +179,69 @@ Component({
       })
     },
 
-    getSignUpText() {
+    getSignUpStatus() {
       const Activity = this.data.Activity
       const SelfActivitySignUp = this.data.SelfActivitySignUp
       const now = dayjs().unix()
       const startTime = dayjs(Activity.BeginTime).unix()
       const endTime = dayjs(Activity.EndTime).unix()
 
-      const signUp = () => {
-        const Price = Activity.ActivityRule.Price
-        const formatPrice = (Price / 100).toFixed(2)
-        this.setData({
-          hasSignedUp: false,
-          canSignUp: true,
-          signUpText: `¥${formatPrice} 走起`
-        })
-      }
-      this.setData({ tipWraning: false })
-
-      if (!SelfActivitySignUp) {
-        // 活动时间和人数上是否可报名
+      const _getStatus = () => {
         if (now > endTime) {
-          this.setData({
-            hasSignedUp: false,
-            canSignUp: false,
-            signUpText: '活动已结束'
-          })
+          return EnumSignUpStatus.End
         } else if (startTime - now < ActivitySignUpBlockTime) {
-          this.setData({
-            hasSignedUp: false,
-            canSignUp: false,
-            signUpText: '报名截止'
-          })
+          return EnumSignUpStatus.Deadline
         } else if (Activity.SignUpNum === Activity.ActivityRule.MaxSignUpNumber) {
-          this.setData({
-            hasSignedUp: false,
-            canSignUp: false,
-            signUpText: '已满员'
-          })
+          return EnumSignUpStatus.Full
         } else {
-          signUp()
+          return EnumSignUpStatus.Empty
         }
-        return
+      }
+      // 未报名过
+      if (!SelfActivitySignUp) {
+        return _getStatus()
       }
 
       // 已经报名过
       const ActivitySignUpStatus = SelfActivitySignUp.ActivitySignUpStatus
+      const InsuranceRetryNum = SelfActivitySignUp.SignUpInfo.InsuranceRetryNum
+
       switch (ActivitySignUpStatus) {
         case 'ToPay': {
-          this.setData({
-            hasSignedUp: false,
-            canSignUp: false,
-            signUpText: `支付确认中`
-          })
-          break
+          return EnumSignUpStatus.ToPay
         }
         case 'PayTimeout': {
-          signUp()
-          break
+          return _getStatus()
         }
-        case 'InsuranceCreating':
+        case 'Paid': {
+          return EnumSignUpStatus.Paid
+        }
+        case 'InsuranceCreating': {
+          return EnumSignUpStatus.InsuranceCreating
+        }
         case 'InsuranceCreated': {
-          this.setData({
-            hasSignedUp: true,
-          })
-          break
+          return EnumSignUpStatus.InsuranceCreated
         }
         case 'InsuranceCreateFail': {
-          this.setData({
-            hasSignedUp: false,
-            canSignUp: false,
-            signUpText: '保险未生效，请联系客服'
-          })
-          break
+          if (InsuranceRetryNum === 1) {
+            return EnumSignUpStatus.InsuranceRetryNum1
+          } else if (InsuranceRetryNum === 2) {
+            return EnumSignUpStatus.InsuranceRetryNum2
+          } else {
+            return EnumSignUpStatus.InsuranceCreateFail
+          }
         }
         case 'Refund': {
-          signUp()
-          break
+          return EnumSignUpStatus.Refund
         }
         case 'Refunding': {
-          this.setData({
-            hasSignedUp: false,
-            canSignUp: false,
-            signUpText: '退款中'
-          })
-          break
+          return EnumSignUpStatus.Refunding
         }
         case 'RefundError': {
-          this.setData({
-            hasSignedUp: false,
-            canSignUp: false,
-            signUpText: '无法退款，请联系客服',
-            tipWraning: true
-          })
-          break
+          return EnumSignUpStatus.RefundError
+        }
+        default: {
+          return EnumSignUpStatus.Empty
         }
       }
     },

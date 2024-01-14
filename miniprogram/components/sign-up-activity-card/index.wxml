@@ -6,7 +6,7 @@
 			<text>{{beginTime}}</text>
 		</view>
 		<view class="tip--status">
-			<view wx:if="{{ActivitySignUpStatus === 'ToPay' || ActivitySignUpStatus === 'PayTimeout'}}" class="row">
+			<view wx:if="{{ActivitySignUpStatus === 'ToPay'}}" class="row">
 				<t-icon name="time" size="16" color="#4321F5" />
 				<text style="margin-left: 2px;">支付确认中</text>
 			</view>

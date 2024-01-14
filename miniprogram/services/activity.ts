@@ -222,6 +222,7 @@ export interface ISelfActivitySignup {
   UserId: string,
   ActivitySignUpStatus: IActivitySignUpStatus,
   User: ISimpleUserInfo
+  SignUpInfo: ISignUpInfo
 }
 
 export interface IGetActivityResp {

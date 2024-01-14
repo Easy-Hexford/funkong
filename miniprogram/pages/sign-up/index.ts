@@ -25,8 +25,8 @@ Component({
     visible: false,
     popupContent: <IPopupContentType>'',
     signUpSuccessTip: '',
-    payFail: false,
 
+    _payFail: false,
     _lock: false,
   },
 
@@ -177,15 +177,14 @@ Component({
             paySign: Payment.paySign,
             success: () => {
               this.showSignUpSuccess()
+              this.data._payFail = false
             },
             fail: () => {
               wx.showToast({
                 icon: 'error',
                 title: '支付失败'
               })
-              this.setData({
-                payFail: true
-              })
+              this.data._payFail = true
             },
           })
         } else {
