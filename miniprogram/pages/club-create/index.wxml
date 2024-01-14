@@ -29,7 +29,8 @@
 		<view class="sheet">
 			<view class="content-wrap">
 				<view class="form-field-wrap">
-					<t-input
+          <t-input
+           value="{{Club.ClubName}}"
 					 cursor-spacing="20"
 					 placeholder="填写俱乐部名称"
 					 placeholder-class="placeholder"
@@ -58,6 +59,7 @@
 				<view class="form-field-wrap">
           <t-textarea
            autosize
+           value="{{Club.ClubDesc}}"
 					 cursor-spacing="20"
 					 placeholder="填写俱乐部描述"
 					 placeholder-class="placeholder"

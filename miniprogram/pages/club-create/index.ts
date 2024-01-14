@@ -3,6 +3,8 @@ import * as request from '../../services/index'
 import { uploadBehavior, IUploadBehavior } from '../../behaviors/upload'
 import type { IClubInfo, IClubInfoNullable } from '../../services/index'
 import { autoBack } from '../../utils/util'
+import env from '../../utils/env'
+import { MockClub } from '../../utils/mock'
 
 const app = getApp()
 const log = wx.getRealtimeLogManager()
@@ -17,25 +19,29 @@ Component({
   behaviors: [uploadBehavior],
 
   properties: {
-
+    mode: {
+      type: String,
+      value: 'create'
+    }
   },
 
   data: {
     ClubCoverTempFile: '',
     ClubIconTempFile: '',
 
-    Club: {
-      CoverUrls: {
-        Items: []
-      }
-    },
+    Club: <IClubInfo>{},
     submittable: false,
     _lock: false,
   },
 
   attached() {
-    this.setData({
-      Club: app.globalData.Club,
+    this.initData().then((resp) => {
+      const Club = resp.Club
+      this.setData({
+        Club,
+        ClubCoverTempFile: Club.CoverUrls?.Items[0] || '',
+        ClubIconTempFile: Club.ClubIcon || ''
+      })
     })
   },
 
@@ -48,20 +54,37 @@ Component({
   },
 
   methods: {
+    initData(): Promise<{ Club: IClubInfo }> {
+      return new Promise(resovle => {
+        const eventChannel = this.getOpenerEventChannel()
+        if (this.data.mode === 'edit' && eventChannel?.on) {
+          eventChannel.on('initData', (data) => {
+            resovle({
+              Club: data.Club
+            })
+          })
+        } else {
+          resovle({ Club: app.globalData.Club })
+        }
+      })
+    },
+
     submit() {
       if (this.data._lock) {
         return
       }
 
       if (!this.data.submittable) return
-      
+
       this.data._lock = true
       const Club: IClubInfo = this.data.Club as any
       wx.showToast({
         icon: 'loading',
         title: '正在确认'
       })
-      request.createClub({
+      const api = this.data.mode === 'edit' ? request.updateClub : request.createClub
+      
+      api({
         ClubType: 'NormalClub',
         ClubName: Club.ClubName,
         CoverUrls: Club.CoverUrls,
