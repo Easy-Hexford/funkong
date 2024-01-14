@@ -1,6 +1,13 @@
 /* components/member-list/index.wxss */
+@import '../../style/common.less';
+
 .scrollable {
   white-space: nowrap;
+}
+
+.wrap {
+  display: flex;
+  align-items: flex-start;
 }
 
 .item {
@@ -9,17 +16,13 @@
   margin-right: 28px;
 }
 
-.column-cross-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .avatar {
   width: 52px;
   height: 52px;
+  box-sizing: border-box;
   border-radius: 50%;
   overflow: hidden;
+  background-color: #F7F7F7;
 }
 
 .nickname {

@@ -1,13 +1,40 @@
 <!--components/member-list/index.wxml-->
 <scroll-view scroll-x class="scrollable">
-	<block wx:for="{{members}}" wx:key="UserId" wx:for-item="User">
-		<view class="item">
-			<view class="column-cross-center">
-				<image class="avatar" src="{{User.Icon || '../../assets/images/@avatar_woman.svg'}}" />
-				<text class="nickname">{{User.NickName || '用户'}}</text>
-				<view class="identity" wx:if="{{index === 0}}">主理人</view>
+	<view class="wrap">
+		<block wx:for="{{members}}" wx:key="UserId" wx:for-item="User">
+			<view class="item">
+				<view class="column-cross-center">
+					<image class="avatar" src="{{User.Icon || '../../assets/images/@avatar_woman.svg'}}" />
+					<text class="nickname">{{User.NickName || '用户'}}</text>
+					<view class="identity" wx:if="{{index === 0}}">主理人</view>
+				</view>
 			</view>
-		</view>
-	</block>
+		</block>
+		<block wx:if="{{members.length >= 10}}">
+			<view class="item" bind:tap="expand">
+				<view class="column-cross-center">
+					<view class="avatar center">
+						<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.55)" />
+					</view>
+					<text class="nickname">全部成员</text>
+				</view>
+			</view>
+			<view>
+				<text style="opacity: 0;">_</text>
+			</view>
+		</block>
+	</view>
 </scroll-view>
+
+<root-portal wx:if="{{members.length >= 10}}" enable>
+	<t-popup
+	 close-on-overlay-click="{{true}}"
+	 visible="{{visible}}"
+	 bind:visible-change="onVisibleChange"
+	 placement="bottom"
+	 t-class="custom-popup"
+	>
+		<expand-member-list activityId="{{activityId}}" />
+	</t-popup>
+</root-portal>
 

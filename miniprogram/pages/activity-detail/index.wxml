@@ -37,7 +37,7 @@
 				</view>
 				<view class="sub-title">小队成员</view>
 				<view wx:if="{{ActivityMembers.length}}" style="margin-left: 24px;">
-					<member-list members="{{ActivityMembers}}" />
+					<member-list members="{{ActivityMembers}}" activityId="{{Activity.ActivityId}}"/>
 				</view>
 				<view class="sub-title">活动描述</view>
 				<view class="activity-content">

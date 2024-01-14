@@ -6,7 +6,21 @@ Component({
     members: {
       type: Array,
       value: []
-    }
+    },
+
+    activityId: {
+      type: String,
+      value: ''
+    },
+
+    clubId: {
+      type: String,
+      value: ''
+    },
+  },
+
+  data: {
+    visible: false
   },
 
   lifetimes: {
@@ -17,11 +31,23 @@ Component({
     }
   },
 
-  data: {
-
-  },
-
   methods: {
+    expand() {
+      this.setData({
+        visible: true,
+      })
+    },
+    
+    hidePopup() {
+      this.setData({
+        visible: false,
+      })
+    },
 
+    onVisibleChange(e: any) {
+      this.setData({
+        visible: e.detail.visible,
+      });
+    },
   }
 })

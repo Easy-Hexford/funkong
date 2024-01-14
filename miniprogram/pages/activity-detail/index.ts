@@ -140,6 +140,7 @@ Component({
         const Activity = resp.Activity
         const OwnerUser = Activity.OwnerUser
         const OtherMembers = resp.Activity.ActivitySignUpList.map(i => i.User)
+        
         this.data.Activity = Activity
         const signUpStatus = this.getSignUpStatus()
 

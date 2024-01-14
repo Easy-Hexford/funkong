@@ -96,6 +96,33 @@ export function getSignActicityList(req: IGetSignUpActicityListReq): Promise<IGe
   })
 }
 
+export interface IGetActivitySignUpListReq {
+  ActivityId: String,
+  Offset: Number,
+  Limit: Number,
+}
+
+export interface IActivitySignUpInfo {
+  SignUpId: String,
+  ActivityId: String,
+  UserId: String,
+  ActivitySignUpStatus: IActivityAuditStatus,
+  User: ISimpleUserInfo
+}
+
+export interface IGetActivitySignUpListResp {
+  ActivitySignUpList: Array<IActivitySignUpInfo>
+  TotalCount: number
+}
+
+export function getActivitySignUpList(req: IGetActivitySignUpListReq): Promise<IGetActivitySignUpListResp> {
+  return call({
+    url: '/activity/get_activity_sign_up_list',
+    method: 'POST',
+    data: req
+  })
+}
+
 export interface IPoint {
   lat: number,
   lon: number
