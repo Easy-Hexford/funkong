@@ -225,8 +225,11 @@ export interface ICreateInsuranceReq {
   ActivityId: string
 }
 
+export type IActivityRefundType = 'RefundAll' | 'RefundHalf'
+
 export interface ISignUpctivityReq {
-  ActivityId: string
+  ActivityId: string,
+  ActivityRefundType: IActivityRefundType
 }
 
 export interface ISignUpctivityResp {
@@ -245,6 +248,7 @@ export interface IGetActivityReq {
 
 export interface ISelfActivitySignup {
   SignUpId: string,
+  PayTime: string,
   ActivityId: string,
   UserId: string,
   ActivitySignUpStatus: IActivitySignUpStatus,

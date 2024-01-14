@@ -1,6 +1,6 @@
 // pages/activity-detail/index.ts
 import * as request from '../../services/index'
-import type { IActivityAuditStatus, IActivityInfo, IClubInfo, IGetUserResp, ISelfActivitySignup, ISimpleUserInfo, IUserInfo } from '../../services'
+import type { IActivityAuditStatus, IActivityInfo, IActivityRefundType, IClubInfo, IGetUserResp, ISelfActivitySignup, ISimpleUserInfo, IUserInfo } from '../../services'
 import { calcDistance, getLocation } from '../../utils/location'
 import { WeekNames } from '../../utils/util'
 import { getPosterQuery } from '../../utils/bind'
@@ -72,6 +72,7 @@ Component({
     visible: false,
     _reenter: false,
     _lock: false,
+    _ActivityRefundType: <IActivityRefundType>'RefundAll',
     auditResult: <IActivityAuditStatus>'',
   },
 
@@ -493,30 +494,35 @@ Component({
     },
 
     showUserCancelSheet() {
-      const signUpStatus = this.data.signUpStatus
-      if (signUpStatus === EnumSignUpStatus.InsuranceRetryNum1) {
-        ActionSheet.show({
-          theme: ActionSheetTheme.List,
-          selector: '#t-user-cancel-action-sheet',
-          description: '',
-          context: this,
-          items: [
-            {
-              label: '退出活动',
-              color: '#FA5151'
-            },
-            {
-              label: '联系客服加入活动群',
-            }
-          ],
-        })
-        return
-      }
+      // const signUpStatus = this.data.signUpStatus
+      // if (signUpStatus === EnumSignUpStatus.InsuranceRetryNum1) {
+      //   ActionSheet.show({
+      //     theme: ActionSheetTheme.List,
+      //     selector: '#t-user-cancel-action-sheet',
+      //     description: '',
+      //     context: this,
+      //     items: [
+      //       {
+      //         label: '退出活动',
+      //         color: '#FA5151'
+      //       },
+      //       {
+      //         label: '联系客服加入活动群',
+      //       }
+      //     ],
+      //   })
+      //   return
+      // }
 
       const Activity = this.data.Activity
+      const Price = Activity.ActivityRule.Price / 100
+
+      const SelfActivitySignUp = this.data.SelfActivitySignUp
+      
       const now = dayjs()
       const startTime = dayjs(Activity.BeginTime)
-      const Price = Activity.ActivityRule.Price / 100
+      const PayTime = dayjs(SelfActivitySignUp?.PayTime)
+
       const diffHour = startTime.diff(now, 'h')
       let desc
       if (diffHour >= 24) {
@@ -527,11 +533,13 @@ Component({
         desc = '距离活动开始不足4小时，退出活动将不会退款'
       }
 
+      this.data._ActivityRefundType = 'RefundAll'
+
       ActionSheet.show({
         theme: ActionSheetTheme.List,
         selector: '#t-user-cancel-action-sheet',
         context: this,
-        description: desc,
+        description: '',
         items: [
           {
             label: '退出活动',
@@ -546,7 +554,8 @@ Component({
       const { index } = e.detail
       if (index === 0) {
         request.deleteSignUpActivity({
-          ActivityId: Activity.ActivityId
+          ActivityId: Activity.ActivityId,
+          ActivityRefundType: this.data._ActivityRefundType,
         }).then(() => {
           wx.showToast({
             icon: 'none',

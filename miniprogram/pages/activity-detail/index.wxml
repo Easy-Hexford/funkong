@@ -13,7 +13,7 @@
 			<view class="content-wrap active">
 				<view class="title">
 					<text>{{Activity.Title}}</text>
-					<block wx:if="{{hasSignedUp}}">
+					<block wx:if="{{signUpStatus === EnumSignUpStatus.InsuranceCreated}}">
 						<text class="tag--sign-up">已上车</text>
 					</block>
 				</view>
