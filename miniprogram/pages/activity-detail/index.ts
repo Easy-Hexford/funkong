@@ -69,7 +69,9 @@ Component({
 
     loading: true,
     firstPage: false,
+    visible: false,
     _reenter: false,
+    _lock: false,
     auditResult: <IActivityAuditStatus>'',
   },
 
@@ -138,6 +140,7 @@ Component({
         const Activity = resp.Activity
         const OwnerUser = Activity.OwnerUser
         const OtherMembers = resp.Activity.ActivitySignUpList.map(i => i.User)
+        this.data.Activity = Activity
         const signUpStatus = this.getSignUpStatus()
 
         this.setData({
@@ -145,7 +148,7 @@ Component({
           SelfActivitySignUp: resp.SelfActivitySignUp,
           OwnerUserId: Activity.UserId,
           ActivityMembers: [OwnerUser, ...OtherMembers],
-          // signUpStatus,
+          signUpStatus,
         })
 
         this.formatDate()
@@ -185,7 +188,6 @@ Component({
       const now = dayjs().unix()
       const startTime = dayjs(Activity.BeginTime).unix()
       const endTime = dayjs(Activity.EndTime).unix()
-
       const _getStatus = () => {
         if (now > endTime) {
           return EnumSignUpStatus.End
@@ -326,6 +328,68 @@ Component({
       })
     },
 
+    showInsuranceForm() {
+      this.setData({
+        visible: true,
+      })
+    },
+
+    hidePopup() {
+      this.setData({
+        visible: false,
+      })
+    },
+
+    onVisibleChange(e: any) {
+      this.setData({
+        visible: e.detail.visible,
+      });
+    },
+
+    async onInsuranceFormSumit(e: any) {
+      if (this.data._lock) return
+      this.data._lock = true
+
+      const insuranceData = e.detail.User
+      try {
+        wx.showToast({
+          icon: 'loading',
+          title: '正在确认',
+          duration: 10000
+        })
+
+        await request.updateUser({
+          ...insuranceData
+        })
+
+        await request.createInsurance({
+          ActivityId: this.data.Activity.ActivityId
+        })
+
+        this.hidePopup()
+        this.refreshActivity()
+        this.data._lock = false
+        wx.showToast({
+          icon: 'none',
+          title: '已重新发起投保'
+        })
+      } catch (e: any) {
+        wx.hideToast()
+        this.hidePopup()
+        this.data._lock = false
+        wx.showModal({
+          content: e.message,
+          showCancel: false
+        })
+      }
+    },
+
+    contactCustomerService() {
+      wx.navigateTo({
+        url: '../customer-service/index'
+      })
+    },
+
     onBack() {
       wx.navigateBack();
     },
@@ -357,7 +421,7 @@ Component({
       }
     },
 
-    manage() {
+    showOwnerCancelSheet() {
       ActionSheet.show({
         theme: ActionSheetTheme.List,
         selector: '#t-manage-action-sheet',
@@ -424,6 +488,78 @@ Component({
           },
         ],
       })
+    },
+
+    showUserCancelSheet() {
+      const signUpStatus = this.data.signUpStatus
+      if (signUpStatus === EnumSignUpStatus.InsuranceRetryNum1) {
+        ActionSheet.show({
+          theme: ActionSheetTheme.List,
+          selector: '#t-user-cancel-action-sheet',
+          description: '',
+          context: this,
+          items: [
+            {
+              label: '退出活动',
+              color: '#FA5151'
+            },
+            {
+              label: '联系客服加入活动群',
+            }
+          ],
+        })
+        return
+      }
+
+      const Activity = this.data.Activity
+      const now = dayjs()
+      const startTime = dayjs(Activity.BeginTime)
+      const Price = Activity.ActivityRule.Price / 100
+      const diffHour = startTime.diff(now, 'h')
+      let desc
+      if (diffHour >= 24) {
+        desc = `活动尚未开始准备，退出活动后将退款 ¥${Price.toFixed(2)}`
+      } else if (diffHour >= 4) {
+        desc = `活动已开始准备，退出活动仅退还 ¥${(Price / 2).toFixed(2)}`
+      } else if (diffHour < 4) {
+        desc = '距离活动开始不足4小时，退出活动将不会退款'
+      }
+
+      ActionSheet.show({
+        theme: ActionSheetTheme.List,
+        selector: '#t-user-cancel-action-sheet',
+        context: this,
+        description: desc,
+        items: [
+          {
+            label: '退出活动',
+            color: '#FA5151'
+          }
+        ],
+      })
+    },
+
+    handleUserCancelSelected(e: any) {
+      const Activity = this.data.Activity
+      const { index } = e.detail
+      if (index === 0) {
+        request.deleteSignUpActivity({
+          ActivityId: Activity.ActivityId
+        }).then(() => {
+          wx.showToast({
+            icon: 'none',
+            title: '已提交退出申请'
+          })
+          this.refreshActivity()
+        }, () => {
+          wx.showToast({
+            icon: 'none',
+            title: '退出活动失败，请稍后重试'
+          })
+        })
+      }else if (index === 1) {
+        this.contactCustomerService()
+      }
     },
   }
 })

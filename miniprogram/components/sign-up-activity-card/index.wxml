@@ -14,17 +14,13 @@
 				<t-icon name="time" size="16" color="#4321F5" />
 				<text style="margin-left: 2px;">购买保险中</text>
 			</view>
-			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 1}}" class="row" catch:tap="createInsurance">
+			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 1}}" class="row" catch:tap="showInsuranceForm">
 				<t-icon name="error-circle" size="16" color="#FA5151" />
-				<text style="margin-left: 2px; color: #FA5151;">保险购买失败，轻触重新购买。</text>
+				<text style="margin-left: 2px; color: #FA5151;">保险未生效，请重新领取保险</text>
       </view>
-			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 2 }}" class="row" catch:tap="showInsuranceForm">
+			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 2 }}" class="row">
 				<t-icon name="error-circle" size="16" color="#FA5151" />
-				<text style="margin-left: 2px; color: #FA5151;">保险购买失败，请修改被保人信息。</text>
-			</view>
-			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 3}}" class="row" catch:tap="contactCustomerService">
-				<t-icon name="error-circle" size="16" color="#FA5151" />
-				<text style="margin-left: 2px; color: #FA5151;">未购买保险，请联系客服。</text>
+				<text style="margin-left: 2px; color: #FA5151;">保险未生效，请参加活动时找主理人领取</text>
 			</view>
 			<view wx:if="{{ActivitySignUpStatus === 'Refunding'}}" class="row">
 				<t-icon name="time" size="16" color="#4321F5" />
