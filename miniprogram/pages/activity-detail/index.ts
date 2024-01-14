@@ -141,20 +141,21 @@ Component({
         const OwnerUser = Activity.OwnerUser
         const OtherMembers = resp.Activity.ActivitySignUpList.map(i => i.User)
         
-        this.data.Activity = Activity
-        const signUpStatus = this.getSignUpStatus()
-
         this.setData({
           Activity,
           SelfActivitySignUp: resp.SelfActivitySignUp,
           OwnerUserId: Activity.UserId,
           ActivityMembers: [OwnerUser, ...OtherMembers],
-          signUpStatus,
         })
 
         this.formatDate()
         this.calcDistance()
         this.checkActivityEnd()
+
+        const signUpStatus = this.getSignUpStatus()
+        this.setData({
+          signUpStatus,
+        })
 
         if (Activity.AuditStatus === 'AuditSucc') {
           wx.showShareMenu({
