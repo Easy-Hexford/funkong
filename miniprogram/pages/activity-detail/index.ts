@@ -136,12 +136,13 @@ Component({
 
     async refreshActivity() {
       return request.getActivity({
-        ActivityId: this.data.ActivityId
+        ActivityId: this.data.ActivityId,
+        UseCache: false
       }).then(resp => {
         const Activity = resp.Activity
         const OwnerUser = Activity.OwnerUser
         const OtherMembers = resp.Activity.ActivitySignUpList.map(i => i.User)
-        
+
         this.setData({
           Activity,
           SelfActivitySignUp: resp.SelfActivitySignUp,
@@ -494,58 +495,56 @@ Component({
     },
 
     showUserCancelSheet() {
-      // const signUpStatus = this.data.signUpStatus
-      // if (signUpStatus === EnumSignUpStatus.InsuranceRetryNum1) {
-      //   ActionSheet.show({
-      //     theme: ActionSheetTheme.List,
-      //     selector: '#t-user-cancel-action-sheet',
-      //     description: '',
-      //     context: this,
-      //     items: [
-      //       {
-      //         label: '退出活动',
-      //         color: '#FA5151'
-      //       },
-      //       {
-      //         label: '联系客服加入活动群',
-      //       }
-      //     ],
-      //   })
-      //   return
-      // }
-
       const Activity = this.data.Activity
       const Price = Activity.ActivityRule.Price / 100
-
       const SelfActivitySignUp = this.data.SelfActivitySignUp
-      
+
       const now = dayjs()
       const startTime = dayjs(Activity.BeginTime)
       const PayTime = dayjs(SelfActivitySignUp?.PayTime)
+      const startZeroTime = startTime.hour(0).minute(0).second(0)
 
-      const diffHour = startTime.diff(now, 'h')
+      // 1. 报名后半小时内可以退
+      // 2. 活动开始前4小时之内，不能退款
+      // 3. 从当天00:00:00到活动开始前4小时只退一半
+      // 4. 非当天可退全款
       let desc
-      if (diffHour >= 24) {
+      if (now.diff(PayTime, 'm') < 30) {
         desc = `活动尚未开始准备，退出活动后将退款 ¥${Price.toFixed(2)}`
-      } else if (diffHour >= 4) {
+        this.data._ActivityRefundType = 'RefundAll'
+      } else if (startTime.diff(now, 'm') <= 0) {
+        desc = '活动已开始，无法退出'
+        this.data._ActivityRefundType = 'RefundNone'
+      } else if (startTime.diff(now, 'm') <= 240) {
+        desc = '距离活动开始不足4小时，无法退出'
+        this.data._ActivityRefundType = 'RefundNone'
+      } else if (now.diff(startZeroTime, 'm') > 0) {
         desc = `活动已开始准备，退出活动仅退还 ¥${(Price / 2).toFixed(2)}`
-      } else if (diffHour < 4) {
-        desc = '距离活动开始不足4小时，退出活动将不会退款'
+        this.data._ActivityRefundType = 'RefundHalf'
+      } else {
+        desc = `活动尚未开始准备，退出活动后将退款 ¥${Price.toFixed(2)}`
+        this.data._ActivityRefundType = 'RefundAll'
       }
 
-      this.data._ActivityRefundType = 'RefundAll'
+      const items: any = [
+        {
+          label: '退出活动',
+          color: '#FA5151'
+        }
+      ]
+      const signUpStatus = this.data.signUpStatus
+      if (signUpStatus === EnumSignUpStatus.InsuranceRetryNum1) {
+        items.push({
+          label: '联系客服加入活动群',
+        })
+      }
 
       ActionSheet.show({
         theme: ActionSheetTheme.List,
         selector: '#t-user-cancel-action-sheet',
         context: this,
-        description: '',
-        items: [
-          {
-            label: '退出活动',
-            color: '#FA5151'
-          }
-        ],
+        description: desc,
+        items,
       })
     },
 
@@ -553,6 +552,9 @@ Component({
       const Activity = this.data.Activity
       const { index } = e.detail
       if (index === 0) {
+        if (this.data._ActivityRefundType === 'RefundNone') {
+          return
+        }
         request.deleteSignUpActivity({
           ActivityId: Activity.ActivityId,
           ActivityRefundType: this.data._ActivityRefundType,
@@ -568,7 +570,7 @@ Component({
             title: '退出活动失败，请稍后重试'
           })
         })
-      }else if (index === 1) {
+      } else if (index === 1) {
         this.contactCustomerService()
       }
     },
