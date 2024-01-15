@@ -16,25 +16,27 @@
 					</view>
 					<view class="club-info column-cross-center">
 						<image mode="aspectFill" class="club-icon" src="{{Activity.Club.ClubIcon}}" />
-						<view class="club-name" style="margin-top: 9px;">{{Activity.Club.ClubName}}</view>
+						<view class="club-name" style="margin-top: 9px;">
+              <text max-lines="2" overflow="ellipsis">{{Activity.Club.ClubName}}</text>
+            </view>
 					</view>
 					<view style="padding: 20px;">
 						<view style="margin-top: 20px;">
 							<view class="sub-title">
 								<text>来吧！！</text>
 							</view>
-							<view class="sub-content line-clamp-2-ellipsis" style="width: 120px;">
-								<text>{{Activity.Title}}</text>
+							<view class="sub-content" style="width: 140px;">
+								<text max-lines="2" overflow="ellipsis">{{Activity.Title}}</text>
 							</view>
 						</view>
 						<view style="margin-top: 76px;">
 							<view class="sub-title">
 								<text>时间</text>
 							</view>
-							<view class="sub-content line-clamp-2-ellipsis" style="margin-top: 8px;">
+							<view class="sub-content" style="margin-top: 8px;">
 								<text>{{week}}</text>
 							</view>
-							<view class="sub-content line-clamp-2-ellipsis" style="font-size: 12px; font-weight: 400;">
+							<view class="sub-content" style="font-size: 12px; font-weight: 400; margin-top: 6px;">
 								<text>{{date}}</text>
 							</view>
 						</view>
@@ -42,8 +44,8 @@
 							<view class="sub-title">
 								<text>地址</text>
 							</view>
-							<view class="sub-content line-clamp-2-ellipsis" style="margin-top: 8px;">
-								<text>{{Activity.Location.Address}}</text>
+							<view class="sub-content" style="margin-top: 8px;">
+								<text max-lines="2" overflow="ellipsis">{{Activity.Location.Address}}</text>
 							</view>
 						</view>
 					</view>

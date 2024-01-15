@@ -12,7 +12,9 @@ t-class-center="custom-navbar-center"
 			<view class="poster">
 				<view class="poster-inner column-cross-center">
 					<image mode="aspectFill" class="club-icon" src="{{Club.ClubIcon}}" />
-					<view class="club-name" style="margin-top: 12px;">{{Club.ClubName}}</view>
+					<view class="club-name" style="margin-top: 12px;">
+            <text>{{Club.ClubName}}</text>
+          </view>
 					<view class="club-desc" style="margin-top: 8px;">
 						<text max-lines="2" overflow="ellipsis">{{Club.ClubDesc}}</text>
 					</view>
