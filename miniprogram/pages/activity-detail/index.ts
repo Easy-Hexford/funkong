@@ -449,14 +449,19 @@ Component({
           title: '已有用户报名，无法修改活动信息',
         })
       } else {
-        wx.navigateTo({
-          url: '../activity-create/index',
-          success: (res) => {
-            res.eventChannel.emit('initData', {
-              Activity: JSON.parse(JSON.stringify(this.data.Activity)),
-            })
-          }
+        wx.showToast({
+          icon: 'none',
+          title: '该功能即将上线'
         })
+
+        // wx.navigateTo({
+        //   url: '../activity-create/index',
+        //   success: (res) => {
+        //     res.eventChannel.emit('initData', {
+        //       Activity: JSON.parse(JSON.stringify(this.data.Activity)),
+        //     })
+        //   }
+        // })
       }
     },
 

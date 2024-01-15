@@ -123,7 +123,7 @@
 				活动已取消
 			</view>
 			<view wx:elif="{{isActivityEnd}}" class="tip--disabled">活动已结束</view>
-			<view wx:else class="btn active" bind:tap="showOwnerCancelSheet">管理</view>
+			<view wx:else class="btn active center" bind:tap="showOwnerCancelSheet">管理</view>
 		</view>
 		<!-- 用户看到的 -->
 		<view wx:else class="tool-bar">
