@@ -67,6 +67,9 @@ Component({
     EnumSignUpStatus,
     signUpStatus: EnumSignUpStatus.Empty,
 
+    triggered:false,
+    _freshing: false,
+
     loading: true,
     firstPage: false,
     visible: false,
@@ -165,6 +168,18 @@ Component({
           })
         }
       })
+    },
+
+    onRefresh() {
+      if (this.data._freshing) return
+      this.data._freshing = true
+      this.refreshActivity()
+        .then(() => {
+          this.setData({
+            triggered: false,
+            _freshing: false,
+          })
+        })
     },
 
     goSignUp() {

@@ -1,5 +1,14 @@
 <wxs src="../../utils/filter.wxs" module="filter" />
-<scroll-view scroll-y type="list" class="scrollable">
+<scroll-view
+ scroll-y
+ type="list"
+ class="scrollable"
+ refresher-enabled
+ refresher-triggered="{{triggered}}"
+ refresher-default-style="black"
+ refresher-background="#fff"
+ bind:refresherrefresh="onRefresh"
+>
 	<block wx:if="{{loading}}">
 		<view style="width: 100%; height: 100%;" class="center">
 			<t-loading indicator="{{false}}" text="加载中..." />
@@ -37,7 +46,7 @@
 				</view>
 				<view class="sub-title">小队成员</view>
 				<view wx:if="{{ActivityMembers.length}}" style="margin-left: 24px;">
-					<member-list members="{{ActivityMembers}}" activityId="{{Activity.ActivityId}}"/>
+					<member-list members="{{ActivityMembers}}" activityId="{{Activity.ActivityId}}" />
 				</view>
 				<view class="sub-title">活动描述</view>
 				<view class="activity-content">
@@ -280,3 +289,4 @@
 >
 	<insurance-form bind:submit="onInsuranceFormSumit" />
 </t-popup>
+
