@@ -1,5 +1,8 @@
 <!--pages/activity-create/index.wxml-->
-<block wx:if="{{Club.AuditStatus === 'Auditing'}}">
+<block wx:if="{{User.Role !== 'SuperRole'}}">
+  <view style="width: 100vw; height: 100vh;" class="center"></view>
+</block>
+<block wx:elif="{{Club.AuditStatus === 'Auditing'}}">
 	<view class="audit-result">
 		<image class="icon--result" mode="aspectFit" src="../../assets/images/@charlet_man_woman.png" />
 		<view class="result-title">已提交</view>

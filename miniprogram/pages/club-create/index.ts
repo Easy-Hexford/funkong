@@ -1,7 +1,7 @@
 import * as request from '../../services/index'
 
 import { uploadBehavior, IUploadBehavior } from '../../behaviors/upload'
-import type { IClubInfo, IClubInfoNullable } from '../../services/index'
+import type { IClubInfo, IClubInfoNullable, IGetUserResp, IUserInfo } from '../../services/index'
 import { autoBack } from '../../utils/util'
 import env from '../../utils/env'
 import { MockClub } from '../../utils/mock'
@@ -26,6 +26,8 @@ Component({
   },
 
   data: {
+    User: <IUserInfo>{},
+
     ClubCoverTempFile: '',
     ClubIconTempFile: '',
 
@@ -35,6 +37,7 @@ Component({
   },
 
   attached() {
+    this.getUser()
     this.initData().then((resp) => {
       const Club = resp.Club
       this.setData({
@@ -54,6 +57,15 @@ Component({
   },
 
   methods: {
+    getUser() {
+      app.getUser()
+        .then((resp: IGetUserResp) => {
+          this.setData({
+            User: resp.User,
+          })
+        })
+    },
+    
     initData(): Promise<{ Club: IClubInfo }> {
       return new Promise(resovle => {
         const eventChannel = this.getOpenerEventChannel()

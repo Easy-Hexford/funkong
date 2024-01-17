@@ -1,5 +1,5 @@
 import * as request from '../../services/index'
-import type { IActivityInfo, ICreateActivityReq, IInsuranceProduct } from "../../services";
+import type { IActivityInfo, ICreateActivityReq, IGetUserResp, IInsuranceProduct, IUserInfo } from "../../services";
 import { uploadBehavior } from '../../behaviors/upload'
 import type { IUploadBehavior } from '../../behaviors/upload'
 import dayjs from 'dayjs'
@@ -35,6 +35,8 @@ Component({
   },
 
   data: {
+    User: <IUserInfo>{},
+
     ActivityCoverTempFile: '',
     Activity: <IActivityInfo>{},
 
@@ -82,6 +84,7 @@ Component({
     },
 
     attached() {
+      this.getUser()
       this.initializeDateTimePicker()
       this.initializeInsuranceProductList()
 
@@ -109,6 +112,15 @@ Component({
           })
         }
       })
+    },
+
+    getUser() {
+      app.getUser()
+        .then((resp: IGetUserResp) => {
+          this.setData({
+            User: resp.User,
+          })
+        })
     },
 
     submit() {
