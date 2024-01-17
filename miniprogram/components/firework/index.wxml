@@ -1,0 +1,7 @@
+<!--components/firework/index.wxml-->
+<view class="container" wx:if="{{show}}">
+  <view class="pyro">
+    <view class="before"></view>
+    <view class="after"></view>
+  </view>
+</view>

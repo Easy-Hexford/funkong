@@ -1,8 +1,19 @@
 /// <reference path="./types/index.d.ts" />
 
-interface IAppOption {
+import { IClubInfo, IInsuranceProduct, IPoint, IRegisterType, IUserInfo } from "../miniprogram/services";
+
+interface IApp {
   globalData: {
-    userInfo?: WechatMiniprogram.UserInfo,
+    Loc: IPoint
+    User: IUserInfo,
+    Club: IClubInfo
+    InsuranceProductList: Array<IInsuranceProduct>
+    SystemInfo: WechatMiniprogram.SystemInfo,
+    AccountInfo: WechatMiniprogram.AccountInfo
   }
-  userInfoReadyCallback?: WechatMiniprogram.GetUserInfoSuccessCallback,
 }
+
+declare global {
+
+}
+

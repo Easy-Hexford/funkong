@@ -1,0 +1,2 @@
+<view class="divider" style="font-size: {{height}}px; color: {{color}};">{{chars}}</view>
+

@@ -1,0 +1,120 @@
+<!--components/register/index.wxml-->
+<wxs src="../../utils/filter.wxs" module="filter" />
+
+<view class="container">
+  <view class="bar-wrap center">
+    <view class="bar" />
+  </view>
+  <view class="title">请添加保险保障人</view>
+  <view class="tip--real">请填写真实信息，否则将无法购买保险</view>
+	<view class="content">
+		<view class="form-field-wrap row" style="margin-top: 21px;">
+			<view class="label">
+				<text>证件</text>
+			</view>
+			<view class="input-field row-between" bind:tap="showIDCardTypePicker">
+				<text>{{idCardType}}</text>
+				<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+			</view>
+		</view>
+
+		<view class="form-field-wrap row">
+			<view class="label">
+				<text>姓名</text>
+			</view>
+			<input
+			 borderless="{{true}}"
+			 t-class="custom-input-field"
+			 class="input"
+			 placeholder="填写真实名字"
+			 placeholder-class="placeholder"
+			 bind:blur="onNameInputDone"
+			 bind:enter="onNameInputDone"
+			/>
+		</view>
+
+		<view class="form-field-wrap row">
+			<view class="label">
+				<text>{{idCardType}}</text>
+			</view>
+			<input
+       borderless="{{true}}"
+			 t-class="custom-input-field"
+			 class="input"
+			 placeholder="填写证件号码"
+       placeholder-class="placeholder"
+       bind:focus="resetIdCarNoErr"
+			 bind:blur="onIDInputDone"
+			 bind:enter="onIDInputDone"
+			/>
+		</view>
+
+		<view wx:if="{{idCardNoErr}}" class="tip-err">{{idCardNoErr}}</view>
+
+    <block wx:if="{{idCardType !== '身份证'}}">
+      <view class="form-field-wrap row">
+        <view class="label">
+          <text>生日</text>
+        </view>
+        <view class="input-field row-between" bind:tap="showDatePicker">
+          <text wx:if="{{User.BirthdayDate}}">{{filter.birthday(User.BirthdayDate)}}</text>
+          <text wx:else class="placeholder">选择出生日期</text>
+          <t-icon name="menu" size="24" color="rgba(0, 0, 0, 0.3)" />
+        </view>
+      </view>
+  
+      <view class="form-field-wrap row">
+        <view class="label">
+          <text>性别</text>
+        </view>
+        <view class="input-field row-between" bind:tap="showGenderPicker">
+          <text wx:if="{{User.Gender}}">{{User.Gender === 'Man' ? '男' : '女'}}</text>
+          <text wx:else class="placeholder">选择性别</text>
+          <t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+        </view>
+      </view>
+    </block>
+
+		<view class="footer center">
+			<view class="btn {{submittable ? 'active' : ''}}" bind:tap="submit">
+				<text>领取保险并支付</text>
+			</view>
+		</view>
+	</view>
+</view>
+
+<t-picker
+ visible="{{idCardTypePickerVisible}}"
+ title="选择证件类型"
+ value="{{idCardType}}"
+ cancelBtn="取消"
+ confirmBtn="确认"
+ bind:confirm="onConfirmIDCardType"
+ bind:cancel="hideIDCardTypePicker"
+>
+	<t-picker-item options="{{idCardTypes}}" />
+</t-picker>
+
+<t-picker
+ visible="{{genderPickerVisible}}"
+ title="性别"
+ cancelBtn="取消"
+ confirmBtn="确认"
+ bind:confirm="onConfirmGender"
+ bind:cancel="hideGenderPicker"
+>
+	<t-picker-item options="{{genders}}" />
+</t-picker>
+
+<t-date-time-picker
+ title="生日"
+ visible="{{datePickerVisible}}"
+ mode="date"
+ defaultValue="{{date}}"
+ format="YYYY-MM-DD HH:mm:ss"
+ bind:confirm="onConfirmDate"
+ bind:cancel="hideDatePicker"
+ start="{{start}}"
+ end="{{end}}"
+/>
+

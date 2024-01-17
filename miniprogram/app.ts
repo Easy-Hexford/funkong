@@ -1,18 +1,76 @@
 // app.ts
-App<IAppOption>({
-  globalData: {},
-  onLaunch() {
-    // 展示本地存储能力
-    const logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
+import * as request from './services/index'
+import { IClubInfo, IGetUserResp, IInsuranceProduct, IPoint, IUserInfo } from './services/index';
+import env from './utils/env'
+import { bindClubManager } from './utils/bind'
+import { forceUpdate } from './utils/update_manager'
 
-    // 登录
-    wx.login({
-      success: res => {
-        console.log(res.code)
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-      },
+App({
+  globalData: {
+    PlatformClubId: '',
+    Loc: <IPoint>{},
+    User: <IUserInfo>{},
+    Club: <IClubInfo>{},
+    InsuranceProductList: <Array<IInsuranceProduct>>[],
+    SystemInfo: <WechatMiniprogram.SystemInfo>{},
+    DidRegisterClub: false
+  },
+  async onLaunch() {
+    forceUpdate()
+
+    this.listenError()
+    wx.getSystemInfo({
+      success: (res) => {
+        this.globalData.SystemInfo = res
+      }
+    })
+
+    request.login().then(resp => {
+      this.globalData.PlatformClubId = resp.PlatformClubId
+      this.getUser().then(resp => {
+        bindClubManager(resp.User)
+      })
     })
   },
+
+  listenError() {
+    // @ts-ignore
+    wx.onError((e: Error) => {
+      if (env.kDebugMode || env.kTrialMode) {
+        wx.showModal({
+          title: e.message,
+          content: e.stack,
+          showCancel: false
+        })
+      }
+    })
+
+    wx.onUnhandledRejection(e => {
+      if (env.kDebugMode || env.kTrialMode) {
+        wx.showModal({
+          content: e.reason,
+          showCancel: false
+        })
+      }
+    })
+  },
+
+  async getUser(): Promise<IGetUserResp> {
+    if (this.globalData.User.UserId) {
+      return {
+        User: this.globalData.User,
+        Club: this.globalData.Club
+      }
+    }
+    return this.getLatestUser()
+  },
+
+  async getLatestUser(): Promise<IGetUserResp> {
+    const resp = await request.getUser({
+      UseCache: false
+    })
+    this.globalData.User = resp.User
+    this.globalData.Club = resp.Club
+    return resp
+  }
 })

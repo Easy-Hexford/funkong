@@ -1,0 +1,24 @@
+<view class="container-placeholder">
+	<view class="container column-cross-center">
+		<view class="bar-wrap">
+			<view class="bar center">
+				<t-icon name="chevron-down" size="16" color="rgba(0, 0, 0, 0.3)" />
+			</view>
+		</view>
+		<view class="column" style="margin-top: 50px;">
+			<image class="icon" mode="aspectFill" src="../../assets/images/@chartlet_happy_man.png" />
+			<view class="tip--welcome">
+				<text>欢迎加入放空</text>
+			</view>
+		</view>
+		<view class="footer column-cross-center">
+			<view class="btn center" data-btn="fill" bind:tap="onTap">
+				<text>填写个人资料</text>
+			</view>
+			<view class="tip--jump" data-btn="skip" bind:tap="onTap">
+				<text>跳过</text>
+			</view>
+		</view>
+	</view>
+</view>
+

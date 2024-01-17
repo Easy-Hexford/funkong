@@ -1,0 +1,102 @@
+@import '../../style//common.less';
+
+.container {
+  box-sizing: border-box;
+  width: 100%;
+  height: 178px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+
+  .cover-area {
+    flex-basis: 215px;
+  }
+
+  .club-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 12px 10px;
+  }
+
+  .club-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+
+  .club-name {
+    color: #FFF;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 140%;
+  }
+
+  .activity-cover {
+    width: 100%;
+    height: 100%;
+  }
+
+  .activity-area {
+    position: relative;
+    flex: 1;
+    box-sizing: border-box;
+    height: 100%;
+    margin-left: -100px;
+    padding: 12px;
+    padding-left: 65px;
+    background: linear-gradient(270deg, #F7F7F7 76.16%, rgba(247, 247, 247, 0.00) 100%);
+    overflow: hidden;
+
+    color: rgba(0, 0, 0, 0.60);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 140%;
+  }
+
+  .title {
+    color: #000;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 140%;
+  }
+
+  .footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+  }
+
+  .btn--enter {
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 140%;
+    background: rgba(0, 0, 0, 0.10);
+    color: #FFF;
+
+    &.active {
+      background: #4321F5;
+      color: #AFF164;
+    }
+  }
+
+  .tip--auditing {
+    color: #4321F5;
+    text-align: right;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 140%;
+  }
+
+  .tip--auditFail {
+    color: #fa5151;
+    text-align: right;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 140%;
+  }
+}

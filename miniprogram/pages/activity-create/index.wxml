@@ -1,0 +1,210 @@
+<!--pages/activity-create/index.wxml-->
+<block wx:if="{{Club.AuditStatus === 'Auditing'}}">
+	<view class="audit-result">
+		<image class="icon--result" mode="aspectFit" src="../../assets/images/@charlet_man_woman.png" />
+		<view class="result-title">已提交</view>
+		<view class="result-content">我们已收到您的俱乐部创建申请，将在3个工作日完成审核，到时会通过短信/微信与您联系。</view>
+	</view>
+</block>
+
+<block wx:else>
+	<scroll-view scroll-y type="list" class="scrollable">
+		<view class="banner" bind:tap="chooseCover">
+			<block wx:if="{{ActivityCoverTempFile}}">
+				<image class="cover" mode="aspectFill" src="{{ActivityCoverTempFile}}" />
+			</block>
+			<block wx:else>
+				<view style="transform: translateY(-47px);" class="column-cross-center">
+					<image class="banner-bg" src="../../assets/images/@chartlet_man_woman.png" />
+					<view class="center" style="margin-top: 9px;">
+						<t-icon name="add" size="24" color="rgba(0, 0, 0, 0.3)" />
+						<text style="margin-left: 8px;">添加活动封面</text>
+					</view>
+				</view>
+			</block>
+		</view>
+
+		<view class="sheet">
+			<view class="content-wrap active">
+				<view class="sub-title">基本信息</view>
+				<view>
+					<t-input
+					 clearable
+					 maxcharacter="32"
+					 placeholder="填写活动名称"
+					 placeholder-class="placeholder"
+					 borderless="{{true}}"
+					 t-class="custom-input-field"
+					 bind:blur="onTitleInputDone"
+					 bind:enter="onTitleInputDone"
+					/>
+				</view>
+
+				<view class="form-field-wrap">
+					<view class="input-field row-between" data-type="Begin" bind:tap="showDatePicker">
+						<text wx:if="{{BeginTime}}">{{BeginTime}}</text>
+						<text wx:else class="placeholder">填写活动开始时间</text>
+						<t-icon name="menu" size="24" color="rgba(0, 0, 0, 0.3)" />
+					</view>
+				</view>
+
+				<view class="form-field-wrap">
+					<view class="input-field row-between" data-type="End" bind:tap="showDatePicker">
+						<text wx:if="{{EndTime}}">{{EndTime}}</text>
+						<text wx:else class="placeholder">填写活动结束时间</text>
+						<t-icon name="menu" size="24" color="rgba(0, 0, 0, 0.3)" />
+					</view>
+        </view>
+        
+        <view class="err" wx:if="{{errTime}}"><text>{{errTime}}</text></view>
+
+				<view class="form-field-wrap" bind:tap="chooseLocation">
+					<view class="input-field row-between">
+						<text wx:if="{{Activity.Location.Name}}">{{Activity.Location.Name}}</text>
+						<text wx:else class="placeholder">添加活动地点</text>
+						<t-icon name="location" size="24" color="rgba(0, 0, 0, 0.3)" />
+					</view>
+				</view>
+
+        <view class="form-field-wrap">
+					<view class="input-field row-between" bind:tap="showTypePicker">
+						<text wx:if="{{ActivityType}}">{{ActivityType}}</text>
+						<text wx:else class="placeholder">选择活动类型</text>
+						<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+					</view>
+        </view>
+
+        <!-- <view class="tips--insure">
+					<view>购买保险费用(将从活动费用中扣除)</view>
+					<view class="insure-price">
+            <text wx:if="{{ActivityType}}">{{InsurancePrice}}元</text>
+            <text wx:else>普通活动保险2.00元，极限类运动5.00元</text>
+          </view>
+        </view> -->
+
+        <view class="sub-title">活动费用</view>
+
+        <view class="form-field-wrap">
+					<t-input
+					 value="{{ActivityPrice}}"
+					 cursor-spacing="20"
+					 placeholder="填写活动价格"
+					 type="digit"
+					 placeholder-class="placeholder"
+					 borderless="{{true}}"
+           t-class="custom-input-field"
+           bind:focus="resetPriceErr"
+					 bind:blur="onPriceInputDone"
+					 bind:enter="onPriceInputDone"
+					>
+						<view slot="suffix" style="display: inline-block; width: 24px; text-align: center;">元</view>
+					</t-input>
+        </view>
+        
+        <view class="err" wx:if="{{errPrice}}"><text>{{errPrice}}</text></view>
+        
+				<view class="sub-title">活动配图</view>
+
+				<view class="grid">
+					<block wx:for="{{illustrations}}" wx:key="idx">
+						<view class="cell center">
+							<t-image
+							 src="{{item.tempFilePath}}"
+							 shape="round"
+							 mode="aspectFill"
+							 style="width: 100%; height: 100%;"
+							/>
+							<t-loading
+							 class="loading"
+							 loading="{{item.status === 'loading'}}"
+							 theme="spinner"
+							 inherit-color
+							 layout="vertical"
+							 size="40rpx"
+							 text="上传中..."
+							/>
+							<view class="btn--xmark center" data-idx="{{index}}" bind:tap="delIllustration">
+								<t-icon name="close" size="16" color="rgba(0, 0, 0, 0.9)" />
+							</view>
+						</view>
+					</block>
+
+					<block wx:if="{{illustrations.length < maxCount}}">
+						<view class="cell center" bind:tap="addIllustration">
+							<t-icon name="add" size="28" color="rgba(0, 0, 0, 0.3)" />
+						</view>
+					</block>
+
+					<view wx:if="{{illustrations.length <= 2}}" class="cell hide" />
+					<view wx:if="{{illustrations.length <= 1}}" class="cell hide" />
+					<view wx:if="{{illustrations.length <= 0}}" class="cell hide" />
+				</view>
+
+				<view class="sub-title">更多信息</view>
+				<view>
+					<t-input
+					 cursor-spacing="20"
+					 type="number"
+					 placeholder="参与人数上限"
+					 placeholder-class="placeholder"
+					 borderless="{{true}}"
+					 t-class="custom-input-field"
+					 bind:blur="onSignUpNumberInputDone"
+					 bind:enter="onSignUpNumberInputDone"
+					>
+						<view slot="suffix" style="display: inline-block; width: 24px; text-align: center;">人</view>
+					</t-input>
+				</view>
+
+				<view class="form-field-wrap">
+					<t-textarea
+					 cursor-spacing="20"
+					 maxlength="1000"
+					 autosize
+					 indicator
+					 placeholder="填写活动描述"
+					 placeholder-class="placeholder"
+					 disableDefaultPadding="{{true}}"
+					 t-class="custom-textarea-field"
+					 bind:blur="onContentInputDone"
+					 bind:enter="onContentInputDone"
+					/>
+				</view>
+
+				<view class="form-field-wrap" style="margin-top: 120px; margin-bottom: 58px;">
+					<view class="center">
+						<view class="btn--modiry center {{submittable ? 'active' : ''}}" bind:tap="submit">
+							<text>创建活动</text>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+
+	</scroll-view>
+</block>
+
+<t-date-time-picker
+ wx:if="{{showDateTimePicker}}"
+ title="{{dateType === 'Begin' ? '开始时间' : '结束时间'}}"
+ visible="{{datePickerVisible}}"
+ steps="{{steps}}"
+ format="YYYY-MM-DD HH:mm"
+ mode="{{['minute']}}"
+ bind:confirm="onConfirmDate"
+ bind:cancel="hideDatePicker"
+ start="{{start}}"
+ end="{{end}}"
+/>
+
+<t-popup visible="{{typePickerVisible}}" bind:visible-change="onTypePickerVisibleChange" placement="bottom">
+	<activity-type-picker types="{{InsuranceProductList}}" bind:confirm="onTypePickerConfirm" bind:cancel="hideTypePicker" />
+</t-popup>
+
+<t-navbar
+ left-arrow
+ fixed
+ title="创建活动"
+ t-class="navbar"
+/>
+

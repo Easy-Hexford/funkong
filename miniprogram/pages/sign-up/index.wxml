@@ -1,0 +1,137 @@
+<!-- pages/sign-up/index.wxml -->
+<wxs src="../../utils/filter.wxs" module="filter" />
+<t-navbar left-arrow fixed title="搞起" />
+<scroll-view scroll-y type="list" class="scrollable">
+	<block wx:if="{{loading}}">
+		<view style="width: 100%; height: 100%;" class="center">
+			<t-loading indicator="{{false}}" text="加载中..." />
+		</view>
+	</block>
+	<view wx:else class="content-wrap">
+		<view class="activity-info row" style="margin-top: 14px;">
+			<image class="cover" mode="aspectFill" src="{{Activity.CoverUrls.Items[0]}}" />
+			<view class="activity-area column-main-center">
+				<view class="ellipsis title">{{Activity.Title}}</view>
+				<view class="ellipsis" style="margin-top: 12px;">
+					<text>{{Activity.Location.Name}}</text>
+				</view>
+				<view style="margin-top: 8px;">
+					<text>{{beginTime}}</text>
+				</view>
+			</view>
+		</view>
+		<view class="cell row-between">
+			<text>支付金额</text>
+			<text class="money">¥{{filter.money(Activity.ActivityRule.Price)}}</text>
+		</view>
+		<view class="cell row-between">
+			<text>支付方式</text>
+			<view class="center">
+				<image class="icon--wechat-pay" src="../../assets/images/@icon_wechat_pay.png" />
+				<text class="txt-gray" style="font-size: 16px;">微信支付</text>
+			</view>
+		</view>
+		<block wx:if="{{!freeInsurance}}">
+			<view class="cell row">
+				<image mode="aspectFill" class="icon--shield" src="../../assets/images/@icon_shield.png" />
+				<text style="margin-left: 4px;">免费保险</text>
+			</view>
+			<view class="insurance-wrap">
+				<view class="row-between">
+					<text>保障时间</text>
+					<text class="gray">{{activityTime}}全天</text>
+				</view>
+				<view class="row-between" style="margin-top: 12px;">
+					<text>意外身故/残疾</text>
+					<text class="gray">￥{{filter.localeMoney(InsuranceProduct.DeathCompensation)}}</text>
+				</view>
+				<view class="row-between" style="margin-top: 12px;">
+					<text>意外医疗费用</text>
+					<text class="gray">￥{{filter.localeMoney(InsuranceProduct.HospitalizationCosts)}}</text>
+				</view>
+				<view class="row-between" style="margin-top: 12px;">
+					<text>意外住院津贴（{{filter.localeMoney(InsuranceProduct.HospitalizationTimeLimit)}}天内）</text>
+					<text class="gray">{{filter.localeMoney(InsuranceProduct.HospitalizationAllowance)}}元/天</text>
+				</view>
+			</view>
+		</block>
+
+		<view class="cell">
+			<text>支付说明</text>
+		</view>
+		<view class="intro-title">退换规则</view>
+		<view class="intro-content">
+			<view>距活动开始前24小时，随时可退</view>
+			<view>距活动开始不足24小时，进退款一半</view>
+			<view>距活动开始前4小时，无法退款</view>
+		</view>
+		<view class="intro-title">无条件退换规则</view>
+		<view class="intro-content">
+			<view>因天气恶劣导致活动无法正常举行</view>
+			<view>因不可抗力导致活动无法举办</view>
+			<view>疫情原因导致活动无法举办</view>
+		</view>
+		<view class="intro-title">运动意外保障服务声明</view>
+		<view class="intro-content">
+			<view>运动意外保障投保年龄范围为1岁(含) -70岁(含)不符合年龄范围会导致投保失败。</view>
+			<view>运动意外保障服务需要填写身份信息才会生效，因身份信息填写错误或未领取保障服务，需在线下与俱乐部确认保险服务是否生效，未确认则视为自动放弃该项服务。</view>
+		</view>
+		<view class="intro-title">免责声明</view>
+		<view class="intro-content">
+			<text>因活动造成的意外损伤风险自担，平台及活动组织方无任何责任，报名成功视为自愿受本声明约束。</text>
+		</view>
+	</view>
+</scroll-view>
+<view class="tool-bar center">
+	<button
+	 wx:if="{{!User.Phone && !PhoneCode}}"
+	 open-type="getPhoneNumber"
+	 bind:getphonenumber="getPhoneNumber"
+	 class="btn active"
+	>
+		<text>支付 ¥{{filter.money(Activity.ActivityRule.Price)}}</text>
+	</button>
+
+	<block wx:else>
+		<view class="btn active" bind:tap="signUp">
+			<text>支付 ¥{{filter.money(Activity.ActivityRule.Price)}}</text>
+		</view>
+	</block>
+</view>
+
+<t-popup
+ close-on-overlay-click="{{true}}"
+ visible="{{visible}}"
+ bind:visible-change="onVisibleChange"
+ placement="bottom"
+ t-class="custom-popup"
+>
+	<block wx:if="{{popupContent === 'RegisterSuccess'}}">
+		<register-success bind:userTap="onRegisterSuccessUserTap" />
+	</block>
+	<block wx:if="{{popupContent === 'InsuranceForm'}}">
+		<insurance-form bind:submit="onInsuranceFormSumit" />
+	</block>
+	<block wx:if="{{popupContent === 'SignUpSuccess'}}">
+		<sign-up-success content="{{signUpSuccessTip}}" bind:done="goBack" />
+	</block>
+	<block wx:if="{{popupContent === 'PhoneAuthorize'}}">
+		<view class="dialog--phone-auauthorize">
+			<view class="bar-wrap center">
+				<view class="bar" />
+			</view>
+			<view class="column-cross-center" style="margin-top: 80px;">
+				<image class="icon" src="https://7072-prod-1gsl7u0x17e23d06-1322287298.tcb.qcloud.la/static/%40chartlet_man_chair.png?sign=f51233d9fd35971b0b75e788be016188&t=1702556578" />
+				<view style="margin-top: 26px;">
+					<text>授权手机号后，才可以购买活动</text>
+				</view>
+			</view>
+			<view class="footer center">
+				<button open-type="getPhoneNumber" bind:getphonenumber="getPhoneNumber" class="btn--authorize center">
+					<text>去授权</text>
+				</button>
+			</view>
+		</view>
+	</block>
+</t-popup>
+

@@ -1,0 +1,87 @@
+/* components/apply-success/index.wxss */
+@import '../../style/common.less';
+
+.container-placeholder {
+  position: relative;
+  height: 75vh;
+}
+
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(75vh + env(safe-area-inset-bottom));
+
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 12px 12px 0px 0px;
+  background: linear-gradient(157deg, #21F583 0%, #C4F6FC 39.34%, #FFF 100%);
+}
+
+.bar-wrap {
+  width: 100%;
+  padding: 12px 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.bar {
+  border-radius: 12px;
+  opacity: 0.5;
+  background: #FFF;
+  width: 40px;
+  height: 16px;
+}
+
+.icon {
+  width: 230px;
+  height: 182px;
+}
+
+.tip-1 {
+  width: 100%;
+  margin-top: 18px;
+  color: #4321F5;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 140%;
+  text-align: center;
+}
+
+.tip-2 {
+  width: 100%;
+  margin-top: 10px;
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 140%;
+  text-align: center;
+}
+
+.btn {
+  border-radius: 18px;
+  background: #F2F2F2;
+  width: 240px;
+  height: 56px;
+
+  color: #4321F5;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 140%;
+}
+
+.footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 62px;
+}
+
+.tip--jump {
+  margin-top: 30px;
+  color: #4321F5;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 140%;
+}

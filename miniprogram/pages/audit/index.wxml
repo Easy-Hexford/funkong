@@ -1,0 +1,71 @@
+<!--pages/audit/index.wxml-->
+
+<t-navbar
+ left-arrow
+ title="审核台"
+ fixed="{{false}}"
+ class="navbar"
+/>
+
+<scroll-view
+ class="scrollable"
+ scroll-y
+ type="list"
+ refresher-enabled
+ refresher-triggered="{{triggered}}"
+ refresher-default-style="black"
+ refresher-background="#ffffff00"
+ bind:refresherrefresh="onRefresh"
+ bind:scrolltolower="loadMore"
+>
+	<block wx:if="{{loading}}">
+		<view style="width: 100%; height: 100%;" class="center">
+			<t-loading indicator="{{false}}" text="加载中..." />
+		</view>
+	</block>
+	<block wx:else>
+		<view class="category">
+			<view class="btn active">
+				<text>活动</text>
+			</view>
+		</view>
+		<view class="selection">
+			<view
+			 wx:for="{{selections}}"
+			 wx:key="index"
+			 data-tag="{{item.tag}}"
+			 bind:tap="select"
+			 class="btn {{auditStatus === item.tag ? 'active': ''}}"
+			>{{item.name}}
+			</view>
+		</view>
+		<block wx:if="{{ActivityList.length}}">
+			<navigator
+			 class="activity-wrap"
+			 wx:for="{{ActivityList}}"
+			 wx:key="ActivityId"
+			 wx:for-item="activity"
+			 url="../activity-detail/index?ActivityId={{activity.ActivityId}}&mode=audit"
+			>
+				<activity-card activity="{{activity}}" mode="audit" />
+			</navigator>
+			<view class="load-more">
+				<text wx:if="{{ActivityList.length < ActivityTotalCount}}">加载更多...</text>
+				<text wx:else>没有更多啦</text>
+			</view>
+		</block>
+
+		<block wx:else>
+			<view class="empty-container">
+				<view class="column-cross-center">
+					<image style="width: 56px; height: 82px;" mode="aspectFill" src="../../assets/images/@chartlet_woman_music_2.png" />
+					<view class="tip-1" style="margin-top: 26px;">
+						<text>没有活动需要审核</text>
+					</view>
+				</view>
+			</view>
+		</block>
+	</block>
+
+</scroll-view>
+

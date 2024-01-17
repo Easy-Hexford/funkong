@@ -1,0 +1,181 @@
+/* pages/sign-up/index.wxss */
+page {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.scrollable {
+  flex: 1;
+  overflow: auto;
+  box-sizing: border-box;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 70px);
+}
+
+.content-wrap {
+  padding: 0 24px 60px;
+}
+
+.activity-info {
+  color: rgba(0, 0, 0, 0.60);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 140%;
+}
+
+.cover {
+  width: 115px;
+  height: 97px;
+  margin-right: 12px;
+}
+
+.activity-area {
+  flex: 1;
+  overflow: hidden;
+}
+
+.title {
+  color: rgba(0, 0, 0, 0.90);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 140%;
+  margin-top: 6px;
+}
+
+.cell {
+  margin-top: 24px;
+  color: rgba(0, 0, 0, 0.88);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 140%;
+}
+
+.money {
+  color: #4321F5;
+  text-align: right;
+  font-family: DIN Condensed;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.icon--wechat-pay {
+  width: 24px;
+  height: 24px;
+  margin-right: 4px;
+}
+
+.txt-gray {
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 140%;
+}
+
+.icon--shield {
+  width: 24px;
+  height: 24px;
+}
+
+.insurance-wrap {
+  margin-top: 14px;
+  border-radius: 4px;
+  background: #F7F7F7;
+  padding: 16px;
+
+  color: #000;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 140%; 
+
+  .gray {
+    color: rgba(0, 0, 0, 0.55);
+  }
+}
+
+.intro-title {
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 140%;
+  margin-top: 16px;
+}
+
+.intro-content {
+  color: rgba(0, 0, 0, 0.88);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 140%;
+  margin-top: 8px;
+}
+
+.tool-bar {
+  position: fixed;
+  width: 100vw;
+  bottom: 0;
+  box-sizing: border-box;
+  padding-top: 14px;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 8px);
+  background: linear-gradient(94deg, #FFF 0%, #F2F2F2 100%);
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.18);
+
+  .btn {
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.10);
+    padding: 8px 24px;
+    color: #FFF;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 140%;
+
+    &.active {
+      background: #4321F5;
+      color: #AFF164;
+    }
+  }
+}
+
+.custom-popup {
+  --td-popup-border-radius: 12px;
+  --td-popup-bg-color: #fff !important;
+}
+
+.dialog--phone-auauthorize {
+  height: calc(75vh - env(safe-area-inset-bottom));
+  background-color: #fff;
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+
+  .bar-wrap {
+    height: 28px;
+  }
+
+  .bar {
+    width: 40px;
+    height: 4px;
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .icon {
+    width: 80px;
+    height: 135px;
+  }
+
+  .footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100px;
+  }
+
+  .btn--authorize {
+    width: 240px;
+    height: 56px;
+    border-radius: 18px;
+    background: #4321F5;
+    color: #AFF164;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 140%;
+  }
+}

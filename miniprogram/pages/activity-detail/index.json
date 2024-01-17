@@ -1,0 +1,12 @@
+{
+  "component": true,
+  "disableScroll": true,
+  "usingComponents": {
+    "t-image": "tdesign-miniprogram/image/image",
+    "t-loading": "tdesign-miniprogram/loading/loading",
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "member-list": "../../components/member-list/index",
+    "t-action-sheet": "tdesign-miniprogram/action-sheet/action-sheet",
+    "firework": "../../components/firework/index"
+  }
+}

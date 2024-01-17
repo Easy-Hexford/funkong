@@ -1,21 +1,67 @@
 {
   "pages": [
-    "pages/index/index"
+    "pages/home/index",
+    "pages/mine/index",
+    "pages/activity-detail/index",
+    "pages/activity-create/index",
+    "pages/activity-poster/index",
+    "pages/profile/index",
+    "pages/sign-up/index",
+    "pages/customer-service/index",
+    "pages/user-info/index",
+    "pages/club-poster/index",
+    "pages/club-create/index",
+    "pages/club-profile/index",
+    "pages/audit/index"
   ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationStyle": "custom"
   },
-  "style": "v2",
+  "renderer": "webview",
   "rendererOptions": {
     "skyline": {
       "defaultDisplayBlock": true,
+      "defaultContentBox": true,
       "disableABTest": true,
       "sdkVersionBegin": "3.0.0",
       "sdkVersionEnd": "15.255.255"
     }
   },
+  "requiredPrivateInfos": [
+    "getLocation",
+    "chooseLocation"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
+  "usingComponents": {
+    "t-navbar": "tdesign-miniprogram/navbar/navbar",
+    "safe-area": "./components/safe-area/index"
+  },
   "componentFramework": "glass-easel",
   "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "tabBar": {
+    "custom": true,
+    "color": "#000000",
+    "selectedColor": "#000000",
+    "backgroundColor": "#000000",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "Fun空"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "text": "活动"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我"
+      }
+    ]
+  }
 }

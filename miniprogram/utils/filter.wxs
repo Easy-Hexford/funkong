@@ -1,0 +1,43 @@
+var birthday = function(d) {
+  return d.trim().split(' ')[0]
+}
+
+var money = function(m) {
+  if (typeof m !== 'number') {
+    return ''
+  }
+  return (m / 100).toFixed(2)
+}
+
+var distance = function(d) {
+  return d ? (d / 1000).toFixed(2) + '公里' : ''
+}
+
+var localeMoney = function(num) {
+  if (!num || isNaN(num)) {
+    return '';
+  }
+
+  var numStr = num.toString();
+  var len = numStr.length;
+  var result = '';
+
+  while (len > 0) {
+    if (len >= 4) {
+      result = ',' + numStr.slice(len - 3, len) + result;
+      len -= 3;
+    } else {
+      result = numStr.slice(0, len) + result;
+      len = 0;
+    }
+  }
+
+  return result;
+}
+
+module.exports = {
+  birthday: birthday,
+  money: money,
+  distance: distance,
+  localeMoney: localeMoney
+}

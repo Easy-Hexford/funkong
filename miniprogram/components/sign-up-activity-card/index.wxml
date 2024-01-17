@@ -1,0 +1,87 @@
+<!--components/sign-up-Activity-card/index.wxml-->
+<view class="step-container">
+	<view bind:tap="onUsertap">
+		<view class="date row-between">
+			<view class="step-dot" />
+			<text>{{beginTime}}</text>
+		</view>
+		<view class="tip--status">
+			<view wx:if="{{ActivitySignUpStatus === 'ToPay' || ActivitySignUpStatus === 'PayTimeout'}}" class="row">
+				<t-icon name="time" size="16" color="#4321F5" />
+				<text style="margin-left: 2px;">支付确认中</text>
+			</view>
+			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreating'}}" class="row">
+				<t-icon name="time" size="16" color="#4321F5" />
+				<text style="margin-left: 2px;">购买保险中</text>
+			</view>
+			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 1}}" class="row" catch:tap="createInsurance">
+				<t-icon name="error-circle" size="16" color="#FA5151" />
+				<text style="margin-left: 2px; color: #FA5151;">保险购买失败，轻触重新购买。</text>
+      </view>
+			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 2 }}" class="row" catch:tap="showInsuranceForm">
+				<t-icon name="error-circle" size="16" color="#FA5151" />
+				<text style="margin-left: 2px; color: #FA5151;">保险购买失败，请修改被保人信息。</text>
+			</view>
+			<view wx:if="{{ActivitySignUpStatus === 'InsuranceCreateFail' && SignUpInfo.InsuranceRetryNum === 3}}" class="row" catch:tap="contactCustomerService">
+				<t-icon name="error-circle" size="16" color="#FA5151" />
+				<text style="margin-left: 2px; color: #FA5151;">未购买保险，请联系客服。</text>
+			</view>
+			<view wx:if="{{ActivitySignUpStatus === 'Refunding'}}" class="row">
+				<t-icon name="time" size="16" color="#4321F5" />
+				<text style="margin-left: 2px;">退款中</text>
+			</view>
+			<view wx:if="{{ActivitySignUpStatus === 'Refund'}}" class="row">
+				<t-icon name="check-circle" size="16" color="#4321F5" />
+				<text style="margin-left: 2px;">已退款</text>
+			</view>
+			<view wx:if="{{ActivitySignUpStatus === 'RefundError'}}" class="row" bind:tap="contactCustomerService">
+				<t-icon name="error-circle" size="16" color="#FA5151" />
+				<text style="margin-left: 2px; color: #FA5151;">无法退款</text>
+			</view>
+		</view>
+		<view class="addr row">
+			<t-icon
+			 style="margin-right: 4px;"
+			 name="location-1"
+			 size="16"
+			 color="rgba(0, 0, 0, 0.55)"
+			/>
+			<text class="ellipsis" space="ensp">{{Activity.Location.Name}} {{filter.distance(distance)}}</text>
+		</view>
+		<view class="content">
+			<image class="cover" mode="aspectFill" src="{{Activity.CoverUrls.Items[0]}}" />
+			<view class="overlay">
+				<view class="title-wrap row-between">
+					<text class="title ellipsis">{{Activity.Title}}</text>
+					<view class="row">
+						<t-avatar-group max="3" class="avatar-group">
+              <view slot="collapse-avatar"></view>
+              <t-avatar
+               size="24px"
+							 wx:for="{{avatarList}}"
+							 wx:for-item="pic"
+							 wx:key="*this"
+							 image="{{pic || defaultHeadImg}}"
+							/>
+						</t-avatar-group>
+						<text style="margin-left: 6px;" class="status">{{signUpText}}</text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+	<view class="btn--more" bind:tap="showAction">
+		<t-icon name="ellipsis" size="24" color="rgba(0, 0, 0, 0.55)" />
+	</view>
+</view>
+
+<t-popup
+ close-on-overlay-click="{{true}}"
+ visible="{{visible}}"
+ bind:visible-change="onVisibleChange"
+ placement="bottom"
+ t-class="custom-popup"
+>
+	<insurance-form bind:submit="onInsuranceFormSumit" />
+</t-popup>
+

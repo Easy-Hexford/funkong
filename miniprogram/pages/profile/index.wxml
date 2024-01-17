@@ -1,0 +1,128 @@
+<scroll-view
+ scroll-y
+ type="list"
+ refresher-enabled
+ refresher-triggered="{{triggered}}"
+ refresher-default-style="black"
+ refresher-background="#ffffff00"
+ bind:refresherrefresh="onRefresh"
+ class="scrollable"
+>
+	<view class="banner">
+		<block wx:if="{{User.CoverUrls && User.CoverUrls.Items[0]}}">
+			<image class="cover" mode="aspectFill" src="{{User.CoverUrls.Items[0]}}" />
+		</block>
+		<block wx:else>
+			<view style="transform: translateY(-47px);" class="column-cross-center" bind:tap="chooseCover">
+				<image class="banner-bg" src="../../assets/images/@chartlet_man_bath.png" />
+			</view>
+		</block>
+	</view>
+
+	<view class="sheet">
+		<view class="content-wrap active">
+			<block wx:if="{{User.Role === 'SuperRole'}}">
+        <view wx:if="{{Club.AuditStatus === 'Auditing' || Club.AuditStatus === 'AuditSucc'}}">
+          <view class="field-title">俱乐部</view>
+          <view class="form-field-wrap">
+            <view class="input-field" style="padding-top: 0; padding-bottom: 0;">
+              <view
+               style="padding: 17px 0;"
+               class="row-between"
+               hover-class="none"
+               bind:tap="viewClub"
+              >
+                <view class="row">
+                  <image class="icon--club circle" mode="aspectFill" src="{{Club.ClubIcon}}" />
+                  <text>{{Club.ClubName}}</text>
+                </view>
+                <view class="row">
+                  <text wx:if="{{isAuditing}}" class="tip-auditing">审核中</text>
+                  <t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+                </view>
+              </view>
+  
+              <t-divider t-class="custom-divider" />
+  
+              <view
+               style="padding: 17px 0;"
+               class="row-between"
+               hover-class="none"
+               bind:tap="createActivity"
+              >
+                <text class="{{isAuditing ? 'disabled' : ''}}">创建活动</text>
+                <t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+              </view>
+  
+              <t-divider t-class="custom-divider" />
+  
+              <view
+               style="padding: 17px 0;"
+               class="row-between"
+               hover-class="none"
+               bind:tap="invite"
+              >
+                <text class="{{isAuditing ? 'disabled' : ''}}">邀请粉丝</text>
+                <t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+              </view>
+            </view>
+          </view>
+        </view>
+  
+        <view wx:else class="form-field-wrap">
+          <navigator class="input-field row-between" url="../club-create/index" hover-class="none">
+            <text>创建俱乐部</text>
+            <t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+          </navigator>
+        </view>
+      </block>
+
+			<view class="form-field-wrap" wx:if="{{User.AuditRole === 'NormalAuditRole'}}">
+				<navigator class="input-field row-between" url="../audit/index" hover-class="none">
+					<text>审核台</text>
+					<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+				</navigator>
+			</view>
+
+			<view class="form-field-wrap">
+				<navigator class="input-field row-between" url="../customer-service/index" hover-class="none">
+					<text>联系客服</text>
+					<t-icon name="chevron-right" size="24" color="rgba(0, 0, 0, 0.3)" />
+				</navigator>
+			</view>
+		</view>
+
+		<view class="avatar-wrap column-cross-center">
+			<view class="btn--add center">
+				<t-avatar
+				 wx:if="{{User.Icon}}"
+				 alt="头像"
+				 image="{{User.Icon}}"
+				 size="96px"
+				 bind:longpress="copyUserId"
+				/>
+				<image
+				 wx:else
+				 class="avatar"
+				 mode="aspectFill"
+				 src="../../assets/images/@avatar_woman.svg"
+				 bind:longpress="copyUserId"
+				/>
+			</view>
+
+			<view class="nickname center" hover-class="none" bind:tap="editUserInfo">
+				<text class="ellipsis" style="display: inline-block; max-width: 220px;">{{User.NickName || '尊嘟假嘟'}}</text>
+				<t-icon
+				 style="margin-left: 4px;"
+				 name="edit"
+				 size="20"
+				 color="#6CCEA2"
+				/>
+			</view>
+			<block wx:if="{{!User.Phone}}">
+				<view class="identity-badge">游客</view>
+			</block>
+		</view>
+	</view>
+</scroll-view>
+

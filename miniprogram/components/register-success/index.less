@@ -1,0 +1,74 @@
+/* components/welcome/index.wxss */
+@import '../../style/common.less';
+
+.container-placeholder {
+  position: relative;
+  height: calc(75vh - env(safe-area-inset-bottom));
+}
+
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(75vh);
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 12px 12px 0px 0px;
+  background: linear-gradient(170deg, #F5AD21 -0.22%, #FFF 58.59%);
+}
+
+.bar-wrap {
+  width: 100%;
+  padding: 12px 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.bar {
+  border-radius: 12px;
+  opacity: 0.5;
+  background: #FFF;
+  width: 40px;
+  height: 16px;
+}
+
+.icon {
+  width: 272px;
+  height: 177px;
+}
+
+.tip--welcome {
+  margin-top: 24px;
+  text-align: right;
+  color: #4321F5;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 140%;
+}
+
+.btn {
+  border-radius: 18px;
+  background: #4321F5;
+  padding: 14px 60px;
+
+  color: #AFF164;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 140%;
+}
+
+.footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(env(safe-area-inset-bottom) + 12px);
+}
+
+.tip--jump {
+  margin-top: 30px;
+  color: #4321F5;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 140%;
+}

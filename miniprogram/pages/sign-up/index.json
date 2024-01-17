@@ -1,0 +1,10 @@
+{
+  "component": true,
+  "usingComponents": {
+    "t-loading": "tdesign-miniprogram/loading/loading",
+    "t-popup": "tdesign-miniprogram/popup/popup",
+    "insurance-form": "../../components/insurance-form/index",
+    "register-success": "../../components/register-success/index",
+    "sign-up-success": "../../components/sign-up-success/index"
+  }
+}
