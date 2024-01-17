@@ -10,7 +10,10 @@
  bind:scrolltolower="loadMore"
 >
 	<view class="banner" bind:tap="chooseCover">
-		<image class="cover" mode="aspectFill" src="{{Club.CoverUrls.Items[0]}}" />
+    <image class="cover" mode="aspectFill" src="{{Club.CoverUrls.Items[0]}}" />
+    <block wx:if="{{User.UserId && User.UserId === ClubOwnerUser.UserId}}">
+      <view class="btn--edit" bind:tap="editClub">编辑</view>
+    </block>
 	</view>
 
 	<view class="sheet">

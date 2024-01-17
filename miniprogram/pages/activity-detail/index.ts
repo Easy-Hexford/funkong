@@ -1,6 +1,6 @@
 // pages/activity-detail/index.ts
 import * as request from '../../services/index'
-import type { IActivityAuditStatus, IActivityInfo, IClubInfo, IGetUserResp, ISelfActivitySignup, ISimpleUserInfo, IUserInfo } from '../../services'
+import type { IActivityAuditStatus, IActivityInfo, IActivityRefundType, IClubInfo, IGetUserResp, ISelfActivitySignup, ISimpleUserInfo, IUserInfo } from '../../services'
 import { calcDistance, getLocation } from '../../utils/location'
 import { WeekNames } from '../../utils/util'
 import { getPosterQuery } from '../../utils/bind'
@@ -9,6 +9,24 @@ import { ActivitySignUpBlockTime } from '../../utils/constant'
 import ActionSheet, { ActionSheetTheme } from 'tdesign-miniprogram/action-sheet/index';
 
 const app = getApp()
+
+const EnumSignUpStatus = {
+  Empty: 0,                    // 空
+  ToPay: 1,                    // 支付确认中
+  PayTimeout: 2,               // 支付超时
+  Paid: 3,                     // 已付款
+  InsuranceCreating: 4,        // 创建保险中
+  InsuranceCreated: 5,         // 保险购买成功
+  InsuranceCreateFail: 6,      // 保险购买失败
+  InsuranceRetryNum1: 7,       // 需重新填写保单
+  InsuranceRetryNum2: 8,       // 需联系客服
+  Refunding: 9,                // 退款中
+  Refund: 10,                  // 退款成功
+  RefundError: 11,             // 退款失败
+  End: 12,                     // 活动已结束
+  Deadline: 13,                // 活动报名截止
+  Full: 14,                    // 活动已满员
+}
 
 Component({
   options: {
@@ -45,15 +63,19 @@ Component({
     User: <IUserInfo>{},
     Club: <IClubInfo>{},
 
-    hasSignedUp: false,
-    canSignUp: false,
-    signUpText: '',
     isActivityEnd: false,
-    tipWraning: false,
+    EnumSignUpStatus,
+    signUpStatus: EnumSignUpStatus.Empty,
+
+    triggered:false,
+    _freshing: false,
 
     loading: true,
     firstPage: false,
+    visible: false,
     _reenter: false,
+    _lock: false,
+    _ActivityRefundType: <IActivityRefundType>'RefundAll',
     auditResult: <IActivityAuditStatus>'',
   },
 
@@ -117,7 +139,8 @@ Component({
 
     async refreshActivity() {
       return request.getActivity({
-        ActivityId: this.data.ActivityId
+        ActivityId: this.data.ActivityId,
+        UseCache: false
       }).then(resp => {
         const Activity = resp.Activity
         const OwnerUser = Activity.OwnerUser
@@ -133,7 +156,11 @@ Component({
         this.formatDate()
         this.calcDistance()
         this.checkActivityEnd()
-        this.getSignUpText()
+
+        const signUpStatus = this.getSignUpStatus()
+        this.setData({
+          signUpStatus,
+        })
 
         if (Activity.AuditStatus === 'AuditSucc') {
           wx.showShareMenu({
@@ -143,10 +170,19 @@ Component({
       })
     },
 
+    onRefresh() {
+      if (this.data._freshing) return
+      this.data._freshing = true
+      this.refreshActivity()
+        .then(() => {
+          this.setData({
+            triggered: false,
+            _freshing: false,
+          })
+        })
+    },
+
     goSignUp() {
-      if (!this.data.canSignUp) {
-        return
-      }
       wx.navigateTo({
         url: '../sign-up/index',
         success: (res) => {
@@ -165,100 +201,68 @@ Component({
       })
     },
 
-    getSignUpText() {
+    getSignUpStatus() {
       const Activity = this.data.Activity
       const SelfActivitySignUp = this.data.SelfActivitySignUp
       const now = dayjs().unix()
       const startTime = dayjs(Activity.BeginTime).unix()
       const endTime = dayjs(Activity.EndTime).unix()
-
-      const signUp = () => {
-        const Price = Activity.ActivityRule.Price
-        const formatPrice = (Price / 100).toFixed(2)
-        this.setData({
-          hasSignedUp: false,
-          canSignUp: true,
-          signUpText: `¥${formatPrice} 走起`
-        })
-      }
-      this.setData({ tipWraning: false })
-
-      if (!SelfActivitySignUp) {
-        // 活动时间和人数上是否可报名
+      const _getStatus = () => {
         if (now > endTime) {
-          this.setData({
-            hasSignedUp: false,
-            canSignUp: false,
-            signUpText: '活动已结束'
-          })
+          return EnumSignUpStatus.End
         } else if (startTime - now < ActivitySignUpBlockTime) {
-          this.setData({
-            hasSignedUp: false,
-            canSignUp: false,
-            signUpText: '报名截止'
-          })
+          return EnumSignUpStatus.Deadline
         } else if (Activity.SignUpNum === Activity.ActivityRule.MaxSignUpNumber) {
-          this.setData({
-            hasSignedUp: false,
-            canSignUp: false,
-            signUpText: '已满员'
-          })
+          return EnumSignUpStatus.Full
         } else {
-          signUp()
+          return EnumSignUpStatus.Empty
         }
-        return
+      }
+      // 未报名过
+      if (!SelfActivitySignUp) {
+        return _getStatus()
       }
 
       // 已经报名过
       const ActivitySignUpStatus = SelfActivitySignUp.ActivitySignUpStatus
+      const InsuranceRetryNum = SelfActivitySignUp.SignUpInfo.InsuranceRetryNum
+
       switch (ActivitySignUpStatus) {
         case 'ToPay': {
-          this.setData({
-            hasSignedUp: false,
-            canSignUp: false,
-            signUpText: `支付确认中`
-          })
-          break
+          return EnumSignUpStatus.ToPay
         }
         case 'PayTimeout': {
-          signUp()
-          break
+          return _getStatus()
         }
-        case 'InsuranceCreating':
+        case 'Paid': {
+          return EnumSignUpStatus.Paid
+        }
+        case 'InsuranceCreating': {
+          return EnumSignUpStatus.InsuranceCreating
+        }
         case 'InsuranceCreated': {
-          this.setData({
-            hasSignedUp: true,
-          })
-          break
+          return EnumSignUpStatus.InsuranceCreated
         }
         case 'InsuranceCreateFail': {
-          this.setData({
-            hasSignedUp: false,
-            canSignUp: false,
-            signUpText: '保险未生效，请联系客服'
-          })
-          break
+          if (InsuranceRetryNum === 1) {
+            return EnumSignUpStatus.InsuranceRetryNum1
+          } else if (InsuranceRetryNum === 2) {
+            return EnumSignUpStatus.InsuranceRetryNum2
+          } else {
+            return EnumSignUpStatus.InsuranceCreateFail
+          }
         }
         case 'Refund': {
-          signUp()
-          break
+          return EnumSignUpStatus.Refund
         }
         case 'Refunding': {
-          this.setData({
-            hasSignedUp: false,
-            canSignUp: false,
-            signUpText: '退款中'
-          })
-          break
+          return EnumSignUpStatus.Refunding
         }
         case 'RefundError': {
-          this.setData({
-            hasSignedUp: false,
-            canSignUp: false,
-            signUpText: '无法退款，请联系客服',
-            tipWraning: true
-          })
-          break
+          return EnumSignUpStatus.RefundError
+        }
+        default: {
+          return EnumSignUpStatus.Empty
         }
       }
     },
@@ -343,6 +347,68 @@ Component({
       })
     },
 
+    showInsuranceForm() {
+      this.setData({
+        visible: true,
+      })
+    },
+
+    hidePopup() {
+      this.setData({
+        visible: false,
+      })
+    },
+
+    onVisibleChange(e: any) {
+      this.setData({
+        visible: e.detail.visible,
+      });
+    },
+
+    async onInsuranceFormSumit(e: any) {
+      if (this.data._lock) return
+      this.data._lock = true
+
+      const insuranceData = e.detail.User
+      try {
+        wx.showToast({
+          icon: 'loading',
+          title: '正在确认',
+          duration: 10000
+        })
+
+        await request.updateUser({
+          ...insuranceData
+        })
+
+        await request.createInsurance({
+          ActivityId: this.data.Activity.ActivityId
+        })
+
+        this.hidePopup()
+        this.refreshActivity()
+        this.data._lock = false
+        wx.showToast({
+          icon: 'none',
+          title: '已重新发起投保'
+        })
+      } catch (e: any) {
+        wx.hideToast()
+        this.hidePopup()
+        this.data._lock = false
+        wx.showModal({
+          content: e.message,
+          showCancel: false
+        })
+      }
+    },
+
+    contactCustomerService() {
+      wx.navigateTo({
+        url: '../customer-service/index'
+      })
+    },
+
     onBack() {
       wx.navigateBack();
     },
@@ -374,7 +440,7 @@ Component({
       }
     },
 
-    manage() {
+    showOwnerCancelSheet() {
       ActionSheet.show({
         theme: ActionSheetTheme.List,
         selector: '#t-manage-action-sheet',
@@ -398,14 +464,19 @@ Component({
           title: '已有用户报名，无法修改活动信息',
         })
       } else {
-        wx.navigateTo({
-          url: '../activity-create/index',
-          success: (res) => {
-            res.eventChannel.emit('initData', {
-              Activity: JSON.parse(JSON.stringify(this.data.Activity)),
-            })
-          }
+        wx.showToast({
+          icon: 'none',
+          title: '该功能即将上线'
         })
+
+        // wx.navigateTo({
+        //   url: '../activity-create/index',
+        //   success: (res) => {
+        //     res.eventChannel.emit('initData', {
+        //       Activity: JSON.parse(JSON.stringify(this.data.Activity)),
+        //     })
+        //   }
+        // })
       }
     },
 
@@ -441,6 +512,87 @@ Component({
           },
         ],
       })
+    },
+
+    showUserCancelSheet() {
+      const Activity = this.data.Activity
+      const Price = Activity.ActivityRule.Price / 100
+      const SelfActivitySignUp = this.data.SelfActivitySignUp
+
+      const now = dayjs()
+      const startTime = dayjs(Activity.BeginTime)
+      const PayTime = dayjs(SelfActivitySignUp?.PayTime)
+      const startZeroTime = startTime.hour(0).minute(0).second(0)
+
+      // 1. 报名后半小时内可以退
+      // 2. 活动开始前4小时之内，不能退款
+      // 3. 从当天00:00:00到活动开始前4小时只退一半
+      // 4. 非当天可退全款
+      let desc
+      if (now.diff(PayTime, 'm') < 30) {
+        desc = `活动尚未开始准备，退出活动后将退款 ¥${Price.toFixed(2)}`
+        this.data._ActivityRefundType = 'RefundAll'
+      } else if (startTime.diff(now, 'm') <= 0) {
+        desc = '活动已开始，无法退出'
+        this.data._ActivityRefundType = 'RefundNone'
+      } else if (startTime.diff(now, 'm') <= 240) {
+        desc = '距离活动开始不足4小时，无法退出'
+        this.data._ActivityRefundType = 'RefundNone'
+      } else if (now.diff(startZeroTime, 'm') > 0) {
+        desc = `活动已开始准备，退出活动仅退还 ¥${(Price / 2).toFixed(2)}`
+        this.data._ActivityRefundType = 'RefundHalf'
+      } else {
+        desc = `活动尚未开始准备，退出活动后将退款 ¥${Price.toFixed(2)}`
+        this.data._ActivityRefundType = 'RefundAll'
+      }
+
+      const items: any = [
+        {
+          label: '退出活动',
+          color: '#FA5151'
+        }
+      ]
+      const signUpStatus = this.data.signUpStatus
+      if (signUpStatus === EnumSignUpStatus.InsuranceRetryNum1) {
+        items.push({
+          label: '联系客服加入活动群',
+        })
+      }
+
+      ActionSheet.show({
+        theme: ActionSheetTheme.List,
+        selector: '#t-user-cancel-action-sheet',
+        context: this,
+        description: desc,
+        items,
+      })
+    },
+
+    handleUserCancelSelected(e: any) {
+      const Activity = this.data.Activity
+      const { index } = e.detail
+      if (index === 0) {
+        if (this.data._ActivityRefundType === 'RefundNone') {
+          return
+        }
+        request.deleteSignUpActivity({
+          ActivityId: Activity.ActivityId,
+          ActivityRefundType: this.data._ActivityRefundType,
+        }).then(() => {
+          wx.showToast({
+            icon: 'none',
+            title: '已提交退出申请'
+          })
+          this.refreshActivity()
+        }, () => {
+          wx.showToast({
+            icon: 'none',
+            title: '退出活动失败，请稍后重试'
+          })
+        })
+      } else if (index === 1) {
+        this.contactCustomerService()
+      }
     },
   }
 })

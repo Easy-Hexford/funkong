@@ -80,6 +80,17 @@ Component({
   },
 
   methods: {
+    editClub() {
+      wx.navigateTo({
+        url: '../club-create/index?mode=edit',
+        success: (res) => {
+          res.eventChannel.emit('initData', {
+            Club: JSON.parse(JSON.stringify(this.data.Club)),
+          })
+        }
+      })
+    },
+
     displayFireWorkIfNeeded() {
       const User: IUserInfo = app.globalData.User
       if (this.data.RegisterClubId) {
@@ -155,6 +166,7 @@ Component({
     onRefresh() {
       if (this.data._freshing) return
       this.data._freshing = true
+      this.refreshClub()
       this.refreshClubActivityList()
         .then(() => {
           this.setData({

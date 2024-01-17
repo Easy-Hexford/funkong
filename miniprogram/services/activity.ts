@@ -96,6 +96,33 @@ export function getSignActicityList(req: IGetSignUpActicityListReq): Promise<IGe
   })
 }
 
+export interface IGetActivitySignUpListReq {
+  ActivityId: String,
+  Offset: Number,
+  Limit: Number,
+}
+
+export interface IActivitySignUpInfo {
+  SignUpId: String,
+  ActivityId: String,
+  UserId: String,
+  ActivitySignUpStatus: IActivityAuditStatus,
+  User: ISimpleUserInfo
+}
+
+export interface IGetActivitySignUpListResp {
+  ActivitySignUpList: Array<IActivitySignUpInfo>
+  TotalCount: number
+}
+
+export function getActivitySignUpList(req: IGetActivitySignUpListReq): Promise<IGetActivitySignUpListResp> {
+  return call({
+    url: '/activity/get_activity_sign_up_list',
+    method: 'POST',
+    data: req
+  })
+}
+
 export interface IPoint {
   lat: number,
   lon: number
@@ -198,8 +225,11 @@ export interface ICreateInsuranceReq {
   ActivityId: string
 }
 
+export type IActivityRefundType = 'RefundAll' | 'RefundHalf' | 'RefundNone'
+
 export interface ISignUpctivityReq {
-  ActivityId: string
+  ActivityId: string,
+  ActivityRefundType: IActivityRefundType
 }
 
 export interface ISignUpctivityResp {
@@ -214,14 +244,17 @@ export interface IExitctivityReq {
 
 export interface IGetActivityReq {
   ActivityId: string
+  UseCache: boolean
 }
 
 export interface ISelfActivitySignup {
   SignUpId: string,
+  PayTime: string,
   ActivityId: string,
   UserId: string,
   ActivitySignUpStatus: IActivitySignUpStatus,
   User: ISimpleUserInfo
+  SignUpInfo: ISignUpInfo
 }
 
 export interface IGetActivityResp {

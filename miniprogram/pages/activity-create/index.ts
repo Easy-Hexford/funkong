@@ -343,10 +343,10 @@ Component({
         return false
       }
 
-      const t1 = dayjs(BeginTime)
-      const t2 = dayjs(EndTime)
-      const days = Math.ceil(t2.diff(t1, 'd', true))
-      
+      const t1 = dayjs(BeginTime).startOf('date')
+      const t2 = dayjs(EndTime).startOf('date')
+      const days = t2.diff(t1, 'd') + 1
+
       const InsurancePrice = +this.data.InsurancePrice * days
       const ActivityType = this.data.ActivityType
       const minActivityPrice = 2 * InsurancePrice
