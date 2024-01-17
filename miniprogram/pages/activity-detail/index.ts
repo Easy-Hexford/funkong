@@ -119,6 +119,7 @@ Component({
     displayFireWorkIfNeeded() {
       const User: IUserInfo = app.globalData.User
       if (this.data.RegisterClubId) {
+        console.info('displayFireWorkIfNeeded DidRegisterClub: ', app.globalData.DidRegisterClub, ' RegisterType: ', User.RegisterType)
         if (app.globalData.DidRegisterClub || !User.RegisterType) {
           this.setData({
             showFireWork: true
@@ -129,7 +130,7 @@ Component({
     },
 
     async getUser() {
-      app.getUser().then((resp: IGetUserResp) => {
+      return app.getUser().then((resp: IGetUserResp) => {
         this.setData({
           User: resp.User,
           Club: resp.Club,

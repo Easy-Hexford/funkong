@@ -41,7 +41,7 @@ export function createSignUpActivity(req: ISignUpctivityReq): Promise<ISignUpcti
   })
 }
 
-export function deleteSignUpActivity(req: ISignUpctivityReq) {
+export function deleteSignUpActivity(req: IDeleteSignUpctivityReq) {
   return call({
     url: '/activity/delete_sign_up',
     method: 'POST',
@@ -49,9 +49,9 @@ export function deleteSignUpActivity(req: ISignUpctivityReq) {
   })
 }
 
-export function exitActivity(req: IExitctivityReq): Promise<void> {
+export function closeSignUp(req: ICloseSignUpReq) {
   return call({
-    url: '/activity/delete_sign_up',
+    url: '/activity/close_sign_up',
     method: 'POST',
     data: req
   })
@@ -228,18 +228,24 @@ export interface ICreateInsuranceReq {
 export type IActivityRefundType = 'RefundAll' | 'RefundHalf' | 'RefundNone'
 
 export interface ISignUpctivityReq {
-  ActivityId: string,
-  ActivityRefundType: IActivityRefundType
+  ActivityId: string
 }
 
 export interface ISignUpctivityResp {
   SignUpId: string,
   PrepayId: string,
+  OrderId: string,
   Payment: IWxPaymentParams
 }
 
-export interface IExitctivityReq {
-  ActivityId: string
+export interface IDeleteSignUpctivityReq {
+  ActivityId: string,
+  ActivityRefundType: IActivityRefundType
+}
+
+export interface ICloseSignUpReq {
+  SignUpId: string,
+  OrderId: string
 }
 
 export interface IGetActivityReq {

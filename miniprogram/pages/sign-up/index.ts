@@ -26,7 +26,6 @@ Component({
     popupContent: <IPopupContentType>'',
     signUpSuccessTip: '',
 
-    _payFail: false,
     _lock: false,
   },
 
@@ -133,13 +132,12 @@ Component({
         this.data._lock = false
         wx.hideToast()
         this.hidePopup()
-        this.signUp()
-
         // 本地先同步
         const User = this.data.User
         Object.assign(User, insuranceData)
         this.setData({ User })
         this.refreshUserInfo()
+        this.signUp()
       }, (e) => {
         wx.showToast({
           icon: 'error',
@@ -177,14 +175,16 @@ Component({
             paySign: Payment.paySign,
             success: () => {
               this.showSignUpSuccess()
-              this.data._payFail = false
             },
             fail: () => {
               wx.showToast({
                 icon: 'error',
                 title: '支付失败'
               })
-              this.data._payFail = true
+              request.closeSignUp({
+                SignUpId: resp.SignUpId,
+                OrderId: resp.OrderId
+              })
             },
           })
         } else {
@@ -201,12 +201,6 @@ Component({
     },
 
     async signUp() {
-      if (this.data.payFail) {
-        await request.deleteSignUpActivity({
-          ActivityId: this.data.Activity.ActivityId
-        })
-      }
-
       if (this.checkInssurance()) {
         this.signUpNormalActivity()
       }
@@ -214,7 +208,7 @@ Component({
 
     checkInssurance() {
       const IdCardNo = this.data.User.IdCardNo
-      if (!IdCardNo) {
+      if (!IdCardNo && !this.data.freeInsurance) {
         this.showInsuranceForm()
         return false
       }

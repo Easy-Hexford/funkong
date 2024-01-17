@@ -66,9 +66,9 @@
 			</view>
 		</view>
 	</view>
-	<view class="btn--more" bind:tap="showAction">
+	<!-- <view class="btn--more" bind:tap="showAction">
 		<t-icon name="ellipsis" size="24" color="rgba(0, 0, 0, 0.55)" />
-	</view>
+	</view> -->
 </view>
 
 <t-popup

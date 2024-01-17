@@ -71,6 +71,7 @@ App({
     })
     this.globalData.User = resp.User
     this.globalData.Club = resp.Club
+    console.info('app getLatestUser ', resp.User)
     return resp
   }
 })
