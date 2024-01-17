@@ -202,7 +202,7 @@
 
 				<!-- 用户已报名 -->
 				<view class="row">
-					<block wx:if="{{signUpStatus === EnumSignUpStatus.Empty || signUpStatus === EnumSignUpStatus.PayTimeout}}">
+					<block wx:if="{{signUpStatus === EnumSignUpStatus.Empty || signUpStatus === EnumSignUpStatus.PayTimeout || signUpStatus === EnumSignUpStatus.Refund}}">
 						<view bind:tap="goSignUp" class="btn active center" style="font-size: 18px; font-weight: 600;">
 							<text>¥{{filter.money(Activity.ActivityRule.Price)}} 走起</text>
 						</view>
@@ -235,7 +235,7 @@
 						</view>
 					</block>
 
-					<view wx:elif="{{signUpStatus === EnumSignUpStatus.Refund}}" class="tip--disabled">已退出活动</view>
+					<!-- <view wx:elif="{{signUpStatus === EnumSignUpStatus.Refund}}" class="tip--disabled">已退出活动</view> -->
 
 					<view wx:elif="{{signUpStatus === EnumSignUpStatus.End}}" class="tip">活动已结束</view>
 
